@@ -8,9 +8,9 @@ export default defineConfig({
     port: 4173,
     proxy: {
       "/api": {
-        target: "https://www.brokket.app",
+        target: "http://13.126.103.246",
         changeOrigin: true,
-        secure: true,
+        secure: false,
       },
       "/admin/api": {
         target: "https://www.brokket.app",

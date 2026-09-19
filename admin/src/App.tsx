@@ -17,11 +17,13 @@ const emptyDraft = (): NewsDraft => ({
   isActive: true,
   newsLink: "",
   thumbnailImage: "",
-  postedBy: "",
-  postedByLogo: "",
+  publisherName: "Brokket News",
+  publisherTagline: "Real Estate Intelligence",
+  publisherLogo: "",
+  sourceName: "",
+  sourceLogo: "",
   cityCode: "",
-  cityName: "",
-  createdAt: new Date().toISOString().slice(0, 10),
+  publishedAt: new Date().toISOString().slice(0, 16),
 });
 
 function displayDate(value: string): string {
@@ -43,7 +45,7 @@ function TokenGate({ onReady }: { onReady: () => void }) {
       <div className="brand-mark">b</div>
       <p className="eyebrow">BROKKET ADMIN</p>
       <h1>Brokket Feed News</h1>
-      <p className="muted">Use your existing Brokket admin access token. It stays only in this browser and is never committed to Git.</p>
+      <p className="muted">Use the separate Feed admin access token. It stays only in this browser and is never committed to Git.</p>
       <label>Admin access token<input type="password" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Paste admin token" autoFocus /></label>
       <button className="primary wide" type="submit">Connect securely</button>
     </form>
@@ -60,16 +62,17 @@ function NewsEditor({ item, onClose, onSaved }: EditorProps) {
   const [draft, setDraft] = useState<NewsDraft>(() => item ? {
     title: item.title || "", description: item.description || "", isActive: item.isActive,
     newsLink: item.newsLink || "", thumbnailImage: item.thumbnailImage || "",
-    postedBy: item.postedBy || "", postedByLogo: item.postedByLogo || "",
-    cityCode: item.cityCode || "", cityName: item.cityName || "",
-    createdAt: item.createdAt ? new Date(item.createdAt).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10),
+    publisherName: item.publisherName || "Brokket News", publisherTagline: item.publisherTagline || "Real Estate Intelligence",
+    publisherLogo: item.publisherLogo || "", sourceName: item.sourceName || "", sourceLogo: item.sourceLogo || "",
+    cityCode: item.cityCode || "",
+    publishedAt: item.publishedAt ? new Date(item.publishedAt).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16),
   } : emptyDraft());
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState<"thumbnailImage" | "postedByLogo" | null>(null);
+  const [uploading, setUploading] = useState<"thumbnailImage" | "sourceLogo" | "publisherLogo" | null>(null);
   const [error, setError] = useState("");
 
   const patch = <K extends keyof NewsDraft>(key: K, value: NewsDraft[K]) => setDraft((current) => ({ ...current, [key]: value }));
-  const doUpload = async (field: "thumbnailImage" | "postedByLogo", file?: File) => {
+  const doUpload = async (field: "thumbnailImage" | "sourceLogo" | "publisherLogo", file?: File) => {
     if (!file) return;
     try {
       setUploading(field);
@@ -86,7 +89,7 @@ function NewsEditor({ item, onClose, onSaved }: EditorProps) {
     try {
       setSaving(true);
       setError("");
-      if (item) await updateNews(item.id, draft); else await createNews(draft);
+      if (item) await updateNews(item.code, draft); else await createNews(draft);
       onSaved();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Unable to save news");
@@ -96,11 +99,11 @@ function NewsEditor({ item, onClose, onSaved }: EditorProps) {
   };
   const selectCity = (code: string) => {
     const city = CITY_PATTERNS.find((candidate) => candidate.code === code);
-    setDraft((current) => ({ ...current, cityCode: code, cityName: city?.name || "" }));
+    setDraft((current) => ({ ...current, cityCode: code }));
   };
   const selectSource = (name: string) => {
     const source = ALL_SOURCES.find((candidate) => candidate.name === name);
-    setDraft((current) => ({ ...current, postedBy: name, postedByLogo: source?.logo || current.postedByLogo }));
+    setDraft((current) => ({ ...current, sourceName: name, sourceLogo: source?.logo || current.sourceLogo }));
   };
 
   return <div className="modal-backdrop" role="presentation" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
@@ -114,15 +117,18 @@ function NewsEditor({ item, onClose, onSaved }: EditorProps) {
           <label className="full">News link (URL)<div className="input-icon"><Link2 /><input type="url" value={draft.newsLink} onChange={(e) => patch("newsLink", e.target.value)} /></div></label>
         </fieldset>
         <fieldset><legend>Publisher & location</legend>
-          <label>Posted by<input list="source-options" value={draft.postedBy} onChange={(e) => selectSource(e.target.value)} placeholder="Select or enter source" /></label>
+          <label>Source name<input list="source-options" value={draft.sourceName} onChange={(e) => selectSource(e.target.value)} placeholder="Select or enter source" /></label>
           <datalist id="source-options">{ALL_SOURCES.map((source) => <option key={`${source.name}-${source.url}`} value={source.name} />)}</datalist>
           <label>City *<select value={draft.cityCode} onChange={(e) => selectCity(e.target.value)}><option value="">Select city</option>{CITY_PATTERNS.map((city) => <option key={city.code} value={city.code}>{city.name}</option>)}</select></label>
-          <label>Date<input type="date" value={draft.createdAt} onChange={(e) => patch("createdAt", e.target.value)} /></label>
+          <label>Published date & time<input type="datetime-local" value={draft.publishedAt} onChange={(e) => patch("publishedAt", e.target.value)} /></label>
+          <label>Publisher name<input value={draft.publisherName} onChange={(e) => patch("publisherName", e.target.value)} /></label>
+          <label>Publisher tagline<input value={draft.publisherTagline} onChange={(e) => patch("publisherTagline", e.target.value)} /></label>
           <label className="toggle-field"><span>Article status</span><button type="button" className={`switch ${draft.isActive ? "on" : ""}`} onClick={() => patch("isActive", !draft.isActive)}><span />{draft.isActive ? "Active" : "Inactive"}</button></label>
         </fieldset>
         <fieldset><legend>Media</legend>
           <MediaField label="Thumbnail image" value={draft.thumbnailImage} loading={uploading === "thumbnailImage"} onChange={(value) => patch("thumbnailImage", value)} onUpload={(file) => doUpload("thumbnailImage", file)} />
-          <MediaField label="Publisher logo" value={draft.postedByLogo} loading={uploading === "postedByLogo"} onChange={(value) => patch("postedByLogo", value)} onUpload={(file) => doUpload("postedByLogo", file)} />
+          <MediaField label="Source logo" value={draft.sourceLogo} loading={uploading === "sourceLogo"} onChange={(value) => patch("sourceLogo", value)} onUpload={(file) => doUpload("sourceLogo", file)} />
+          <MediaField label="Publisher logo" value={draft.publisherLogo} loading={uploading === "publisherLogo"} onChange={(value) => patch("publisherLogo", value)} onUpload={(file) => doUpload("publisherLogo", file)} />
         </fieldset>
       </div>
       <footer><button className="secondary" onClick={onClose}>Cancel</button><button className="primary" disabled={saving || Boolean(uploading)} onClick={submit}>{saving && <LoaderCircle className="spin" />}{item ? "Update article" : "Create article"}</button></footer>
@@ -179,7 +185,7 @@ export function App() {
       if (filters.search.trim()) request.searchQuery = filters.search.trim();
       if (filters.status !== "all") request.isActive = filters.status === "active";
       if (filters.city) request.cityCode = filters.city;
-      if (filters.source) request.postedBy = filters.source;
+      if (filters.source) request.sourceName = filters.source;
       if (filters.from) request.createdFrom = filters.from;
       if (filters.to) request.createdTo = filters.to;
       const result = await listNews(request);
@@ -195,7 +201,7 @@ export function App() {
     const next = !item.isActive;
     if (!next && !window.confirm(`Deactivate “${item.title}”? It will stop showing in the app.`)) return;
     try {
-      await updateNews(item.id, { ...item, isActive: next });
+      await updateNews(item.code, { ...item, isActive: next });
       await load();
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Status update failed"); }
   };
@@ -218,13 +224,13 @@ export function App() {
         </section>
         {error && <div className="alert">{error}</div>}
         <section className="news-card">
-          <div className="table-head"><span>Image</span><span>Title</span><span>City</span><span>Posted by</span><span>Date</span><span>Status</span><span>Actions</span></div>
+          <div className="table-head"><span>Image</span><span>Title</span><span>City</span><span>Source</span><span>Published</span><span>Status</span><span>Actions</span></div>
           {loading && items.length === 0 ? <div className="empty"><LoaderCircle className="spin" />Loading news…</div> : items.length === 0 ? <div className="empty"><SlidersHorizontal />No news matches these filters.</div> : items.map((item) => <article className="news-row" key={item.id}>
             <div className="thumb">{item.thumbnailImage ? <img src={item.thumbnailImage} alt="" /> : <Newspaper />}</div>
             <div className="news-title"><strong>{item.title}</strong>{item.newsLink && <a href={item.newsLink} target="_blank" rel="noreferrer"><Link2 />{item.newsLink}</a>}</div>
-            <span className="city-pill">{item.cityName || item.cityCode || "—"}</span>
-            <div className="publisher">{item.postedByLogo ? <img src={item.postedByLogo} alt="" /> : <Building2 />}<span>{item.postedBy || "Brokket News"}</span></div>
-            <time>{displayDate(item.createdAt)}</time>
+            <span className="city-pill">{CITY_PATTERNS.find((city) => city.code === item.cityCode)?.name || item.cityCode || "—"}</span>
+            <div className="publisher">{item.sourceLogo ? <img src={item.sourceLogo} alt="" /> : <Building2 />}<span>{item.sourceName || "Unknown source"}</span></div>
+            <time>{displayDate(item.publishedAt)}</time>
             <button className={`status ${item.isActive ? "active" : "inactive"}`} onClick={() => toggle(item)}><CirclePower />{item.isActive ? "Active" : "Inactive"}</button>
             <div className="actions"><button className="icon-button" onClick={() => setEditor({ open: true, item })} aria-label="Edit"><FilePenLine /></button><button className="icon-button danger" onClick={() => item.isActive && toggle(item)} aria-label="Deactivate" disabled={!item.isActive}><Trash2 /></button></div>
           </article>)}

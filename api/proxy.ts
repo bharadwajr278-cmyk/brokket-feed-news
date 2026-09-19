@@ -1,7 +1,10 @@
-const UPSTREAM_ORIGIN = "https://www.brokket.app";
+const FEED_ORIGIN = "http://13.126.103.246";
+const MEDIA_ORIGIN = "https://www.brokket.app";
 
 const ALLOWED_ROUTES = [
-  /^\/api\/more-pages\/news(?:\/list|\/[A-Za-z0-9_-]+)?$/,
+  /^\/api\/feed-news$/,
+  /^\/api\/feed-news\/list$/,
+  /^\/api\/feed-news\/NEWS-[A-Za-z0-9_-]+$/,
   /^\/admin\/api\/projects\/photos$/,
 ];
 
@@ -36,14 +39,15 @@ export default async function handler(request: Request): Promise<Response> {
   }
 
   const headers = new Headers();
-  const accessToken = process.env.BROKKET_ACCESS_TOKEN;
+  const isMediaRoute = path.startsWith("/admin/api/");
+  const accessToken = isMediaRoute ? process.env.BROKKET_ACCESS_TOKEN : undefined;
   const contentType = request.headers.get("content-type");
   if (accessToken) headers.set("ACCESS_TOKEN", accessToken);
   if (contentType) headers.set("content-type", contentType);
   headers.set("accept", "application/json");
 
   try {
-    const upstream = await fetch(`${UPSTREAM_ORIGIN}${path}`, {
+    const upstream = await fetch(`${isMediaRoute ? MEDIA_ORIGIN : FEED_ORIGIN}${path}`, {
       method: request.method,
       headers,
       body: request.method === "GET" || request.method === "OPTIONS"

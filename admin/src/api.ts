@@ -1,19 +1,31 @@
 export type NewsItem = {
   id: string;
-  code?: string;
+  code: string;
   title: string;
   description: string;
   isActive: boolean;
   newsLink: string;
   thumbnailImage: string;
-  postedBy: string;
-  postedByLogo: string;
+  publisherName: string;
+  publisherTagline: string;
+  publisherLogo: string;
+  sourceName: string;
+  sourceLogo: string;
   cityCode: string;
-  cityName: string;
-  createdAt: string;
+  publishedAt: string;
+  dateCreated: string;
+  dateUpdated: string;
+  likeCount: number;
+  commentCount: number;
+  engagementShareCount: number;
+  repostCount: number;
+  viewCount: number;
 };
 
-export type NewsDraft = Omit<NewsItem, "id" | "code">;
+export type NewsDraft = Omit<NewsItem,
+  "id" | "code" | "dateCreated" | "dateUpdated" | "likeCount" |
+  "commentCount" | "engagementShareCount" | "repostCount" | "viewCount"
+>;
 
 export type NewsFilters = {
   page: number;
@@ -21,7 +33,7 @@ export type NewsFilters = {
   searchQuery?: string;
   isActive?: boolean;
   cityCode?: string;
-  postedBy?: string;
+  sourceName?: string;
   createdFrom?: string;
   createdTo?: string;
 };
@@ -39,7 +51,7 @@ type ApiEnvelope<T> = {
   code?: string;
 };
 
-const TOKEN_KEY = "admin_access_token";
+const TOKEN_KEY = "feed_admin_access_token";
 
 export function hasAdminToken(): boolean {
   return Boolean(localStorage.getItem(TOKEN_KEY));
@@ -62,7 +74,7 @@ async function api<T>(method: string, path: string, data?: unknown): Promise<T> 
     method,
     headers: {
       ...(data instanceof FormData ? {} : { "content-type": "application/json" }),
-      ...(token ? (import.meta.env.DEV ? { ACCESS_TOKEN: token } : { "X-PANEL-TOKEN": token }) : {}),
+      ...(token ? { "X-PANEL-TOKEN": token } : {}),
     },
     body: data === undefined ? undefined : data instanceof FormData ? data : JSON.stringify(data),
   });
@@ -74,42 +86,54 @@ async function api<T>(method: string, path: string, data?: unknown): Promise<T> 
 }
 
 export async function listNews(filters: NewsFilters): Promise<PageResult> {
-  const response = await api<unknown>("POST", "/api/more-pages/news/list", filters);
+  const { sourceName, ...request } = filters;
+  if (sourceName && !request.searchQuery) request.searchQuery = sourceName;
+  const response = await api<unknown>("POST", "/api/feed-news/list", request);
   const candidate = response && typeof response === "object" && "page" in response
     ? (response as { page: unknown }).page
     : response;
   if (Array.isArray(candidate)) {
-    return { content: candidate as NewsItem[], page: filters.page, totalPages: 1, totalElements: candidate.length };
+    const content = sourceName
+      ? (candidate as NewsItem[]).filter((item) => item.sourceName === sourceName)
+      : candidate as NewsItem[];
+    return { content, page: filters.page, totalPages: 1, totalElements: content.length };
   }
   const page = candidate as Partial<PageResult> & { number?: number };
+  const rawContent = Array.isArray(page.content) ? page.content : [];
+  const content = sourceName
+    ? rawContent.filter((item) => item.sourceName === sourceName)
+    : rawContent;
   return {
-    content: Array.isArray(page.content) ? page.content : [],
+    content,
     page: page.page ?? page.number ?? filters.page,
     totalPages: page.totalPages ?? 0,
-    totalElements: page.totalElements ?? 0,
+    totalElements: sourceName ? content.length : page.totalElements ?? 0,
   };
 }
 
-function toWritePayload(draft: NewsDraft, includeCreatedAt: boolean): Record<string, unknown> {
+function toWritePayload(draft: NewsDraft): Record<string, unknown> {
   return {
     title: draft.title,
     description: draft.description,
     isActive: draft.isActive,
     newsLink: draft.newsLink || null,
     thumbnailImage: draft.thumbnailImage || null,
-    postedBy: draft.postedBy,
-    postedByLogo: draft.postedByLogo || null,
+    publisherName: draft.publisherName || "Brokket News",
+    publisherTagline: draft.publisherTagline || "Real Estate Intelligence",
+    publisherLogo: draft.publisherLogo || "",
+    sourceName: draft.sourceName,
+    sourceLogo: draft.sourceLogo || "",
+    publishedAt: new Date(draft.publishedAt).toISOString(),
     cityCode: draft.cityCode,
-    ...(includeCreatedAt ? { createdAt: new Date(draft.createdAt) } : {}),
   };
 }
 
 export function createNews(draft: NewsDraft): Promise<unknown> {
-  return api("POST", "/api/more-pages/news", toWritePayload(draft, true));
+  return api("POST", "/api/feed-news", toWritePayload(draft));
 }
 
-export function updateNews(id: string, draft: NewsDraft): Promise<unknown> {
-  return api("PUT", `/api/more-pages/news/${encodeURIComponent(id)}`, toWritePayload(draft, false));
+export function updateNews(code: string, draft: NewsDraft): Promise<unknown> {
+  return api("PUT", `/api/feed-news/${encodeURIComponent(code)}`, toWritePayload(draft));
 }
 
 export async function uploadImage(file: File): Promise<string> {

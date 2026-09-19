@@ -86,8 +86,7 @@ async function api<T>(method: string, path: string, data?: unknown): Promise<T> 
 }
 
 export async function listNews(filters: NewsFilters): Promise<PageResult> {
-  const { sourceName, createdFrom, createdTo, ...request } = filters;
-  const needsClientFiltering = Boolean(sourceName || createdFrom || createdTo);
+  const { sourceName, createdFrom, createdTo, isActive, ...request } = filters;
   if (sourceName && !request.searchQuery) request.searchQuery = sourceName;
 
   const fetchPage = async (pageNumber: number, size: number): Promise<PageResult> => {
@@ -99,10 +98,8 @@ export async function listNews(filters: NewsFilters): Promise<PageResult> {
     return normalisePage(response, pageNumber);
   };
 
-  if (!needsClientFiltering) return fetchPage(filters.page, filters.size);
-
-  // The Feed API currently ignores date fields, so fetch the matching result set
-  // and apply source/date filtering locally before paginating it for the admin UI.
+  // Fetch the complete matching set so duplicate API rows can be collapsed and
+  // date/status filters remain correct even when two copies disagree on status.
   const batchSize = 200;
   const first = await fetchPage(0, batchSize);
   const pages = [first];
@@ -112,9 +109,14 @@ export async function listNews(filters: NewsFilters): Promise<PageResult> {
   }
 
   const unique = new Map<string, NewsItem>();
-  pages.flatMap((page) => page.content).forEach((item) => unique.set(item.code || item.id, item));
+  pages.flatMap((page) => page.content).forEach((item) => {
+    const key = duplicateKey(item);
+    const existing = unique.get(key);
+    if (!existing || preferItem(item, existing)) unique.set(key, item);
+  });
   const filtered = [...unique.values()].filter((item) => {
     if (sourceName && item.sourceName !== sourceName) return false;
+    if (isActive !== undefined && item.isActive !== isActive) return false;
     const dateKey = publishedDateKey(item.publishedAt);
     if (createdFrom && (!dateKey || dateKey < createdFrom)) return false;
     if (createdTo && (!dateKey || dateKey > createdTo)) return false;
@@ -128,6 +130,29 @@ export async function listNews(filters: NewsFilters): Promise<PageResult> {
     totalPages: Math.ceil(filtered.length / filters.size),
     totalElements: filtered.length,
   };
+}
+
+function duplicateKey(item: NewsItem): string {
+  if (item.newsLink) {
+    try {
+      const url = new URL(item.newsLink);
+      url.hash = "";
+      url.search = "";
+      url.hostname = url.hostname.toLowerCase().replace(/^www\./, "");
+      url.pathname = url.pathname.replace(/\/+$/, "") || "/";
+      return `url:${url.toString().toLowerCase()}`;
+    } catch {
+      // Fall through to the title key for malformed legacy URLs.
+    }
+  }
+  const title = item.title.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  return `title:${title}|${item.cityCode}|${publishedDateKey(item.publishedAt)}`;
+}
+
+function preferItem(candidate: NewsItem, current: NewsItem): boolean {
+  if (candidate.isActive !== current.isActive) return candidate.isActive;
+  return new Date(candidate.dateUpdated || candidate.dateCreated).getTime()
+    > new Date(current.dateUpdated || current.dateCreated).getTime();
 }
 
 function publishedDateKey(value: string): string {

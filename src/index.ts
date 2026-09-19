@@ -242,6 +242,46 @@ async function fetchSource(source: NewsSource, queryDays: number): Promise<FeedI
   return parseFeed(xml, source.name, source.domain);
 }
 
+function comparableUrl(value: string): string {
+  try {
+    const url = new URL(value);
+    url.hash = "";
+    url.search = "";
+    url.hostname = url.hostname.toLowerCase().replace(/^www\./, "");
+    url.pathname = url.pathname.replace(/\/+$/, "") || "/";
+    return url.toString().toLowerCase();
+  } catch {
+    return value.trim().toLowerCase().replace(/\/+$/, "");
+  }
+}
+
+async function alreadyExistsInFeed(env: MonitorEnv, title: string, articleUrl: string): Promise<boolean> {
+  const headers: Record<string, string> = {
+    "content-type": "application/json",
+    "user-agent": "Mozilla/5.0 (compatible; BrokketNewsBot/2.3; +https://brokket.com)",
+  };
+  if (env.BROKKET_API_KEY) headers.authorization = `Bearer ${env.BROKKET_API_KEY}`;
+  const response = await fetch(`${env.BROKKET_API_URL.replace(/\/+$/, "")}/list`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ page: 0, size: 50, searchQuery: title }),
+  });
+  if (!response.ok) {
+    await discardResponse(response);
+    throw new Error(`Feed duplicate check returned ${response.status}`);
+  }
+  const body = await response.json() as {
+    data?: { page?: { content?: Array<{ title?: string; newsLink?: string }> } };
+  };
+  const content = body.data?.page?.content ?? [];
+  const expectedUrl = comparableUrl(articleUrl);
+  const expectedTitle = normalizedTitle(title);
+  return content.some((item) =>
+    Boolean(item.newsLink && comparableUrl(item.newsLink) === expectedUrl)
+    || Boolean(item.title && normalizedTitle(item.title) === expectedTitle),
+  );
+}
+
 async function fetchCityFeed(city: CityPattern, queryDays: number): Promise<FeedItem[]> {
   const locationTerms = city.patterns.slice(0, 3).map((pattern) => `"${pattern}"`).join(" OR ");
   const query = `(${QUERY_TERMS}) (${locationTerms}) when:${queryDays}d`;
@@ -499,6 +539,30 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
   if (await env.NEWS_STATE.get(`sent:${idempotencyKey}`)) {
     await env.NEWS_STATE.put(`seenfeed:${feedKey}`, article.url, { expirationTtl: 60 * 60 * 24 * 7 });
     return { ...resultBase, status: "skipped", articleUrl: article.url };
+  }
+  try {
+    if (await alreadyExistsInFeed(env, cleanTitle, article.url)) {
+      await Promise.all([
+        env.NEWS_STATE.put(`sent:${idempotencyKey}`, JSON.stringify({
+          version: 2,
+          url: article.url,
+          title: cleanTitle,
+          sentAt: new Date().toISOString(),
+          isActive: true,
+          recoveredFromApi: true,
+        })),
+        env.NEWS_STATE.put(`senttitle:${titleKey}`, article.url),
+        env.NEWS_STATE.put(`seenfeed:${feedKey}`, article.url, { expirationTtl: 60 * 60 * 24 * 7 }),
+      ]);
+      return { ...resultBase, status: "skipped", articleUrl: article.url };
+    }
+  } catch (error) {
+    return {
+      ...resultBase,
+      status: "failed",
+      articleUrl: article.url,
+      error: `duplicate_check: ${error instanceof Error ? error.message : String(error)}`,
+    };
   }
   const description = decodeEntities(article.description).slice(0, 2_000);
   const source = sourceAsset(article.url, item.sourceName);

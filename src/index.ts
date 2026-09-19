@@ -187,7 +187,7 @@ async function sha256(value: string): Promise<string> {
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
-async function fetchSource(source: NewsSource): Promise<FeedItem[]> {
+async function fetchSource(source: NewsSource, queryDays: number): Promise<FeedItem[]> {
   if (source.feed) {
     const response = await fetch(source.url, {
       headers: {
@@ -208,7 +208,7 @@ async function fetchSource(source: NewsSource): Promise<FeedItem[]> {
     : source.type === "publisher" ? QUERY_TERMS : OFFICIAL_QUERY_TERMS;
   const sourceUrl = new URL(source.url);
   const scopedPath = sourceUrl.pathname !== "/" ? sourceUrl.pathname.replace(/\/+$/, "") : "";
-  const query = `(${terms}) site:${source.domain}${scopedPath} when:3d`;
+  const query = `(${terms}) site:${source.domain}${scopedPath} when:${queryDays}d`;
   const url = `${GOOGLE_NEWS}?q=${encodeURIComponent(query)}&hl=en-IN&gl=IN&ceid=IN:en`;
   const response = await fetch(url, {
     headers: { "User-Agent": "BrokketRealEstateMonitor/1.0" },
@@ -487,6 +487,7 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
 export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}): Promise<RunSummary> {
   const runStarted = new Date();
   const maxAgeMs = Math.max(1, Number(env.MAX_AGE_HOURS || "72")) * 60 * 60 * 1_000;
+  const queryDays = Math.max(1, Math.ceil(maxAgeMs / (24 * 60 * 60 * 1_000)));
   const sourceBatchSize = Math.max(1, Math.min(
     ROTATING_SOURCES.length,
     options.sourceBatchSize ?? ROTATING_BATCH_SIZE,
@@ -499,7 +500,7 @@ export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}):
     (_unused, offset) => ROTATING_SOURCES[(cursor + offset) % ROTATING_SOURCES.length])
     .filter((source): source is NewsSource => source !== undefined);
   const sources = [...CORE_SOURCES, ...rotating];
-  const feeds = await Promise.allSettled(sources.map((source) => fetchSource(source)));
+  const feeds = await Promise.allSettled(sources.map((source) => fetchSource(source, queryDays)));
   const items = feeds.flatMap((result) => result.status === "fulfilled" ? result.value : []);
   const unique = new Map(items.map((item) => [item.link, item]));
   const candidates: Array<{ item: FeedItem; city: CityPattern }> = [];

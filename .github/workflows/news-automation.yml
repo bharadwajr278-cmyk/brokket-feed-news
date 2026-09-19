@@ -25,15 +25,15 @@ concurrency:
 jobs:
   publish-news:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
     env:
       NEWS_API_ENDPOINT: ${{ vars.NEWS_API_ENDPOINT }}
       NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
       NEWS_STATE_PATH: state/news-state.json
       MAX_AGE_HOURS: ${{ inputs.backfill_20_days && '480' || '72' }}
       SOURCE_BATCH_SIZE: "10000"
-      MAX_ITEMS_PER_RUN: "25"
-      MAX_ATTEMPTS_PER_RUN: "50"
+      MAX_ITEMS_PER_RUN: ${{ inputs.backfill_20_days && '200' || '25' }}
+      MAX_ATTEMPTS_PER_RUN: ${{ inputs.backfill_20_days && '500' || '50' }}
     steps:
       - uses: actions/checkout@v4
         with:

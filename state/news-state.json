@@ -686,13 +686,13 @@
       "value": "imported-from-cloudflare-kv"
     },
     "state:last_checked_at": {
-      "value": "2026-09-19T10:51:34.904Z"
+      "value": "2026-09-19T10:52:38.501Z"
     },
     "state:last_run": {
-      "value": "{\"checkedAt\":\"2026-09-19T10:51:34.904Z\",\"discovered\":14,\"eligible\":0,\"sent\":[],\"skipped\":[],\"failures\":[],\"sources\":[\"Hindustan Times\",\"The Times of India\",\"The Economic Times\",\"ETRealty\",\"SwarajyaMag\",\"Chennai Metro Rail\",\"Ahmedabad Urban Development Authority\",\"Gujarat Infrastructure Development Board\",\"Kolkata Metropolitan Development Authority\",\"HIDCO West Bengal\",\"Jaipur Development Authority\",\"RIICO\",\"Punjab Urban Planning and Development Authority\",\"Uttar Pradesh State Industrial Development Authority\",\"Lucknow Development Authority\"]}"
+      "value": "{\"checkedAt\":\"2026-09-19T10:52:38.501Z\",\"discovered\":14,\"eligible\":0,\"sent\":[],\"skipped\":[],\"failures\":[],\"sources\":[\"Hindustan Times\",\"The Times of India\",\"The Economic Times\",\"ETRealty\",\"SwarajyaMag\",\"Jharkhand Urban Infrastructure Development Company\",\"Odisha Housing & Urban Development\",\"Bhubaneswar Development Authority\",\"Kochi Metro Rail\",\"Goa Town and Country Planning\",\"Uttarakhand Urban Development Directorate\",\"Chandigarh Administration\",\"Puducherry Public Works Department\",\"DLF Limited\",\"M3M India\",\"Godrej Properties\",\"Macrotech Developers / Lodha\",\"Prestige Estates Projects\",\"Sobha Limited\",\"Oberoi Realty\",\"Emaar India\",\"Tata Housing\",\"Mahindra Lifespace Developers\",\"Adani Realty\",\"Brigade Enterprises\",\"Puravankara Limited\",\"Embassy Group\",\"K Raheja Corp\",\"Hiranandani Group\",\"Shapoorji Pallonji Real Estate\",\"L&T Realty\",\"Birla Estates\",\"Raymond Realty\",\"Piramal Realty\",\"Runwal Realty\",\"Kalpataru\",\"Kolte-Patil Developers\",\"Ajmera Realty\",\"NCC Urban\",\"Sattva Group\",\"RMZ Corp\",\"CapitaLand India\",\"Sumadhura Group\",\"Casagrand\",\"TVS Emerald\",\"Radiance Realty\",\"Ramky Estates\",\"My Home Constructions\",\"Aparna Constructions\",\"Rajapushpa Properties\",\"Phoenix Group Hyderabad\",\"Rustomjee\",\"Wadhwa Group\",\"VTP Realty\",\"Kohinoor Group Pune\"]}"
     },
     "state:source_cursor": {
-      "value": "167"
+      "value": "217"
     }
   }
 }

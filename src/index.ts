@@ -76,6 +76,7 @@ const EXCLUDED_TERMS = [
   "emergency landing", "flight delay", "crash", "accident", "smuggling",
   "liquor", "monkey", "stunt", "book fair", "passenger robot",
   "vehicle dispatch", "vehicle dispatches", "carmaker", "automobile sales",
+  "child safety", "pocso", "district jail", "prison inspection",
 ];
 const QUERY_TERMS = [
   '"real estate"', "property", "housing", "RERA", "homebuyers", "redevelopment",

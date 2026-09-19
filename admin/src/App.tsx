@@ -42,7 +42,7 @@ function TokenGate({ onReady }: { onReady: () => void }) {
     }}>
       <div className="brand-mark">b</div>
       <p className="eyebrow">BROKKET ADMIN</p>
-      <h1>News control centre</h1>
+      <h1>Brokket Feed News</h1>
       <p className="muted">Use your existing Brokket admin access token. It stays only in this browser and is never committed to Git.</p>
       <label>Admin access token<input type="password" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Paste admin token" autoFocus /></label>
       <button className="primary wide" type="submit">Connect securely</button>
@@ -202,9 +202,9 @@ export function App() {
 
   if (!authenticated) return <TokenGate onReady={() => setAuthenticated(true)} />;
   return <div className="app-shell">
-    <aside><div className="logo"><span>b</span><strong>brokket</strong></div><nav><button className={view === "news" ? "active" : ""} onClick={() => setView("news")}><Newspaper />News</button><button className={view === "sources" ? "active" : ""} onClick={() => setView("sources")}><Activity />Sources</button></nav><div className="aside-foot"><div><strong>20 min</strong><span>Automation cycle</span></div><button className="icon-button" aria-label="Log out" onClick={() => { clearAdminToken(); setAuthenticated(false); }}><LogOut /></button></div></aside>
+    <aside><div className="logo"><span>b</span><strong>Brokket Feed News</strong></div><nav><button className={view === "news" ? "active" : ""} onClick={() => setView("news")}><Newspaper />News</button><button className={view === "sources" ? "active" : ""} onClick={() => setView("sources")}><Activity />Sources</button></nav><div className="aside-foot"><div><strong>20 min</strong><span>Automation cycle</span></div><button className="icon-button" aria-label="Log out" onClick={() => { clearAdminToken(); setAuthenticated(false); }}><LogOut /></button></div></aside>
     <main className="main-content">
-      <header className="topbar"><div><p className="eyebrow">REAL ESTATE INTELLIGENCE</p><h1>{view === "news" ? "News management" : "Source directory"}</h1><p>{view === "news" ? "Review, edit and control every article shown in the Brokket app." : "Every publisher, developer and official channel monitored by automation."}</p></div>{view === "news" && <button className="primary" onClick={() => setEditor({ open: true, item: null })}><Plus />Add news</button>}</header>
+      <header className="topbar"><div><p className="eyebrow">BROKKET FEED NEWS</p><h1>{view === "news" ? "News management" : "Source directory"}</h1><p>{view === "news" ? "Review, edit and control every article shown in the Brokket app." : "Every publisher, developer and official channel monitored by automation."}</p></div>{view === "news" && <button className="primary" onClick={() => setEditor({ open: true, item: null })}><Plus />Add news</button>}</header>
       <section className="stats"><article><span>Total results</span><strong>{total.toLocaleString("en-IN")}</strong><Newspaper /></article><article><span>Configured cities</span><strong>{CITY_PATTERNS.length}</strong><Building2 /></article><article><span>Monitored sources</span><strong>{ALL_SOURCES.length}</strong><Activity /></article></section>
       <div className="view-tabs"><button className={view === "news" ? "active" : ""} onClick={() => setView("news")}>Feed news</button><button className={view === "sources" ? "active" : ""} onClick={() => setView("sources")}>All sources <span>{ALL_SOURCES.length}</span></button></div>
       {view === "sources" ? <SourcesPanel /> : <>

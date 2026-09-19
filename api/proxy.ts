@@ -1,0 +1,47 @@
+const UPSTREAM_ORIGIN = "https://www.brokket.app";
+
+const ALLOWED_ROUTES = [
+  /^\/api\/more-pages\/news(?:\/list|\/[A-Za-z0-9_-]+)?$/,
+  /^\/admin\/api\/projects\/photos$/,
+];
+
+const ALLOWED_METHODS = new Set(["GET", "POST", "PUT", "OPTIONS"]);
+
+export const config = { runtime: "edge" };
+
+export default async function handler(request: Request): Promise<Response> {
+  const incomingUrl = new URL(request.url);
+  const path = incomingUrl.searchParams.get("path") || "";
+
+  if (!ALLOWED_METHODS.has(request.method)) {
+    return Response.json({ message: "Method not allowed" }, { status: 405 });
+  }
+  if (!ALLOWED_ROUTES.some((pattern) => pattern.test(path))) {
+    return Response.json({ message: "Route not allowed" }, { status: 403 });
+  }
+
+  const headers = new Headers();
+  const accessToken = request.headers.get("ACCESS_TOKEN");
+  const contentType = request.headers.get("content-type");
+  if (accessToken) headers.set("ACCESS_TOKEN", accessToken);
+  if (contentType) headers.set("content-type", contentType);
+  headers.set("accept", "application/json");
+
+  try {
+    const upstream = await fetch(`${UPSTREAM_ORIGIN}${path}`, {
+      method: request.method,
+      headers,
+      body: request.method === "GET" || request.method === "OPTIONS"
+        ? undefined
+        : await request.arrayBuffer(),
+      redirect: "manual",
+    });
+    const responseHeaders = new Headers();
+    const upstreamType = upstream.headers.get("content-type");
+    if (upstreamType) responseHeaders.set("content-type", upstreamType);
+    responseHeaders.set("cache-control", "no-store");
+    return new Response(upstream.body, { status: upstream.status, headers: responseHeaders });
+  } catch {
+    return Response.json({ message: "Brokket API is temporarily unavailable" }, { status: 502 });
+  }
+}

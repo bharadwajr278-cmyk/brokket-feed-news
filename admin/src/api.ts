@@ -55,11 +55,14 @@ export function clearAdminToken(): void {
 
 async function api<T>(method: string, path: string, data?: unknown): Promise<T> {
   const token = localStorage.getItem(TOKEN_KEY);
-  const response = await fetch(path, {
+  const requestPath = import.meta.env.DEV
+    ? path
+    : `/api/proxy?path=${encodeURIComponent(path)}`;
+  const response = await fetch(requestPath, {
     method,
     headers: {
       ...(data instanceof FormData ? {} : { "content-type": "application/json" }),
-      ...(token ? { authorization: `Bearer ${token}` } : {}),
+      ...(token ? { ACCESS_TOKEN: token } : {}),
     },
     body: data === undefined ? undefined : data instanceof FormData ? data : JSON.stringify(data),
   });

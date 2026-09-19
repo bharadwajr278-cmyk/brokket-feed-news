@@ -46,4 +46,4 @@ pnpm admin:dev
 
 Then open `http://localhost:4173`. The panel uses the same `admin_access_token` browser storage key and API routes as the existing Brokket admin application. The token is stored only in the browser and is never added to this repository.
 
-For production, build with `pnpm build`; the static admin bundle is written to `dist/admin`. It must be served from the Brokket web origin (or the Brokket API must explicitly allow the chosen origin through CORS) so authenticated API calls and image uploads work correctly.
+For production, build with `pnpm build`; the static admin bundle is written to `dist/admin`. The included Vercel Edge proxy forwards only the allow-listed Brokket news-management and image-upload routes. It does not store the admin token or expose arbitrary upstream endpoints, so the standalone deployment can securely perform authenticated API operations without weakening Brokket's CORS policy.

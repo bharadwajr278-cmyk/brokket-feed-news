@@ -1,6 +1,62 @@
 {
   "version": 1,
   "entries": {
+    "retry:0617d125aef18f683e454e6b2130efc35048e198d95f28d5c7800d159221d731": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817089998
+    },
+    "retry:7535d89a80832ef5b971e2de2230c0d3ce89ca73bfe58261106d9b9b153c8475": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817099827
+    },
+    "retry:a3a8b221d7c1e6cfb043c975a1fd3dd06461d8da61b2895ef2896d02e0effd80": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817103663
+    },
+    "retry:b4fd0a8cfa4e802e0c16e7cd460096965b492b07000d5bf7499b508a127aed29": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817101222
+    },
+    "retry:c3cfe48b624cf7cb5381ff69e1b9f14df8d686061dee25f7d8974d1c2dcfaed1": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817103946
+    },
+    "retry:f9c7bb485f07bad27bad34a8823206fa2b5f494dd6a124045c3a873dbe7f3bb7": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817101089
+    },
+    "retry:fc12a1a8ff744836a99782f69e671563c575bd1b561ff9498f8746aa53070890": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817100982
+    },
+    "seenfeed:16b1ed6d6712f69951fa7ec73024c079b6dda4f77e333649b08377397d88a9d7": {
+      "value": "https://timesofindia.indiatimes.com/city/gurgaon/child-safety-under-scanner-state-commission-inspects-school-railway-station-bhondsi-jail-in-gurgaon/articleshow/134339631.cms",
+      "expiresAt": 1790420090594
+    },
+    "seenfeed:252abf4300b8ebdb61ff6a5993abc18202c87410e54862ca1d1fe3faa958b523": {
+      "value": "https://www.magicbricks.com/news/sion-bridge-nears-opening-bmc-fast-tracks-byculla-jj-flyover-link-in-mumbai-pmmb/151645.html",
+      "expiresAt": 1790420099559
+    },
+    "seenfeed:2778d2756b6ac40a92923f242552c616dcfe99b105469aa6effbe8be8144791a": {
+      "value": "https://www.magicbricks.com/news/bye-bye-shankar-chowk-cyber-city-traffic-haryana-approves-new-flyover-and-underpass-project-rbmb/151673.html",
+      "expiresAt": 1790420092325
+    },
+    "seenfeed:c7062e8d96324ea10c33ad5f46b0378af312c5b4aedaaa936e0789280a2b645a": {
+      "value": "https://www.magicbricks.com/news/dlf-plans-7-lakh-sq-ft-mall-in-goa-by-march-2027/151677.html",
+      "expiresAt": 1790420089574
+    },
+    "seenfeed:d7da294f781aaaa2559d2acc2863a71d06557933085250cdbe131c5f27c02267": {
+      "value": "https://www.magicbricks.com/news/goa-highway-upgrade-centre-approve-inr-4000-crore-road-projects-in-goa-to-cut-traffic-jkmb/151648.html",
+      "expiresAt": 1790420097769
+    },
+    "seenfeed:e33249dda372c6b2f324100d42edaf4ac28fa3b333604e2338e56220c0150c0a": {
+      "value": "https://www.magicbricks.com/news/highway-infrastructure-wins-rs-220-crore-toll-collection-contract-for-gorakhpur-link-expressway-samb/151665.html",
+      "expiresAt": 1790420096122
+    },
+    "seenfeed:ffeef3baf658b862c0a59670f74d30d099ca4e65c42b90962284cce521a0db59": {
+      "value": "https://www.magicbricks.com/news/kamathipura-redevelopment-deal-signed-work-to-begin-around-diwali-ssmb/151666.html",
+      "expiresAt": 1790420093999
+    },
     "sent:0290dbb3746ff6eb6f278bc32366cf5265768cc661c5d685c505722cf82ffd22": {
       "value": "imported-from-cloudflare-kv"
     },
@@ -12,6 +68,10 @@
     },
     "sent:06f9a8b5a4468922027c33d0dd40fcb75a158bc8e75b18b5dcbc8d10a1b0e178": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "sent:16b1ed6d6712f69951fa7ec73024c079b6dda4f77e333649b08377397d88a9d7": {
+      "value": "{\"url\":\"https://timesofindia.indiatimes.com/city/gurgaon/child-safety-under-scanner-state-commission-inspects-school-railway-station-bhondsi-jail-in-gurgaon/articleshow/134339631.cms\",\"title\":\"Child safety under scanner: State commission inspects school, railway station, Bhondsi jail in Gurgaon\",\"apiCode\":\"NEWS-HSLQPVFW\",\"sentAt\":\"2026-09-19T10:54:50.594Z\"}",
+      "expiresAt": 1805367290594
     },
     "sent:19391af0385b63c5253330b65afc7c507aba59f7f9f06c24a6970d66b79cc5f0": {
       "value": "imported-from-cloudflare-kv"
@@ -40,8 +100,16 @@
     "sent:247e6193964638c02c40d5b8d637d60f74ca56fdd7bd4fefd35f42833de3c9b4": {
       "value": "imported-from-cloudflare-kv"
     },
+    "sent:252abf4300b8ebdb61ff6a5993abc18202c87410e54862ca1d1fe3faa958b523": {
+      "value": "{\"url\":\"https://www.magicbricks.com/news/sion-bridge-nears-opening-bmc-fast-tracks-byculla-jj-flyover-link-in-mumbai-pmmb/151645.html\",\"title\":\"Sion Bridge Nears Opening! BMC Fast-Tracks Byculla-JJ Flyover Link in Mumbai\",\"apiCode\":\"NEWS-XT6YVVT8\",\"sentAt\":\"2026-09-19T10:54:59.559Z\"}",
+      "expiresAt": 1805367299559
+    },
     "sent:26446e5b5edc7f332350d5ab46d78e6e291e0d6eccde8c265ee39614089c1076": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "sent:2778d2756b6ac40a92923f242552c616dcfe99b105469aa6effbe8be8144791a": {
+      "value": "{\"url\":\"https://www.magicbricks.com/news/bye-bye-shankar-chowk-cyber-city-traffic-haryana-approves-new-flyover-and-underpass-project-rbmb/151673.html\",\"title\":\"Bye-Bye Shankar Chowk-Cyber City Traffic! Haryana Approves New Flyover and Underpass Project\",\"apiCode\":\"NEWS-R3VW3YTW\",\"sentAt\":\"2026-09-19T10:54:52.325Z\"}",
+      "expiresAt": 1805367292325
     },
     "sent:28a3dffdd234626df555857e087f48e65f8bef0b261a9a43264ea0540b4e4324": {
       "value": "imported-from-cloudflare-kv"
@@ -274,6 +342,10 @@
     "sent:bfbfdeb37660dbebb0cf10bb4c1901672b3f4b19e835f1837df9c66736a35317": {
       "value": "imported-from-cloudflare-kv"
     },
+    "sent:c7062e8d96324ea10c33ad5f46b0378af312c5b4aedaaa936e0789280a2b645a": {
+      "value": "{\"url\":\"https://www.magicbricks.com/news/dlf-plans-7-lakh-sq-ft-mall-in-goa-by-march-2027/151677.html\",\"title\":\"DLF Plans 7-Lakh-Sq-Ft Mall in Goa by March 2027\",\"apiCode\":\"NEWS-EDRRTM33\",\"sentAt\":\"2026-09-19T10:54:49.574Z\"}",
+      "expiresAt": 1805367289574
+    },
     "sent:ca4a8cb517aa5ddaaba4d782ac376d0a54a265acb2c6f459658a5f833dae948f": {
       "value": "imported-from-cloudflare-kv"
     },
@@ -295,6 +367,10 @@
     "sent:d706430f6fdb18b6ec98cb20dbfe2e0c32f3766c1aec333b7cc35d4c0ab93307": {
       "value": "imported-from-cloudflare-kv"
     },
+    "sent:d7da294f781aaaa2559d2acc2863a71d06557933085250cdbe131c5f27c02267": {
+      "value": "{\"url\":\"https://www.magicbricks.com/news/goa-highway-upgrade-centre-approve-inr-4000-crore-road-projects-in-goa-to-cut-traffic-jkmb/151648.html\",\"title\":\"Goa Highway Upgrade: Centre Approve INR 4,000 Crore Road Projects in Goa to Cut Traffic\",\"apiCode\":\"NEWS-3W6JS9DB\",\"sentAt\":\"2026-09-19T10:54:57.769Z\"}",
+      "expiresAt": 1805367297769
+    },
     "sent:d8420b101bf5a01f0a9174b035614a0278a68f779529c39fce0733dcd80eaec8": {
       "value": "imported-from-cloudflare-kv"
     },
@@ -315,6 +391,10 @@
     },
     "sent:e208fd1249d11225311910406819c52aff8f95f9a592f7507456a3e3c277654b": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "sent:e33249dda372c6b2f324100d42edaf4ac28fa3b333604e2338e56220c0150c0a": {
+      "value": "{\"url\":\"https://www.magicbricks.com/news/highway-infrastructure-wins-rs-220-crore-toll-collection-contract-for-gorakhpur-link-expressway-samb/151665.html\",\"title\":\"Highway Infrastructure Wins Rs 220 Crore Toll Collection Contract for Gorakhpur Link Expressway\",\"apiCode\":\"NEWS-AE5BFUA6\",\"sentAt\":\"2026-09-19T10:54:56.122Z\"}",
+      "expiresAt": 1805367296122
     },
     "sent:e5a74de35dfae8658f124ef6acdbdd0724d6a381f34537c2b784f77a68f6ab12": {
       "value": "imported-from-cloudflare-kv"
@@ -342,6 +422,10 @@
     },
     "sent:fbf9cefa6a0f87b4c3f83cc9100d14f9dde69bf3f54d463d2ab4bb26e7bb97bc": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "sent:ffeef3baf658b862c0a59670f74d30d099ca4e65c42b90962284cce521a0db59": {
+      "value": "{\"url\":\"https://www.magicbricks.com/news/kamathipura-redevelopment-deal-signed-work-to-begin-around-diwali-ssmb/151666.html\",\"title\":\"Kamathipura Redevelopment Deal Signed, Work to Begin Around Diwali\",\"apiCode\":\"NEWS-4B9Y8R5U\",\"sentAt\":\"2026-09-19T10:54:53.999Z\"}",
+      "expiresAt": 1805367293999
     },
     "senttitle:0055ff5f0248f598fea7873e4c5a5ffc0b704e64753aae306f2e243ebe395271": {
       "value": "imported-from-cloudflare-kv"
@@ -381,6 +465,10 @@
     },
     "senttitle:250b0926c6b5c847f2a839b18bb0439a27ef269980747a7e6542119b7925cad1": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "senttitle:252d0c8954b8ff5199b752612563d741ef2c75894eb5eb9bd50212a07201ea8f": {
+      "value": "https://www.magicbricks.com/news/bye-bye-shankar-chowk-cyber-city-traffic-haryana-approves-new-flyover-and-underpass-project-rbmb/151673.html",
+      "expiresAt": 1805367292325
     },
     "senttitle:25427c891acdd912742f185c673cc65894c53be6f3ede6c82fd04262a390e40a": {
       "value": "imported-from-cloudflare-kv"
@@ -445,6 +533,10 @@
     "senttitle:48a41bc1580ec7c8b6ee7766c2a715342aea5dca7b3245e77db25a2391193482": {
       "value": "imported-from-cloudflare-kv"
     },
+    "senttitle:49cde4aa8e8f323c0d09c3aec73693394a7330ce1b25a0acfee10817d55ee7e7": {
+      "value": "https://www.magicbricks.com/news/kamathipura-redevelopment-deal-signed-work-to-begin-around-diwali-ssmb/151666.html",
+      "expiresAt": 1805367293999
+    },
     "senttitle:4cbeb87cb811ff88e9a0e7ff6efa7dd3cf9bb8768f5777c7ef509517e660c51e": {
       "value": "imported-from-cloudflare-kv"
     },
@@ -459,6 +551,10 @@
     },
     "senttitle:52a9f62acc85e7eaf43dbd804362ddd42d7cfcc081bf270503c50811720caded": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "senttitle:56b32456462fd965702bd05d4faedddc89b754a85e6bd8a581918b4518092f01": {
+      "value": "https://www.magicbricks.com/news/dlf-plans-7-lakh-sq-ft-mall-in-goa-by-march-2027/151677.html",
+      "expiresAt": 1805367289574
     },
     "senttitle:578d2d4c225909b6e33a36b0ba8f8ef4f99a0ba578f6a7ece356792170fc85a0": {
       "value": "imported-from-cloudflare-kv"
@@ -483,6 +579,10 @@
     },
     "senttitle:68b25eeab30e064499ca41c166452b23855702199faf10d35653bd31ffb21a14": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "senttitle:6a187bef04a21fc4ce0c39aaafb8126339de62530a1f7183a0aa7fdcfc39c6f3": {
+      "value": "https://www.magicbricks.com/news/highway-infrastructure-wins-rs-220-crore-toll-collection-contract-for-gorakhpur-link-expressway-samb/151665.html",
+      "expiresAt": 1805367296122
     },
     "senttitle:6c5e266b3314597e5dfe313f899ca43666c005673d02d6dcd228d74b09d4327f": {
       "value": "imported-from-cloudflare-kv"
@@ -519,6 +619,10 @@
     },
     "senttitle:8986852f0031bdf435b32f8d1481a88713b222d53d6ac33747484239022dde44": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "senttitle:8a19ff40d34cd18214e931e06ea61200035e43ce5a4e7e535184b7d71a21ee21": {
+      "value": "https://timesofindia.indiatimes.com/city/gurgaon/child-safety-under-scanner-state-commission-inspects-school-railway-station-bhondsi-jail-in-gurgaon/articleshow/134339631.cms",
+      "expiresAt": 1805367290594
     },
     "senttitle:8bed1e5688c0c028aecd8b660b1d59697a266783bfcc1ed2e8c11baf3803debe": {
       "value": "imported-from-cloudflare-kv"
@@ -573,6 +677,10 @@
     },
     "senttitle:a80b7283f826defccc7e18b195c9495ade53417807711c1aea5b501db8cee3e2": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "senttitle:a80d4c6f30be0525a7c8eb354bf71df9dd3fc626893714e102ac7e834ab89d44": {
+      "value": "https://www.magicbricks.com/news/sion-bridge-nears-opening-bmc-fast-tracks-byculla-jj-flyover-link-in-mumbai-pmmb/151645.html",
+      "expiresAt": 1805367299559
     },
     "senttitle:a9577d07f7f86f24de3739847af10909150ab949cf540f79b8e13c1475cab090": {
       "value": "imported-from-cloudflare-kv"
@@ -682,17 +790,21 @@
     "senttitle:f8c4d7414e5750a7875e2ba99df8417cc2c652223d3b7de87994e6ffb99ec52d": {
       "value": "imported-from-cloudflare-kv"
     },
+    "senttitle:f8d1c0cba118b5724631f9c555ed9a13021bba2576df4fb9fb190d385e2c84da": {
+      "value": "https://www.magicbricks.com/news/goa-highway-upgrade-centre-approve-inr-4000-crore-road-projects-in-goa-to-cut-traffic-jkmb/151648.html",
+      "expiresAt": 1805367297769
+    },
     "senttitle:fed0d062bb37ea07c4eee0e84258c14e8f806acc99ff9591d744e857fe5a1075": {
       "value": "imported-from-cloudflare-kv"
     },
     "state:last_checked_at": {
-      "value": "2026-09-19T10:52:38.501Z"
+      "value": "2026-09-19T10:54:46.164Z"
     },
     "state:last_run": {
-      "value": "{\"checkedAt\":\"2026-09-19T10:52:38.501Z\",\"discovered\":14,\"eligible\":0,\"sent\":[],\"skipped\":[],\"failures\":[],\"sources\":[\"Hindustan Times\",\"The Times of India\",\"The Economic Times\",\"ETRealty\",\"SwarajyaMag\",\"Jharkhand Urban Infrastructure Development Company\",\"Odisha Housing & Urban Development\",\"Bhubaneswar Development Authority\",\"Kochi Metro Rail\",\"Goa Town and Country Planning\",\"Uttarakhand Urban Development Directorate\",\"Chandigarh Administration\",\"Puducherry Public Works Department\",\"DLF Limited\",\"M3M India\",\"Godrej Properties\",\"Macrotech Developers / Lodha\",\"Prestige Estates Projects\",\"Sobha Limited\",\"Oberoi Realty\",\"Emaar India\",\"Tata Housing\",\"Mahindra Lifespace Developers\",\"Adani Realty\",\"Brigade Enterprises\",\"Puravankara Limited\",\"Embassy Group\",\"K Raheja Corp\",\"Hiranandani Group\",\"Shapoorji Pallonji Real Estate\",\"L&T Realty\",\"Birla Estates\",\"Raymond Realty\",\"Piramal Realty\",\"Runwal Realty\",\"Kalpataru\",\"Kolte-Patil Developers\",\"Ajmera Realty\",\"NCC Urban\",\"Sattva Group\",\"RMZ Corp\",\"CapitaLand India\",\"Sumadhura Group\",\"Casagrand\",\"TVS Emerald\",\"Radiance Realty\",\"Ramky Estates\",\"My Home Constructions\",\"Aparna Constructions\",\"Rajapushpa Properties\",\"Phoenix Group Hyderabad\",\"Rustomjee\",\"Wadhwa Group\",\"VTP Realty\",\"Kohinoor Group Pune\"]}"
+      "value": "{\"checkedAt\":\"2026-09-19T10:54:46.164Z\",\"discovered\":126,\"eligible\":14,\"sent\":[{\"title\":\"DLF Plans 7-Lakh-Sq-Ft Mall in Goa by March 2027\",\"status\":\"sent\",\"code\":\"NEWS-EDRRTM33\"},{\"title\":\"Child safety under scanner: State commission inspects school, railway station, Bhondsi jail in Gurgaon\",\"status\":\"sent\",\"code\":\"NEWS-HSLQPVFW\"},{\"title\":\"Bye-Bye Shankar Chowk-Cyber City Traffic! Haryana Approves New Flyover and Underpass Project\",\"status\":\"sent\",\"code\":\"NEWS-R3VW3YTW\"},{\"title\":\"Kamathipura Redevelopment Deal Signed, Work to Begin Around Diwali\",\"status\":\"sent\",\"code\":\"NEWS-4B9Y8R5U\"},{\"title\":\"Highway Infrastructure Wins Rs 220 Crore Toll Collection Contract for Gorakhpur Link Expressway\",\"status\":\"sent\",\"code\":\"NEWS-AE5BFUA6\"},{\"title\":\"Goa Highway Upgrade: Centre Approve INR 4,000 Crore Road Projects in Goa to Cut Traffic\",\"status\":\"sent\",\"code\":\"NEWS-3W6JS9DB\"},{\"title\":\"Sion Bridge Nears Opening! BMC Fast-Tracks Byculla-JJ Flyover Link in Mumbai\",\"status\":\"sent\",\"code\":\"NEWS-XT6YVVT8\"}],\"skipped\":[],\"failures\":[{\"title\":\"Tier-2 cities such as Goa, Bhopal, Lucknow, Coimbatore see 63% rise in housing prices in 5 years: Report\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"With a 3 crore budget, the Gurgaon home-buyer will no longer “compromise”\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Gurugram buyers seek bigger homes as 3BHK demand rises\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Kamathipura’s redevelopment deal inked, work from Diwali\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"MCG to hold special camps to resolve property tax issues\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Sewage connections to be cut if STPs non-functional: GMDA\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Sanjay Nayar buys Rs 90 crore luxury apartment in South Mumbai’s Carmichael Road\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"}],\"sources\":[\"Hindustan Times\",\"The Times of India\",\"The Economic Times\",\"ETRealty\",\"SwarajyaMag\",\"Smartworld Developers\",\"Elan Group\",\"BPTP\",\"Whiteland Corporation\",\"Central Park\",\"ATS Infrastructure\",\"ACE Group\",\"County Group\",\"Gaurs Group\",\"Eldeco Group\",\"Supertech\",\"Sikka Group\",\"Saya Group\",\"ABA Corp\",\"Mahagun Group\",\"Shalimar Corp\",\"Sushma Group\",\"GBP Group\",\"Hero Realty\",\"Ashiana Housing\",\"Manglam Group\",\"Mahima Group\",\"Pacifica Companies\",\"Arvind SmartSpaces\",\"Shivalik Group\",\"Bakeri Group\",\"PS Group\",\"Merlin Group\",\"Srijan Realty\",\"Ambuja Neotia\",\"Assotech\",\"DN Homes\",\"Malabar Developers\",\"Asset Homes\",\"Confident Group\",\"Amolik Group\",\"MagicBricks News Feed\",\"Hindustan Times Real Estate\",\"Hindustan Times Gurugram Feed\",\"Hindustan Times Faridabad\",\"Hindustan Times Faridabad Feed\",\"Hindustan Times Real Estate Feed\",\"Economic Times Property\",\"Economic Times Property Feed\",\"Economic Times Corporate Trends\",\"CNBC-TV18 Real Estate\",\"Times of India Real Estate\",\"Times of India Real Estate Feed\",\"Indian Express Delhi Feed\",\"ETRealty Gurugram\"]}"
     },
     "state:source_cursor": {
-      "value": "217"
+      "value": "14"
     }
   }
 }

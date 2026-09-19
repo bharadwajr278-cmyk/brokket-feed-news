@@ -9,6 +9,14 @@
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817269885
     },
+    "retry:0a5183cbc5fe74460f47f4bb12cc2219f2cad23dfa0ecb26dfe60debc3ef29ed": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817785344
+    },
+    "retry:0b4aeb22ed8452f6e72f7575230a83844329254e03270b7958d060d13a6204e8": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817797078
+    },
     "retry:2bab37822721653727e7ad642d9894281ebe7eaf53a19693e385ff524647c1e2": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817278714
@@ -21,6 +29,10 @@
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817278938
     },
+    "retry:5b06673324d247a1542a7030da1f1aeb19addd0a65cc64ec3ca8516332b4e0d7": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817796323
+    },
     "retry:7535d89a80832ef5b971e2de2230c0d3ce89ca73bfe58261106d9b9b153c8475": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817099827
@@ -28,6 +40,10 @@
     "retry:77f23feb4b242b53163f840c22b8bb9a84cf793022319d8ce041001582e2c0c2": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817268453
+    },
+    "retry:78acb8c391c4dc9fd9cd8632d1614a22447b29d293d68799b0f351d5fe0b079f": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817800837
     },
     "retry:a3a8b221d7c1e6cfb043c975a1fd3dd06461d8da61b2895ef2896d02e0effd80": {
       "value": "missing_valid_exact_article_thumbnail",
@@ -45,6 +61,10 @@
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817276948
     },
+    "retry:bc403aa781daa54322b6e37c102ef3b87c812d5cbcec5b91b979dc752dead672": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817788265
+    },
     "retry:c3cfe48b624cf7cb5381ff69e1b9f14df8d686061dee25f7d8974d1c2dcfaed1": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817103946
@@ -60,6 +80,14 @@
     "retry:ec981b9307c8c6ea4efcbb40280e7ba10e4bb8b97ae2e9ded945aa7b9f10beaa": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817280243
+    },
+    "retry:f41f245726668fe806dcf4092fcb9e323a722c2db42d8fa70e11117110b2d3b2": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817783795
+    },
+    "retry:f8d3e1f28a30c6dffb6650a161d11dd769dcd8933d68620179f7f2d6887de6cc": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789817787011
     },
     "retry:f9c7bb485f07bad27bad34a8823206fa2b5f494dd6a124045c3a873dbe7f3bb7": {
       "value": "missing_valid_exact_article_thumbnail",
@@ -85,9 +113,21 @@
       "value": "https://www.magicbricks.com/news/bye-bye-shankar-chowk-cyber-city-traffic-haryana-approves-new-flyover-and-underpass-project-rbmb/151673.html",
       "expiresAt": 1790420092325
     },
+    "seenfeed:341029da32dc0f9059c219ef67445cc7e189d6697dd1aa13401d5a61c851f5d1": {
+      "value": "https://realty.economictimes.indiatimes.com/news/regulatory/nclat-rejects-noida-greater-noida-authorities-plea-for-secured-creditor-status-in-shubhkamna-buildtech-case/134324009",
+      "expiresAt": 1790420798346
+    },
     "seenfeed:456d6016c922aac18ed159c80d13fc655c1ea804ff73496f7ce22bb373c42d72": {
       "value": "https://realtyquarter.com/mumbais-n-m-joshi-marg-bdd-chawl-redevelopment-684-homes-targeted-by-december/",
       "expiresAt": 1790420273940
+    },
+    "seenfeed:91adf31d3f96dbb35b7170c8af76ef8726693b81df3183eb223c3daac5deed95": {
+      "value": "https://realty.economictimes.indiatimes.com/news/industry/dra-acquires-10-acre-land-parcel-in-chennai-for-159-crore/134288584",
+      "expiresAt": 1790420803508
+    },
+    "seenfeed:96223d37ae9e78a5de4b758c7864b314e8f2ea9d7d169c1747cfda914f0ba740": {
+      "value": "https://realty.economictimes.indiatimes.com/news/industry/puravankara-to-redevelop-three-projects-in-mumbai-paradigm-realty-to-invest-80-crore-to-redevelop-bandra-project/134309084",
+      "expiresAt": 1790420799717
     },
     "seenfeed:9d4784f344ab184578142e591fc2a67d3e6607a582c3f6d90c538b27694f4ddc": {
       "value": "https://realtyquarter.com/pranav-constructions-ipo-puts-mumbais-redevelopment-market-in-focus/",
@@ -96,6 +136,10 @@
     "seenfeed:aa733d8c7bf9cb4cfd74e910cf10814ce3519e5131c9297a18444aad28adbaab": {
       "value": "https://realtyquarter.com/mhadas-old-colonies-could-become-mumbais-biggest-new-housing-pipeline/",
       "expiresAt": 1790420274981
+    },
+    "seenfeed:bd0b1516569074e3b4229c5c1ca92b6fd183e4ba5c7a15d6c7831450ac13e679": {
+      "value": "https://realtynmore.com/up-rera-organises-webinar-on-digital-submission/",
+      "expiresAt": 1790420783146
     },
     "seenfeed:c259d26e3ee916b556370d7a702e08c20c55128b57c3f63db3c84b3f9fc39b33": {
       "value": "https://timesofindia.indiatimes.com/city/noida/hc-orders-survey-of-society-after-row-over-112-extra-flats-cc/articleshow/134320396.cms",
@@ -112,6 +156,10 @@
     "seenfeed:c7062e8d96324ea10c33ad5f46b0378af312c5b4aedaaa936e0789280a2b645a": {
       "value": "https://www.magicbricks.com/news/dlf-plans-7-lakh-sq-ft-mall-in-goa-by-march-2027/151677.html",
       "expiresAt": 1790420089574
+    },
+    "seenfeed:c8ad65246bde83b91f617df23988401803912c000a5cdbfe3d19fbc7e7f2ab44": {
+      "value": "https://realty.economictimes.indiatimes.com/news/regulatory/lucknow-civic-body-collects-6-50-crore-property-tax-under-ots-scheme/134338071",
+      "expiresAt": 1790420795595
     },
     "seenfeed:d7da294f781aaaa2559d2acc2863a71d06557933085250cdbe131c5f27c02267": {
       "value": "https://www.magicbricks.com/news/goa-highway-upgrade-centre-approve-inr-4000-crore-road-projects-in-goa-to-cut-traffic-jkmb/151648.html",
@@ -142,12 +190,10 @@
       "value": "imported-from-cloudflare-kv"
     },
     "sent:0a81a4cf6245df837be41a16209741b11ee9d500d5e184630adb64e5c0664e0a": {
-      "value": "{\"url\":\"https://realtyquarter.com/mmrdas-badlapur-waste-facility-reaches-60-progress/\",\"title\":\"MMRDA’s Badlapur Waste Facility Reaches 60% Progress\",\"apiCode\":\"NEWS-N4N9CXRW\",\"sentAt\":\"2026-09-19T10:57:46.563Z\"}",
-      "expiresAt": 1805367466563
+      "value": "{\"url\":\"https://realtyquarter.com/mmrdas-badlapur-waste-facility-reaches-60-progress/\",\"title\":\"MMRDA’s Badlapur Waste Facility Reaches 60% Progress\",\"apiCode\":\"NEWS-N4N9CXRW\",\"sentAt\":\"2026-09-19T10:57:46.563Z\"}"
     },
     "sent:16b1ed6d6712f69951fa7ec73024c079b6dda4f77e333649b08377397d88a9d7": {
-      "value": "{\"url\":\"https://timesofindia.indiatimes.com/city/gurgaon/child-safety-under-scanner-state-commission-inspects-school-railway-station-bhondsi-jail-in-gurgaon/articleshow/134339631.cms\",\"title\":\"Child safety under scanner: State commission inspects school, railway station, Bhondsi jail in Gurgaon\",\"apiCode\":\"NEWS-HSLQPVFW\",\"sentAt\":\"2026-09-19T10:54:50.594Z\"}",
-      "expiresAt": 1805367290594
+      "value": "{\"url\":\"https://timesofindia.indiatimes.com/city/gurgaon/child-safety-under-scanner-state-commission-inspects-school-railway-station-bhondsi-jail-in-gurgaon/articleshow/134339631.cms\",\"title\":\"Child safety under scanner: State commission inspects school, railway station, Bhondsi jail in Gurgaon\",\"apiCode\":\"NEWS-HSLQPVFW\",\"sentAt\":\"2026-09-19T10:54:50.594Z\"}"
     },
     "sent:19391af0385b63c5253330b65afc7c507aba59f7f9f06c24a6970d66b79cc5f0": {
       "value": "imported-from-cloudflare-kv"
@@ -177,15 +223,13 @@
       "value": "imported-from-cloudflare-kv"
     },
     "sent:252abf4300b8ebdb61ff6a5993abc18202c87410e54862ca1d1fe3faa958b523": {
-      "value": "{\"url\":\"https://www.magicbricks.com/news/sion-bridge-nears-opening-bmc-fast-tracks-byculla-jj-flyover-link-in-mumbai-pmmb/151645.html\",\"title\":\"Sion Bridge Nears Opening! BMC Fast-Tracks Byculla-JJ Flyover Link in Mumbai\",\"apiCode\":\"NEWS-XT6YVVT8\",\"sentAt\":\"2026-09-19T10:54:59.559Z\"}",
-      "expiresAt": 1805367299559
+      "value": "{\"url\":\"https://www.magicbricks.com/news/sion-bridge-nears-opening-bmc-fast-tracks-byculla-jj-flyover-link-in-mumbai-pmmb/151645.html\",\"title\":\"Sion Bridge Nears Opening! BMC Fast-Tracks Byculla-JJ Flyover Link in Mumbai\",\"apiCode\":\"NEWS-XT6YVVT8\",\"sentAt\":\"2026-09-19T10:54:59.559Z\"}"
     },
     "sent:26446e5b5edc7f332350d5ab46d78e6e291e0d6eccde8c265ee39614089c1076": {
       "value": "imported-from-cloudflare-kv"
     },
     "sent:2778d2756b6ac40a92923f242552c616dcfe99b105469aa6effbe8be8144791a": {
-      "value": "{\"url\":\"https://www.magicbricks.com/news/bye-bye-shankar-chowk-cyber-city-traffic-haryana-approves-new-flyover-and-underpass-project-rbmb/151673.html\",\"title\":\"Bye-Bye Shankar Chowk-Cyber City Traffic! Haryana Approves New Flyover and Underpass Project\",\"apiCode\":\"NEWS-R3VW3YTW\",\"sentAt\":\"2026-09-19T10:54:52.325Z\"}",
-      "expiresAt": 1805367292325
+      "value": "{\"url\":\"https://www.magicbricks.com/news/bye-bye-shankar-chowk-cyber-city-traffic-haryana-approves-new-flyover-and-underpass-project-rbmb/151673.html\",\"title\":\"Bye-Bye Shankar Chowk-Cyber City Traffic! Haryana Approves New Flyover and Underpass Project\",\"apiCode\":\"NEWS-R3VW3YTW\",\"sentAt\":\"2026-09-19T10:54:52.325Z\"}"
     },
     "sent:28a3dffdd234626df555857e087f48e65f8bef0b261a9a43264ea0540b4e4324": {
       "value": "imported-from-cloudflare-kv"
@@ -204,6 +248,9 @@
     },
     "sent:2f1a6ffa8775d53d0307a18afa8c2e51c38f797f4363d36516cb8470f851a91f": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "sent:341029da32dc0f9059c219ef67445cc7e189d6697dd1aa13401d5a61c851f5d1": {
+      "value": "{\"url\":\"https://realty.economictimes.indiatimes.com/news/regulatory/nclat-rejects-noida-greater-noida-authorities-plea-for-secured-creditor-status-in-shubhkamna-buildtech-case/134324009\",\"title\":\"NCLAT rejects Noida &amp; Greater Noida authorities' plea for secured creditor status in Shubhkamna Buildtech case\",\"apiCode\":\"NEWS-LD8QV6D3\",\"sentAt\":\"2026-09-19T11:06:38.346Z\"}"
     },
     "sent:37c42bcb326196690d45e05bd2d9436bc30446f2d6367006dec359e31706d42e": {
       "value": "imported-from-cloudflare-kv"
@@ -230,8 +277,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "sent:456d6016c922aac18ed159c80d13fc655c1ea804ff73496f7ce22bb373c42d72": {
-      "value": "{\"url\":\"https://realtyquarter.com/mumbais-n-m-joshi-marg-bdd-chawl-redevelopment-684-homes-targeted-by-december/\",\"title\":\"Mumbai’s N. M. Joshi Marg BDD Chawl Redevelopment: 684 Homes Targeted by December\",\"apiCode\":\"NEWS-6MWFRFPP\",\"sentAt\":\"2026-09-19T10:57:53.940Z\"}",
-      "expiresAt": 1805367473940
+      "value": "{\"url\":\"https://realtyquarter.com/mumbais-n-m-joshi-marg-bdd-chawl-redevelopment-684-homes-targeted-by-december/\",\"title\":\"Mumbai’s N. M. Joshi Marg BDD Chawl Redevelopment: 684 Homes Targeted by December\",\"apiCode\":\"NEWS-6MWFRFPP\",\"sentAt\":\"2026-09-19T10:57:53.940Z\"}"
     },
     "sent:4a151bae0a16697b47e8091adc343f887894f26b6627414ebea294219a5d715e": {
       "value": "imported-from-cloudflare-kv"
@@ -353,6 +399,9 @@
     "sent:91810279f0663b396a0ea1cbe466e40e1e25d484507bbc6ff47191665a40b96b": {
       "value": "imported-from-cloudflare-kv"
     },
+    "sent:91adf31d3f96dbb35b7170c8af76ef8726693b81df3183eb223c3daac5deed95": {
+      "value": "{\"url\":\"https://realty.economictimes.indiatimes.com/news/industry/dra-acquires-10-acre-land-parcel-in-chennai-for-159-crore/134288584\",\"title\":\"DRA acquires 10-acre land parcel in Chennai for ₹159 crore\",\"apiCode\":\"NEWS-8KBWCDTS\",\"sentAt\":\"2026-09-19T11:06:43.508Z\"}"
+    },
     "sent:927d8d04739b00c8dda77f7d00ef53800266c7745150d020a58d0932ec7d3399": {
       "value": "imported-from-cloudflare-kv"
     },
@@ -361,6 +410,9 @@
     },
     "sent:95e9f43e013a0ebdde2d05f949832660c55ba5af58c70cd7d013a67071431372": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "sent:96223d37ae9e78a5de4b758c7864b314e8f2ea9d7d169c1747cfda914f0ba740": {
+      "value": "{\"url\":\"https://realty.economictimes.indiatimes.com/news/industry/puravankara-to-redevelop-three-projects-in-mumbai-paradigm-realty-to-invest-80-crore-to-redevelop-bandra-project/134309084\",\"title\":\"Puravankara to redevelop three projects in Mumbai; Paradigm Realty to invest ₹80 crore to redevelop Bandra project\",\"apiCode\":\"NEWS-WQM8Q3RG\",\"sentAt\":\"2026-09-19T11:06:39.717Z\"}"
     },
     "sent:984df071c1bd62fa7d42f210e234336726fd8d95449f13c664fd12cd89e7cd77": {
       "value": "imported-from-cloudflare-kv"
@@ -381,8 +433,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "sent:9d4784f344ab184578142e591fc2a67d3e6607a582c3f6d90c538b27694f4ddc": {
-      "value": "{\"url\":\"https://realtyquarter.com/pranav-constructions-ipo-puts-mumbais-redevelopment-market-in-focus/\",\"title\":\"Pranav Constructions IPO Puts Mumbai’s Redevelopment Market In Focus\",\"apiCode\":\"NEWS-4FRAZF6Q\",\"sentAt\":\"2026-09-19T10:58:03.067Z\"}",
-      "expiresAt": 1805367483067
+      "value": "{\"url\":\"https://realtyquarter.com/pranav-constructions-ipo-puts-mumbais-redevelopment-market-in-focus/\",\"title\":\"Pranav Constructions IPO Puts Mumbai’s Redevelopment Market In Focus\",\"apiCode\":\"NEWS-4FRAZF6Q\",\"sentAt\":\"2026-09-19T10:58:03.067Z\"}"
     },
     "sent:9edcea9690a2ffec2d06b31e94106867f4e7fbafe83cda82e6211c3951da29cb": {
       "value": "imported-from-cloudflare-kv"
@@ -423,20 +474,23 @@
     "sent:bcebcfb5fbc10dc39c8b6b145596d0f8635c1aa9dc3c0a9fdd61c07dbcbf8b93": {
       "value": "imported-from-cloudflare-kv"
     },
+    "sent:bd0b1516569074e3b4229c5c1ca92b6fd183e4ba5c7a15d6c7831450ac13e679": {
+      "value": "{\"url\":\"https://realtynmore.com/up-rera-organises-webinar-on-digital-submission/\",\"title\":\"UP RERA Organises Webinar On Digital Submission Of Professional Certificates\",\"apiCode\":\"NEWS-MPYQ6VZ5\",\"sentAt\":\"2026-09-19T11:06:23.146Z\"}"
+    },
     "sent:bfbfdeb37660dbebb0cf10bb4c1901672b3f4b19e835f1837df9c66736a35317": {
       "value": "imported-from-cloudflare-kv"
     },
     "sent:c259d26e3ee916b556370d7a702e08c20c55128b57c3f63db3c84b3f9fc39b33": {
-      "value": "{\"url\":\"https://timesofindia.indiatimes.com/city/noida/hc-orders-survey-of-society-after-row-over-112-extra-flats-cc/articleshow/134320396.cms\",\"title\":\"HC orders survey of society after row over 112 extra flats, CC\",\"apiCode\":\"NEWS-H9EGSWLR\",\"sentAt\":\"2026-09-19T10:58:00.888Z\"}",
-      "expiresAt": 1805367480888
+      "value": "{\"url\":\"https://timesofindia.indiatimes.com/city/noida/hc-orders-survey-of-society-after-row-over-112-extra-flats-cc/articleshow/134320396.cms\",\"title\":\"HC orders survey of society after row over 112 extra flats, CC\",\"apiCode\":\"NEWS-H9EGSWLR\",\"sentAt\":\"2026-09-19T10:58:00.888Z\"}"
     },
     "sent:c5de98773135b6dcf0d34a8da0bef616e69dc93d30acb6e6313bf3fafa99d9e7": {
-      "value": "{\"url\":\"https://realtyquarter.com/dadar-redevelopment-dispute-tribunal-orders-2-penalty-conveyance-to-housing-society/\",\"title\":\"Dadar Redevelopment Dispute: Tribunal Orders 2% Penalty, Conveyance to Housing Society\",\"apiCode\":\"NEWS-XPAAUT3L\",\"sentAt\":\"2026-09-19T10:57:47.099Z\"}",
-      "expiresAt": 1805367467099
+      "value": "{\"url\":\"https://realtyquarter.com/dadar-redevelopment-dispute-tribunal-orders-2-penalty-conveyance-to-housing-society/\",\"title\":\"Dadar Redevelopment Dispute: Tribunal Orders 2% Penalty, Conveyance to Housing Society\",\"apiCode\":\"NEWS-XPAAUT3L\",\"sentAt\":\"2026-09-19T10:57:47.099Z\"}"
     },
     "sent:c7062e8d96324ea10c33ad5f46b0378af312c5b4aedaaa936e0789280a2b645a": {
-      "value": "{\"url\":\"https://www.magicbricks.com/news/dlf-plans-7-lakh-sq-ft-mall-in-goa-by-march-2027/151677.html\",\"title\":\"DLF Plans 7-Lakh-Sq-Ft Mall in Goa by March 2027\",\"apiCode\":\"NEWS-EDRRTM33\",\"sentAt\":\"2026-09-19T10:54:49.574Z\"}",
-      "expiresAt": 1805367289574
+      "value": "{\"url\":\"https://www.magicbricks.com/news/dlf-plans-7-lakh-sq-ft-mall-in-goa-by-march-2027/151677.html\",\"title\":\"DLF Plans 7-Lakh-Sq-Ft Mall in Goa by March 2027\",\"apiCode\":\"NEWS-EDRRTM33\",\"sentAt\":\"2026-09-19T10:54:49.574Z\"}"
+    },
+    "sent:c8ad65246bde83b91f617df23988401803912c000a5cdbfe3d19fbc7e7f2ab44": {
+      "value": "{\"url\":\"https://realty.economictimes.indiatimes.com/news/regulatory/lucknow-civic-body-collects-6-50-crore-property-tax-under-ots-scheme/134338071\",\"title\":\"Lucknow civic body collects ₹6.50 crore property tax under OTS scheme\",\"apiCode\":\"NEWS-GDH39DU7\",\"sentAt\":\"2026-09-19T11:06:35.595Z\"}"
     },
     "sent:ca4a8cb517aa5ddaaba4d782ac376d0a54a265acb2c6f459658a5f833dae948f": {
       "value": "imported-from-cloudflare-kv"
@@ -460,8 +514,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "sent:d7da294f781aaaa2559d2acc2863a71d06557933085250cdbe131c5f27c02267": {
-      "value": "{\"url\":\"https://www.magicbricks.com/news/goa-highway-upgrade-centre-approve-inr-4000-crore-road-projects-in-goa-to-cut-traffic-jkmb/151648.html\",\"title\":\"Goa Highway Upgrade: Centre Approve INR 4,000 Crore Road Projects in Goa to Cut Traffic\",\"apiCode\":\"NEWS-3W6JS9DB\",\"sentAt\":\"2026-09-19T10:54:57.769Z\"}",
-      "expiresAt": 1805367297769
+      "value": "{\"url\":\"https://www.magicbricks.com/news/goa-highway-upgrade-centre-approve-inr-4000-crore-road-projects-in-goa-to-cut-traffic-jkmb/151648.html\",\"title\":\"Goa Highway Upgrade: Centre Approve INR 4,000 Crore Road Projects in Goa to Cut Traffic\",\"apiCode\":\"NEWS-3W6JS9DB\",\"sentAt\":\"2026-09-19T10:54:57.769Z\"}"
     },
     "sent:d8420b101bf5a01f0a9174b035614a0278a68f779529c39fce0733dcd80eaec8": {
       "value": "imported-from-cloudflare-kv"
@@ -485,8 +538,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "sent:e33249dda372c6b2f324100d42edaf4ac28fa3b333604e2338e56220c0150c0a": {
-      "value": "{\"url\":\"https://www.magicbricks.com/news/highway-infrastructure-wins-rs-220-crore-toll-collection-contract-for-gorakhpur-link-expressway-samb/151665.html\",\"title\":\"Highway Infrastructure Wins Rs 220 Crore Toll Collection Contract for Gorakhpur Link Expressway\",\"apiCode\":\"NEWS-AE5BFUA6\",\"sentAt\":\"2026-09-19T10:54:56.122Z\"}",
-      "expiresAt": 1805367296122
+      "value": "{\"url\":\"https://www.magicbricks.com/news/highway-infrastructure-wins-rs-220-crore-toll-collection-contract-for-gorakhpur-link-expressway-samb/151665.html\",\"title\":\"Highway Infrastructure Wins Rs 220 Crore Toll Collection Contract for Gorakhpur Link Expressway\",\"apiCode\":\"NEWS-AE5BFUA6\",\"sentAt\":\"2026-09-19T10:54:56.122Z\"}"
     },
     "sent:e5a74de35dfae8658f124ef6acdbdd0724d6a381f34537c2b784f77a68f6ab12": {
       "value": "imported-from-cloudflare-kv"
@@ -513,26 +565,22 @@
       "value": "imported-from-cloudflare-kv"
     },
     "sent:f59c22f7470a88454b4ec2ce17593d00908b3b574835f13af7ed8b4e0c1f6732": {
-      "value": "{\"url\":\"https://realtyquarter.com/bombay-hc-sets-aside-₹52-61-crore-property-valuation-in-stamp-duty-dispute/\",\"title\":\"Bombay HC Sets Aside ₹52.61 Crore Property Valuation in Stamp Duty Dispute\",\"apiCode\":\"NEWS-RLTUXDZK\",\"sentAt\":\"2026-09-19T10:58:05.074Z\"}",
-      "expiresAt": 1805367485074
+      "value": "{\"url\":\"https://realtyquarter.com/bombay-hc-sets-aside-₹52-61-crore-property-valuation-in-stamp-duty-dispute/\",\"title\":\"Bombay HC Sets Aside ₹52.61 Crore Property Valuation in Stamp Duty Dispute\",\"apiCode\":\"NEWS-RLTUXDZK\",\"sentAt\":\"2026-09-19T10:58:05.074Z\"}"
     },
     "sent:f7d5790d9245a4f49377922110eee3e1427629503d60246c6bcde188fa060c83": {
-      "value": "{\"url\":\"https://realtyquarter.com/maharashtra-forms-sit-to-examine-174-acre-kalyan-land-transaction/\",\"title\":\"Maharashtra Forms SIT to Examine 174-Acre Kalyan Land Transaction\",\"apiCode\":\"NEWS-QEYARU86\",\"sentAt\":\"2026-09-19T10:58:06.224Z\"}",
-      "expiresAt": 1805367486224
+      "value": "{\"url\":\"https://realtyquarter.com/maharashtra-forms-sit-to-examine-174-acre-kalyan-land-transaction/\",\"title\":\"Maharashtra Forms SIT to Examine 174-Acre Kalyan Land Transaction\",\"apiCode\":\"NEWS-QEYARU86\",\"sentAt\":\"2026-09-19T10:58:06.224Z\"}"
     },
     "sent:fbf9cefa6a0f87b4c3f83cc9100d14f9dde69bf3f54d463d2ab4bb26e7bb97bc": {
       "value": "imported-from-cloudflare-kv"
     },
     "sent:ffeef3baf658b862c0a59670f74d30d099ca4e65c42b90962284cce521a0db59": {
-      "value": "{\"url\":\"https://www.magicbricks.com/news/kamathipura-redevelopment-deal-signed-work-to-begin-around-diwali-ssmb/151666.html\",\"title\":\"Kamathipura Redevelopment Deal Signed, Work to Begin Around Diwali\",\"apiCode\":\"NEWS-4B9Y8R5U\",\"sentAt\":\"2026-09-19T10:54:53.999Z\"}",
-      "expiresAt": 1805367293999
+      "value": "{\"url\":\"https://www.magicbricks.com/news/kamathipura-redevelopment-deal-signed-work-to-begin-around-diwali-ssmb/151666.html\",\"title\":\"Kamathipura Redevelopment Deal Signed, Work to Begin Around Diwali\",\"apiCode\":\"NEWS-4B9Y8R5U\",\"sentAt\":\"2026-09-19T10:54:53.999Z\"}"
     },
     "senttitle:0055ff5f0248f598fea7873e4c5a5ffc0b704e64753aae306f2e243ebe395271": {
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:01bd848a737e30c2f696fabb0eeace9949e8ae8882eec0072670ab2fc7708f30": {
-      "value": "https://realtyquarter.com/mumbais-n-m-joshi-marg-bdd-chawl-redevelopment-684-homes-targeted-by-december/",
-      "expiresAt": 1805367473940
+      "value": "https://realtyquarter.com/mumbais-n-m-joshi-marg-bdd-chawl-redevelopment-684-homes-targeted-by-december/"
     },
     "senttitle:02a40f2f973e8afadb9070664d35f041d5bb1a82deac9dc3fc733c55beb2ebfe": {
       "value": "imported-from-cloudflare-kv"
@@ -548,6 +596,9 @@
     },
     "senttitle:0b7cac077a135099a2bbeca941112273a008d1cc996e541e1a06242598213af1": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "senttitle:11d7b0d67997cbe0d54ee6f7edc5dc93c958f92c5e7170c9ffd7e7a617981577": {
+      "value": "https://realty.economictimes.indiatimes.com/news/regulatory/lucknow-civic-body-collects-6-50-crore-property-tax-under-ots-scheme/134338071"
     },
     "senttitle:13172a1173f0a6da26d939606bf0a4b4b1e98cb01fb89faf8c2feb1723320c3b": {
       "value": "imported-from-cloudflare-kv"
@@ -571,8 +622,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:252d0c8954b8ff5199b752612563d741ef2c75894eb5eb9bd50212a07201ea8f": {
-      "value": "https://www.magicbricks.com/news/bye-bye-shankar-chowk-cyber-city-traffic-haryana-approves-new-flyover-and-underpass-project-rbmb/151673.html",
-      "expiresAt": 1805367292325
+      "value": "https://www.magicbricks.com/news/bye-bye-shankar-chowk-cyber-city-traffic-haryana-approves-new-flyover-and-underpass-project-rbmb/151673.html"
     },
     "senttitle:25427c891acdd912742f185c673cc65894c53be6f3ede6c82fd04262a390e40a": {
       "value": "imported-from-cloudflare-kv"
@@ -605,11 +655,13 @@
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:39a08a70aca6091418a9a7a4b679f5d47689fa10bc73097b367e92d5bcc0ecd9": {
-      "value": "https://realtyquarter.com/pranav-constructions-ipo-puts-mumbais-redevelopment-market-in-focus/",
-      "expiresAt": 1805367483067
+      "value": "https://realtyquarter.com/pranav-constructions-ipo-puts-mumbais-redevelopment-market-in-focus/"
     },
     "senttitle:3a791e355d1ad042f775ac758cbf61a2902b3ed5968df5ffcd1cc5d67c5704f7": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "senttitle:3aaf349223afeb0671fd80bd10e825e9dcec712412c8b46fc4a1c4c480e7c064": {
+      "value": "https://realty.economictimes.indiatimes.com/news/industry/puravankara-to-redevelop-three-projects-in-mumbai-paradigm-realty-to-invest-80-crore-to-redevelop-bandra-project/134309084"
     },
     "senttitle:3ae764e282a5778b2e4d9c6bd0677b47ed91abaf14753b1c7ce947bded20eb53": {
       "value": "imported-from-cloudflare-kv"
@@ -642,15 +694,13 @@
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:49cde4aa8e8f323c0d09c3aec73693394a7330ce1b25a0acfee10817d55ee7e7": {
-      "value": "https://www.magicbricks.com/news/kamathipura-redevelopment-deal-signed-work-to-begin-around-diwali-ssmb/151666.html",
-      "expiresAt": 1805367293999
+      "value": "https://www.magicbricks.com/news/kamathipura-redevelopment-deal-signed-work-to-begin-around-diwali-ssmb/151666.html"
     },
     "senttitle:4cbeb87cb811ff88e9a0e7ff6efa7dd3cf9bb8768f5777c7ef509517e660c51e": {
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:4dae2121d66c265085876ecf0389cd5527e23ef2c7d7dff88ca7348f514d7439": {
-      "value": "https://realtyquarter.com/bombay-hc-sets-aside-₹52-61-crore-property-valuation-in-stamp-duty-dispute/",
-      "expiresAt": 1805367485074
+      "value": "https://realtyquarter.com/bombay-hc-sets-aside-₹52-61-crore-property-valuation-in-stamp-duty-dispute/"
     },
     "senttitle:4e5f96ee2e9c810d0b116869eca406fb99e5db699f9ce7470dca89a4f09ca76b": {
       "value": "imported-from-cloudflare-kv"
@@ -665,8 +715,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:56b32456462fd965702bd05d4faedddc89b754a85e6bd8a581918b4518092f01": {
-      "value": "https://www.magicbricks.com/news/dlf-plans-7-lakh-sq-ft-mall-in-goa-by-march-2027/151677.html",
-      "expiresAt": 1805367289574
+      "value": "https://www.magicbricks.com/news/dlf-plans-7-lakh-sq-ft-mall-in-goa-by-march-2027/151677.html"
     },
     "senttitle:578d2d4c225909b6e33a36b0ba8f8ef4f99a0ba578f6a7ece356792170fc85a0": {
       "value": "imported-from-cloudflare-kv"
@@ -684,8 +733,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:6196e6d5fb3b36bb64e92c3bd82307c4e83613b3ffbfd6f154ce3949d1e63cf6": {
-      "value": "https://realtyquarter.com/maharashtra-forms-sit-to-examine-174-acre-kalyan-land-transaction/",
-      "expiresAt": 1805367486224
+      "value": "https://realtyquarter.com/maharashtra-forms-sit-to-examine-174-acre-kalyan-land-transaction/"
     },
     "senttitle:672c30364ae9477d65cdc655d9ac1ecc590b6fa854b7ab3f7d1d58411e7090ce": {
       "value": "imported-from-cloudflare-kv"
@@ -697,8 +745,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:6a187bef04a21fc4ce0c39aaafb8126339de62530a1f7183a0aa7fdcfc39c6f3": {
-      "value": "https://www.magicbricks.com/news/highway-infrastructure-wins-rs-220-crore-toll-collection-contract-for-gorakhpur-link-expressway-samb/151665.html",
-      "expiresAt": 1805367296122
+      "value": "https://www.magicbricks.com/news/highway-infrastructure-wins-rs-220-crore-toll-collection-contract-for-gorakhpur-link-expressway-samb/151665.html"
     },
     "senttitle:6c5e266b3314597e5dfe313f899ca43666c005673d02d6dcd228d74b09d4327f": {
       "value": "imported-from-cloudflare-kv"
@@ -737,8 +784,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:8a19ff40d34cd18214e931e06ea61200035e43ce5a4e7e535184b7d71a21ee21": {
-      "value": "https://timesofindia.indiatimes.com/city/gurgaon/child-safety-under-scanner-state-commission-inspects-school-railway-station-bhondsi-jail-in-gurgaon/articleshow/134339631.cms",
-      "expiresAt": 1805367290594
+      "value": "https://timesofindia.indiatimes.com/city/gurgaon/child-safety-under-scanner-state-commission-inspects-school-railway-station-bhondsi-jail-in-gurgaon/articleshow/134339631.cms"
     },
     "senttitle:8bed1e5688c0c028aecd8b660b1d59697a266783bfcc1ed2e8c11baf3803debe": {
       "value": "imported-from-cloudflare-kv"
@@ -746,12 +792,14 @@
     "senttitle:8d0a78f10ed64d8ac2e05ba29f6f31ce50723fa37a427ecfd534104804605509": {
       "value": "imported-from-cloudflare-kv"
     },
+    "senttitle:8eb247fd776fe94ac01de336cb90d0d57ad6544004972e41f6657b269b1814a7": {
+      "value": "https://realtynmore.com/up-rera-organises-webinar-on-digital-submission/"
+    },
     "senttitle:8f3d6a9245a35988446094ae40a73438cf8cac354569138af8157d8de9b9749b": {
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:9022d5e0c1f25d2605313ccf5c11881f42a558660ab04052b4471a6ebc6f6b4e": {
-      "value": "https://realtyquarter.com/dadar-redevelopment-dispute-tribunal-orders-2-penalty-conveyance-to-housing-society/",
-      "expiresAt": 1805367467099
+      "value": "https://realtyquarter.com/dadar-redevelopment-dispute-tribunal-orders-2-penalty-conveyance-to-housing-society/"
     },
     "senttitle:92d30887d6ad789c09648d2da894163aacd928d7374d44d391e819b617d5ecd6": {
       "value": "imported-from-cloudflare-kv"
@@ -760,8 +808,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:94b8fa18423deaf011091ad485e16c64341e350aac9fc1c37e4b3fa5572c0f9b": {
-      "value": "https://timesofindia.indiatimes.com/city/noida/hc-orders-survey-of-society-after-row-over-112-extra-flats-cc/articleshow/134320396.cms",
-      "expiresAt": 1805367480888
+      "value": "https://timesofindia.indiatimes.com/city/noida/hc-orders-survey-of-society-after-row-over-112-extra-flats-cc/articleshow/134320396.cms"
     },
     "senttitle:94d9bacd3f8ac93aec3b695dc69b6aea0270f6aa78745063bbf8a02f63350966": {
       "value": "imported-from-cloudflare-kv"
@@ -803,14 +850,16 @@
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:a80d4c6f30be0525a7c8eb354bf71df9dd3fc626893714e102ac7e834ab89d44": {
-      "value": "https://www.magicbricks.com/news/sion-bridge-nears-opening-bmc-fast-tracks-byculla-jj-flyover-link-in-mumbai-pmmb/151645.html",
-      "expiresAt": 1805367299559
+      "value": "https://www.magicbricks.com/news/sion-bridge-nears-opening-bmc-fast-tracks-byculla-jj-flyover-link-in-mumbai-pmmb/151645.html"
     },
     "senttitle:a9577d07f7f86f24de3739847af10909150ab949cf540f79b8e13c1475cab090": {
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:aa091a49ec7903664d407a20936b231deaa8c34840b681021513f85ffce5eba2": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "senttitle:acb4af84c8befdbe0acb146ae4491c4c3ac0d06ebebcef36ad501ea8d0991fe0": {
+      "value": "https://realty.economictimes.indiatimes.com/news/industry/dra-acquires-10-acre-land-parcel-in-chennai-for-159-crore/134288584"
     },
     "senttitle:ae94a80e314f2ded06041dea6d5884f40b01dea6e598c0fff806a46fa85d4392": {
       "value": "imported-from-cloudflare-kv"
@@ -825,8 +874,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:b6f42a372b2a3af283ca6ec5f2472e6eb68a5f746b01670fd56c6f3662558369": {
-      "value": "https://realtyquarter.com/mmrdas-badlapur-waste-facility-reaches-60-progress/",
-      "expiresAt": 1805367466563
+      "value": "https://realtyquarter.com/mmrdas-badlapur-waste-facility-reaches-60-progress/"
     },
     "senttitle:b92c1f3f5fe921292e0cd684dc3d6efae35741829901cb58d7038c15e1df6a5d": {
       "value": "imported-from-cloudflare-kv"
@@ -863,6 +911,9 @@
     },
     "senttitle:cfe593608fd084cda6f40b3d1bf9d09635f003100c5d207f035452835d33cba8": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "senttitle:cfe7063d8f2867dcdc25e51df8b6dc4bfe0245e9f82faf279ddecb7b0b2342d2": {
+      "value": "https://realty.economictimes.indiatimes.com/news/regulatory/nclat-rejects-noida-greater-noida-authorities-plea-for-secured-creditor-status-in-shubhkamna-buildtech-case/134324009"
     },
     "senttitle:d01c7905926a09bd3c9d8201fe9e9aa5897798a6bf438cff99bf9850654c936e": {
       "value": "imported-from-cloudflare-kv"
@@ -919,17 +970,16 @@
       "value": "imported-from-cloudflare-kv"
     },
     "senttitle:f8d1c0cba118b5724631f9c555ed9a13021bba2576df4fb9fb190d385e2c84da": {
-      "value": "https://www.magicbricks.com/news/goa-highway-upgrade-centre-approve-inr-4000-crore-road-projects-in-goa-to-cut-traffic-jkmb/151648.html",
-      "expiresAt": 1805367297769
+      "value": "https://www.magicbricks.com/news/goa-highway-upgrade-centre-approve-inr-4000-crore-road-projects-in-goa-to-cut-traffic-jkmb/151648.html"
     },
     "senttitle:fed0d062bb37ea07c4eee0e84258c14e8f806acc99ff9591d744e857fe5a1075": {
       "value": "imported-from-cloudflare-kv"
     },
     "state:last_checked_at": {
-      "value": "2026-09-19T10:57:31.321Z"
+      "value": "2026-09-19T11:06:15.235Z"
     },
     "state:last_run": {
-      "value": "{\"checkedAt\":\"2026-09-19T10:57:31.321Z\",\"discovered\":199,\"eligible\":18,\"sent\":[{\"title\":\"MMRDA’s Badlapur Waste Facility Reaches 60% Progress\",\"status\":\"sent\",\"code\":\"NEWS-N4N9CXRW\"},{\"title\":\"Dadar Redevelopment Dispute: Tribunal Orders 2% Penalty, Conveyance to Housing Society\",\"status\":\"sent\",\"code\":\"NEWS-XPAAUT3L\"},{\"title\":\"Mumbai’s N. M. Joshi Marg BDD Chawl Redevelopment: 684 Homes Targeted by December\",\"status\":\"sent\",\"code\":\"NEWS-6MWFRFPP\"},{\"title\":\"HC orders survey of society after row over 112 extra flats, CC\",\"status\":\"sent\",\"code\":\"NEWS-H9EGSWLR\"},{\"title\":\"Pranav Constructions IPO Puts Mumbai’s Redevelopment Market In Focus\",\"status\":\"sent\",\"code\":\"NEWS-4FRAZF6Q\"},{\"title\":\"Bombay HC Sets Aside ₹52.61 Crore Property Valuation in Stamp Duty Dispute\",\"status\":\"sent\",\"code\":\"NEWS-RLTUXDZK\"},{\"title\":\"Maharashtra Forms SIT to Examine 174-Acre Kalyan Land Transaction\",\"status\":\"sent\",\"code\":\"NEWS-QEYARU86\"}],\"skipped\":[{\"title\":\"MHADA’s Old Colonies Could Become Mumbai’s Biggest New Housing Pipeline\",\"status\":\"skipped\"}],\"failures\":[{\"title\":\"Built years ago, Noida sector 105 homes now face lakhs in labour cess dues\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Bhubaneswar development body opens Ekamra Residency flat applications, prices disappoint middle class\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"13 key roads in ciity to be reconstructed on priority: GMDA\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Built years ago, Noida Sector 105 homes now face lakhs in labour cess dues\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Bhubaneswar: 10 years on, allottees yet to get Dhauli Heights flats, announce mass dharna\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Sanjay Nayar buys ₹90 crore luxury apartment in South Mumbai’s Carmichael Road\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Bombay HC sets guidelines for land title on layout with multiple buildings\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"No electricity overnight: Noida homes in sectors 31 and 36 see power outage\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Ganga water supply resumes in Supertech Supernova in Sector 94 Noida\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Chandigarh housing board clears need-based changes in houses, lifts in all dwelling units\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"}],\"sources\":[\"Hindustan Times\",\"The Times of India\",\"The Economic Times\",\"ETRealty\",\"SwarajyaMag\",\"ETRealty Faridabad\",\"ETRealty Residential\",\"ETRealty Commercial\",\"ETRealty Infrastructure\",\"ETRealty Industry\",\"ETRealty Top Stories Feed\",\"Moneycontrol Real Estate\",\"Business Standard Real Estate Feed\",\"Business Standard Latest Feed\",\"Construction World Real Estate\",\"Outlook Money Real Estate\",\"Tribune Real Estate\",\"Swarajya Stories Feed\",\"Business of Food - Food Service\",\"Torbit Realty Gurugram\",\"Indian Infrastructure\",\"Urban Transport News\",\"Metro Rail News\",\"The Metro Rail Guy\",\"Rail Analysis India\",\"Realty & More\",\"Realty & More Feed\",\"RealtyNXT\",\"Track2Realty\",\"Prop News Time\",\"Realty Quarter Feed\",\"BPTP Media\",\"DLF Media\",\"M3M Media\",\"Smartworld Developers Media\",\"Signature Global\",\"Central Park Media\",\"Godrej Properties Media\",\"Max Estates Media\",\"Birla Estates Media\",\"Puri Constructions\",\"Omaxe\",\"RPS Group India\",\"Times of India Noida Feed\",\"Hindustan Times Noida Feed\",\"ETRealty Noida\",\"ETRealty Greater Noida\",\"ETRealty Greater Noida AMP\",\"ETRealty Jewar\",\"ETRealty Yamuna Expressway\",\"ETRealty Noida Airport\",\"ETRealty Noida Authority\",\"ETRealty Greater Noida Authority\",\"ETRealty YEIDA\",\"ETRealty Residential Feed\"]}"
+      "value": "{\"checkedAt\":\"2026-09-19T11:06:15.235Z\",\"discovered\":393,\"eligible\":12,\"sent\":[{\"title\":\"UP RERA Organises Webinar On Digital Submission Of Professional Certificates\",\"status\":\"sent\",\"code\":\"NEWS-MPYQ6VZ5\"},{\"title\":\"Lucknow civic body collects ₹6.50 crore property tax under OTS scheme\",\"status\":\"sent\",\"code\":\"NEWS-GDH39DU7\"},{\"title\":\"NCLAT rejects Noida &amp; Greater Noida authorities' plea for secured creditor status in Shubhkamna Buildtech case\",\"status\":\"sent\",\"code\":\"NEWS-LD8QV6D3\"},{\"title\":\"Puravankara to redevelop three projects in Mumbai; Paradigm Realty to invest ₹80 crore to redevelop Bandra project\",\"status\":\"sent\",\"code\":\"NEWS-WQM8Q3RG\"},{\"title\":\"DRA acquires 10-acre land parcel in Chennai for ₹159 crore\",\"status\":\"sent\",\"code\":\"NEWS-8KBWCDTS\"}],\"skipped\":[],\"failures\":[{\"title\":\"Prayagraj civic body approves land bank, fee hikes, reforms\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Chandigarh's amended master plan gives industrial areas more space, more uses\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Mumbai: Decks cleared, Kamathipura redevelopment work set to begin this Diwali\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Panchkula civic body launches extensive survey in 42 villages to identify building violations\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Chandigarh gets room to grow as heritage panel clears master plan changes\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Allahabad HC orders survey of Gulmohar Greens after row over 112 extra flats, CC\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Enforcement directorate arrests Kolkata-based builder for land grab, illegal constructions\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"}],\"sources\":[\"Hindustan Times\",\"The Times of India\",\"The Economic Times\",\"ETRealty\",\"SwarajyaMag\",\"ETRealty Commercial Feed\",\"ETRealty Infrastructure Feed\",\"ETRealty Industry Feed\",\"ETRealty Regulatory Feed\",\"Hindustan Times Noida\",\"Hindustan Times Noida Topic\",\"Hindustan Times Greater Noida\",\"Hindustan Times Noida Authority\",\"Hindustan Times Greater Noida Authority\",\"Hindustan Times Yamuna Expressway\",\"Hindustan Times Jewar Airport\",\"Hindustan Times YEIDA\",\"Noida International Airport News\",\"YEIDA News\",\"YEIDA Announcements\",\"Greater Noida Authority Announcements\",\"ATS Greens Blog\",\"Mahagun Media\",\"Prateek Group Blog\",\"Gulshan Group\",\"Indian Express Noida Authority\",\"Indian Express Greater Noida Authority\",\"Times of India Noida\",\"The Hindu\",\"The Indian Express\",\"The New Indian Express\",\"Business Standard\",\"Financial Express\",\"Mint\",\"BusinessLine\",\"Moneycontrol\",\"NDTV Profit\",\"Construction World\",\"Realty Plus\",\"Deccan Herald\",\"Deccan Chronicle\",\"The Tribune\",\"Telangana Today\",\"News Karnataka\",\"The Assam Tribune\",\"Odisha TV\",\"The Statesman\",\"Free Press Journal\",\"Haryana RERA\",\"Madhya Pradesh RERA\",\"Andhra Pradesh RERA\",\"Assam RERA / GMDA\",\"Chandigarh RERA\",\"Chhattisgarh RERA\",\"DNH & Daman Diu Administration\",\"Delhi RERA\",\"Goa RERA\",\"Gujarat RERA\",\"Jharkhand RERA\",\"Kerala RERA\",\"Karnataka RERA\",\"Himachal Pradesh RERA\",\"Punjab RERA\",\"Tamil Nadu RERA\",\"Telangana RERA\",\"West Bengal RERA\",\"Tripura RERA\",\"Maharashtra RERA\",\"Odisha RERA\",\"Uttarakhand RERA\",\"Puducherry Registration Department\",\"Rajasthan RERA\",\"Uttar Pradesh RERA\",\"Press Information Bureau\",\"Ministry of Housing and Urban Affairs\",\"Ministry of Road Transport and Highways\",\"National Highways Authority of India\",\"NCRTC / Namo Bharat\",\"Airports Authority of India\",\"Dedicated Freight Corridor Corporation\",\"Delhi Development Authority\",\"Delhi Metro Rail Corporation\",\"NOIDA Authority\",\"Greater Noida Authority\",\"YEIDA\",\"GMDA Gurugram\",\"HSVP Haryana\",\"DTCP Haryana\",\"MMRDA\",\"CIDCO\",\"PMRDA\",\"Nagpur Metro\",\"APCRDA\",\"GVMC\",\"Hyderabad Metropolitan Development Authority\",\"Bangalore Development Authority\",\"Bengaluru Metro Rail Corporation\",\"Chennai Metropolitan Development Authority\",\"Chennai Metro Rail\",\"Ahmedabad Urban Development Authority\",\"Gujarat Infrastructure Development Board\",\"Kolkata Metropolitan Development Authority\",\"HIDCO West Bengal\",\"Jaipur Development Authority\",\"RIICO\",\"Punjab Urban Planning and Development Authority\",\"Uttar Pradesh State Industrial Development Authority\",\"Lucknow Development Authority\",\"Jharkhand Urban Infrastructure Development Company\",\"Odisha Housing & Urban Development\",\"Bhubaneswar Development Authority\",\"Kochi Metro Rail\",\"Goa Town and Country Planning\",\"Uttarakhand Urban Development Directorate\",\"Chandigarh Administration\",\"Puducherry Public Works Department\",\"DLF Limited\",\"M3M India\",\"Godrej Properties\",\"Macrotech Developers / Lodha\",\"Prestige Estates Projects\",\"Sobha Limited\",\"Oberoi Realty\",\"Emaar India\",\"Tata Housing\",\"Mahindra Lifespace Developers\",\"Adani Realty\",\"Brigade Enterprises\",\"Puravankara Limited\",\"Embassy Group\",\"K Raheja Corp\",\"Hiranandani Group\",\"Shapoorji Pallonji Real Estate\",\"L&T Realty\",\"Birla Estates\",\"Raymond Realty\",\"Piramal Realty\",\"Runwal Realty\",\"Kalpataru\",\"Kolte-Patil Developers\",\"Ajmera Realty\",\"NCC Urban\",\"Sattva Group\",\"RMZ Corp\",\"CapitaLand India\",\"Sumadhura Group\",\"Casagrand\",\"TVS Emerald\",\"Radiance Realty\",\"Ramky Estates\",\"My Home Constructions\",\"Aparna Constructions\",\"Rajapushpa Properties\",\"Phoenix Group Hyderabad\",\"Rustomjee\",\"Wadhwa Group\",\"VTP Realty\",\"Kohinoor Group Pune\",\"Smartworld Developers\",\"Elan Group\",\"BPTP\",\"Whiteland Corporation\",\"Central Park\",\"ATS Infrastructure\",\"ACE Group\",\"County Group\",\"Gaurs Group\",\"Eldeco Group\",\"Supertech\",\"Sikka Group\",\"Saya Group\",\"ABA Corp\",\"Mahagun Group\",\"Shalimar Corp\",\"Sushma Group\",\"GBP Group\",\"Hero Realty\",\"Ashiana Housing\",\"Manglam Group\",\"Mahima Group\",\"Pacifica Companies\",\"Arvind SmartSpaces\",\"Shivalik Group\",\"Bakeri Group\",\"PS Group\",\"Merlin Group\",\"Srijan Realty\",\"Ambuja Neotia\",\"Assotech\",\"DN Homes\",\"Malabar Developers\",\"Asset Homes\",\"Confident Group\",\"Amolik Group\",\"MagicBricks News Feed\",\"Hindustan Times Real Estate\",\"Hindustan Times Gurugram Feed\",\"Hindustan Times Faridabad\",\"Hindustan Times Faridabad Feed\",\"Hindustan Times Real Estate Feed\",\"Economic Times Property\",\"Economic Times Property Feed\",\"Economic Times Corporate Trends\",\"CNBC-TV18 Real Estate\",\"Times of India Real Estate\",\"Times of India Real Estate Feed\",\"Indian Express Delhi Feed\",\"ETRealty Gurugram\",\"ETRealty Faridabad\",\"ETRealty Residential\",\"ETRealty Commercial\",\"ETRealty Infrastructure\",\"ETRealty Industry\",\"ETRealty Top Stories Feed\",\"Moneycontrol Real Estate\",\"Business Standard Real Estate Feed\",\"Business Standard Latest Feed\",\"Construction World Real Estate\",\"Outlook Money Real Estate\",\"Tribune Real Estate\",\"Swarajya Stories Feed\",\"Business of Food - Food Service\",\"Torbit Realty Gurugram\",\"Indian Infrastructure\",\"Urban Transport News\",\"Metro Rail News\",\"The Metro Rail Guy\",\"Rail Analysis India\",\"Realty & More\",\"Realty & More Feed\",\"RealtyNXT\",\"Track2Realty\",\"Prop News Time\",\"Realty Quarter Feed\",\"BPTP Media\",\"DLF Media\",\"M3M Media\",\"Smartworld Developers Media\",\"Signature Global\",\"Central Park Media\",\"Godrej Properties Media\",\"Max Estates Media\",\"Birla Estates Media\",\"Puri Constructions\",\"Omaxe\",\"RPS Group India\",\"Times of India Noida Feed\",\"Hindustan Times Noida Feed\",\"ETRealty Noida\",\"ETRealty Greater Noida\",\"ETRealty Greater Noida AMP\",\"ETRealty Jewar\",\"ETRealty Yamuna Expressway\",\"ETRealty Noida Airport\",\"ETRealty Noida Authority\",\"ETRealty Greater Noida Authority\",\"ETRealty YEIDA\",\"ETRealty Residential Feed\"]}"
     },
     "state:source_cursor": {
       "value": "64"

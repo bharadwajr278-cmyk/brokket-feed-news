@@ -62,7 +62,7 @@ async function api<T>(method: string, path: string, data?: unknown): Promise<T> 
     method,
     headers: {
       ...(data instanceof FormData ? {} : { "content-type": "application/json" }),
-      ...(token ? { ACCESS_TOKEN: token } : {}),
+      ...(token ? (import.meta.env.DEV ? { ACCESS_TOKEN: token } : { "X-PANEL-TOKEN": token }) : {}),
     },
     body: data === undefined ? undefined : data instanceof FormData ? data : JSON.stringify(data),
   });

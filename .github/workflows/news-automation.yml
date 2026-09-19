@@ -2,8 +2,14 @@ name: Brokket news automation
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/20 * * * *"
   workflow_dispatch:
+    inputs:
+      backfill_20_days:
+        description: "Run a one-time scan covering the last 20 days"
+        required: false
+        default: false
+        type: boolean
   push:
     branches: [main]
     paths-ignore:
@@ -19,14 +25,15 @@ concurrency:
 jobs:
   publish-news:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     env:
-      NEWS_API_ENDPOINT: http://13.126.103.246/api/feed-news
+      NEWS_API_ENDPOINT: ${{ vars.NEWS_API_ENDPOINT }}
+      NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
       NEWS_STATE_PATH: state/news-state.json
-      MAX_AGE_HOURS: "72"
-      SOURCE_BATCH_SIZE: "50"
-      MAX_ITEMS_PER_RUN: "12"
-      MAX_ATTEMPTS_PER_RUN: "20"
+      MAX_AGE_HOURS: ${{ inputs.backfill_20_days && '480' || '72' }}
+      SOURCE_BATCH_SIZE: "10000"
+      MAX_ITEMS_PER_RUN: "25"
+      MAX_ATTEMPTS_PER_RUN: "50"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,6 +46,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Verify clean build
+        run: pnpm build
       - id: publish
         continue-on-error: true
         run: pnpm news:run

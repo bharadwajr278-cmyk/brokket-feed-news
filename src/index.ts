@@ -47,6 +47,7 @@ export type NewsStateStore = {
 export type MonitorEnv = {
   NEWS_STATE: NewsStateStore;
   BROKKET_API_URL: string;
+  BROKKET_API_KEY?: string;
   MAX_AGE_HOURS: string;
 };
 
@@ -55,8 +56,7 @@ const STATE_KEY = "state:last_checked_at";
 const SOURCE_CURSOR_KEY = "state:source_cursor";
 const LAST_RUN_KEY = "state:last_run";
 const ROTATING_BATCH_SIZE = 20;
-// Each candidate can require Google decoding, article, image and API requests.
-// Four keeps the run below the Workers subrequest ceiling with 25 RSS feeds.
+// Conservative local defaults; production limits are configured by GitHub Actions.
 const MAX_ITEMS_PER_RUN = 4;
 const MAX_ATTEMPTS_PER_RUN = 5;
 const REAL_ESTATE_TERMS = [
@@ -194,7 +194,6 @@ async function fetchSource(source: NewsSource): Promise<FeedItem[]> {
         "User-Agent": "BrokketRealEstateMonitor/2.2",
         Accept: "application/rss+xml, application/xml, text/xml, */*;q=0.5",
       },
-      cf: { cacheTtl: 300, cacheEverything: true },
     });
     if (!response.ok) {
       await discardResponse(response);
@@ -213,7 +212,6 @@ async function fetchSource(source: NewsSource): Promise<FeedItem[]> {
   const url = `${GOOGLE_NEWS}?q=${encodeURIComponent(query)}&hl=en-IN&gl=IN&ceid=IN:en`;
   const response = await fetch(url, {
     headers: { "User-Agent": "BrokketRealEstateMonitor/1.0" },
-    cf: { cacheTtl: 300, cacheEverything: true },
   });
   if (!response.ok) {
     await discardResponse(response);
@@ -366,7 +364,6 @@ async function validateThumbnail(url: string): Promise<string | null> {
       Range: "bytes=0-65535",
     },
     redirect: "follow",
-    cf: { cacheTtl: 3600, cacheEverything: true },
   });
   const contentType = response.headers.get("content-type")?.toLowerCase() ?? "";
   if (!response.ok || !contentType.startsWith("image/")) {
@@ -384,7 +381,6 @@ async function fetchArticleMetadata(item: FeedItem): Promise<ArticleMetadata | n
   const response = await fetch(decodedUrl, {
     headers: { "User-Agent": "Mozilla/5.0 (compatible; BrokketRealEstateMonitor/1.0)" },
     redirect: "follow",
-    cf: { cacheTtl: 900, cacheEverything: true },
   });
   if (!response.ok) {
     await discardResponse(response);
@@ -455,17 +451,19 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
     isActive: true,
   };
   try {
+    const headers: Record<string, string> = {
+      "content-type": "application/json",
+      "user-agent": "Mozilla/5.0 (compatible; BrokketNewsBot/2.2; +https://brokket.com)",
+    };
+    if (env.BROKKET_API_KEY) headers.authorization = `Bearer ${env.BROKKET_API_KEY}`;
     const response = await fetch(env.BROKKET_API_URL, {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "user-agent": "Mozilla/5.0 (compatible; BrokketNewsBot/2.2; +https://brokket.com)",
-      },
+      headers,
       body: JSON.stringify(payload),
     });
     let body: { data?: { code?: string }; message?: string } = {};
     try {
-      body = await response.json<{ data?: { code?: string }; message?: string }>();
+      body = await response.json() as { data?: { code?: string }; message?: string };
     } catch {
       body = {};
     }
@@ -476,9 +474,9 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
         title: cleanTitle,
         apiCode: body.data?.code ?? null,
         sentAt: new Date().toISOString(),
-      }), { expirationTtl: 60 * 60 * 24 * 180 }),
+      })),
       env.NEWS_STATE.put(`seenfeed:${feedKey}`, article.url, { expirationTtl: 60 * 60 * 24 * 7 }),
-      env.NEWS_STATE.put(`senttitle:${titleKey}`, article.url, { expirationTtl: 60 * 60 * 24 * 180 }),
+      env.NEWS_STATE.put(`senttitle:${titleKey}`, article.url),
     ]);
     return { title: cleanTitle, status: "sent", code: body.data?.code };
   } catch (error) {
@@ -552,41 +550,3 @@ export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}):
   console.log(JSON.stringify({ event: "monitor_complete", ...summary }));
   return summary;
 }
-
-export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const url = new URL(request.url);
-    if (request.method === "GET" && url.pathname === "/health") {
-      return Response.json({
-        ok: true,
-        service: "brokket-real-estate-news",
-        schedule: "GitHub Actions every 5 minutes",
-        deliveryEngine: "github-actions",
-        cloudflareCron: "disabled",
-        lastCheckedAt: await env.NEWS_STATE.get(STATE_KEY),
-        sourceCounts: {
-          total: ALL_SOURCES.length,
-          corePerRun: CORE_SOURCES.length,
-          rotatingPerCloudflareRun: ROTATING_BATCH_SIZE,
-        },
-      });
-    }
-    if (request.method === "GET" && url.pathname === "/sources") {
-      return Response.json({ count: ALL_SOURCES.length, sources: ALL_SOURCES }, {
-        headers: {
-          "cache-control": "public, max-age=3600",
-          "access-control-allow-origin": "*",
-        },
-      });
-    }
-    if (request.method === "GET" && url.pathname === "/last-run") {
-      const lastRun = await env.NEWS_STATE.get(LAST_RUN_KEY, "json");
-      return Response.json(lastRun ?? { status: "not_run_yet" });
-    }
-    return Response.json({ error: "not_found" }, { status: 404 });
-  },
-
-  async scheduled(_controller: ScheduledController, env: Env, _ctx: ExecutionContext): Promise<void> {
-    await runMonitor(env);
-  },
-} satisfies ExportedHandler<Env>;

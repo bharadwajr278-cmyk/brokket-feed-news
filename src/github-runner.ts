@@ -21,6 +21,7 @@ class FileBackedKv {
       if (code !== "ENOENT") throw error;
     }
     this.removeExpired();
+    this.makePublishedRecordsPermanent();
   }
 
   async get(key: string): Promise<string | null>;
@@ -59,6 +60,14 @@ class FileBackedKv {
       if (entry.expiresAt !== undefined && entry.expiresAt <= now) delete this.state.entries[key];
     }
   }
+
+  private makePublishedRecordsPermanent(): void {
+    for (const [key, entry] of Object.entries(this.state.entries)) {
+      if (key.startsWith("sent:") || key.startsWith("senttitle:")) {
+        delete entry.expiresAt;
+      }
+    }
+  }
 }
 
 function positiveInteger(value: string | undefined, fallback: number): number {
@@ -67,12 +76,17 @@ function positiveInteger(value: string | undefined, fallback: number): number {
 }
 
 const statePath = resolve(process.env.NEWS_STATE_PATH || "state/news-state.json");
+const apiEndpoint = process.env.NEWS_API_ENDPOINT?.trim();
+if (!apiEndpoint) {
+  throw new Error("NEWS_API_ENDPOINT is required; configure it as a GitHub Actions repository secret");
+}
 const state = new FileBackedKv(statePath);
 await state.load();
 
 const env = {
   NEWS_STATE: state,
-  BROKKET_API_URL: process.env.NEWS_API_ENDPOINT || "http://13.126.103.246/api/feed-news",
+  BROKKET_API_URL: apiEndpoint,
+  BROKKET_API_KEY: process.env.NEWS_API_KEY?.trim() || undefined,
   MAX_AGE_HOURS: process.env.MAX_AGE_HOURS || "72",
 } satisfies MonitorEnv;
 

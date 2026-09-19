@@ -4,20 +4,20 @@ This repository discovers recent Indian real-estate and infrastructure news, val
 
 ## Production automation
 
-GitHub Actions is the primary scheduler and runs every five minutes. It is used for delivery because the current Brokket API raw-IP endpoint rejects Cloudflare Worker egress with HTTP 403, while ordinary server requests are accepted.
+GitHub Actions is the only production runtime. The scheduled workflow runs every 20 minutes and scans the complete catalogue of 258 publisher, developer, infrastructure, and government sources on every run.
 
-Each run checks the five core publishers plus 50 rotating sources. The full 258-source catalogue is covered in approximately 30 minutes. State is stored in `state/news-state.json`; URL and normalized-title hashes prevent duplicate publication.
+Every run performs a clean TypeScript build before publishing. It accepts only recent real-estate and infrastructure stories, rejects crime and unrelated content, requires a valid article thumbnail, assigns a configured city code, and sends accepted stories to the Brokket API.
 
-The Cloudflare Worker remains available for `/health`, `/sources`, and `/last-run`, but its Cron Trigger is disabled to avoid the Workers Free plan's 10 ms CPU limit.
+Duplicate protection is persistent: canonical article URL and normalized-title SHA-256 hashes are stored in `state/news-state.json` without expiry. The workflow commits that state after every run, and concurrency control prevents overlapping runs from racing each other.
+
+Use the `backfill_20_days` workflow-dispatch option for a single 20-day historical run. Scheduled runs always use the normal 72-hour discovery window.
+
+Configure `NEWS_API_ENDPOINT` as a GitHub Actions repository variable. When the API requires authentication, configure `NEWS_API_KEY` as a repository secret. The key is sent as a bearer token and is never committed or logged.
 
 ## Commands
 
 ```bash
 pnpm install
-pnpm types
-pnpm check
+pnpm build
 pnpm news:run
-pnpm deploy
 ```
-
-The production endpoint defaults to `http://13.126.103.246/api/feed-news` and can be overridden with `NEWS_API_ENDPOINT` for the GitHub runner.

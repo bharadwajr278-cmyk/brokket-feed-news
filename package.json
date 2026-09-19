@@ -1,19 +1,16 @@
 {
-  "name": "brokket-cloudflare-news-worker",
+  "name": "brokket-feed-news",
   "version": "1.0.0",
   "type": "module",
   "private": true,
   "scripts": {
-    "check": "tsc --noEmit",
-    "types": "wrangler types",
-    "deploy": "wrangler deploy --minify",
+    "build": "tsc --noEmit",
+    "check": "pnpm build",
     "news:run": "tsx src/github-runner.ts"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260918.1",
     "@types/node": "latest",
     "tsx": "^4.23.13",
-    "typescript": "latest",
-    "wrangler": "latest"
+    "typescript": "latest"
   }
 }

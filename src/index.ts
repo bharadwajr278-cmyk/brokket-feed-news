@@ -559,12 +559,14 @@ export default {
       return Response.json({
         ok: true,
         service: "brokket-real-estate-news",
-        schedule: "every 5 minutes",
+        schedule: "GitHub Actions every 5 minutes",
+        deliveryEngine: "github-actions",
+        cloudflareCron: "disabled",
         lastCheckedAt: await env.NEWS_STATE.get(STATE_KEY),
         sourceCounts: {
           total: ALL_SOURCES.length,
-          coreEveryMinute: CORE_SOURCES.length,
-          rotatingPerMinute: ROTATING_BATCH_SIZE,
+          corePerRun: CORE_SOURCES.length,
+          rotatingPerCloudflareRun: ROTATING_BATCH_SIZE,
         },
       });
     }

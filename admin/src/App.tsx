@@ -49,6 +49,16 @@ function dateGroupLabel(value: string): string {
   }).format(date);
 }
 
+function cityFromSearch(value: string): CityPattern | undefined {
+  const query = value.trim().toLowerCase();
+  if (!query) return undefined;
+  return CITY_PATTERNS.find((city) =>
+    city.name.toLowerCase() === query ||
+    city.code.toLowerCase() === query ||
+    city.patterns.some((pattern) => pattern.toLowerCase() === query),
+  );
+}
+
 function TokenGate({ onReady }: { onReady: () => void }) {
   const [token, setToken] = useState("");
   return <main className="login-shell">
@@ -198,9 +208,11 @@ export function App() {
     try {
       setLoading(true); setError("");
       const request: NewsFilters = { page, size: 20 };
-      if (filters.search.trim()) request.searchQuery = filters.search.trim();
+      const matchedCity = cityFromSearch(filters.search);
+      if (filters.search.trim() && (!matchedCity || filters.city)) request.searchQuery = filters.search.trim();
       if (filters.status !== "all") request.isActive = filters.status === "active";
       if (filters.city) request.cityCode = filters.city;
+      else if (matchedCity) request.cityCode = matchedCity.code;
       if (filters.source) request.sourceName = filters.source;
       if (filters.from) request.createdFrom = filters.from;
       if (filters.to) request.createdTo = filters.to;

@@ -1,4 +1,4 @@
-const FEED_ORIGIN = "http://13.126.103.246";
+const FEED_ORIGIN = "http://ec2-13-126-103-246.ap-south-1.compute.amazonaws.com";
 const MEDIA_ORIGIN = "https://www.brokket.app";
 
 const ALLOWED_ROUTES = [

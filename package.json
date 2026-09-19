@@ -7,6 +7,7 @@
     "build": "tsc --noEmit",
     "check": "pnpm build",
     "news:run": "tsx src/github-runner.ts",
+    "report": "tsx src/report.ts",
     "state:merge": "tsx src/merge-state.ts"
   },
   "devDependencies": {

@@ -8,12 +8,19 @@ type FeedItem = {
   sourceName: string;
   sourceDomain: string;
   description: string;
+  cityHint?: CityPattern;
+  ambiguousCityHint?: boolean;
 };
 
 type PushResult = {
   title: string;
   status: "sent" | "failed" | "skipped";
+  cityCode: string;
+  cityName: string;
+  sourceName: string;
+  publishedAt: string;
   code?: string;
+  articleUrl?: string;
   error?: string;
 };
 
@@ -30,6 +37,10 @@ export type RunSummary = {
   sent: PushResult[];
   skipped: PushResult[];
   failures: PushResult[];
+  publisherSourcesChecked: number;
+  cityFeedsChecked: number;
+  publisherSourceFailures: number;
+  cityFeedFailures: number;
 };
 
 export type MonitorOptions = {
@@ -55,6 +66,7 @@ const GOOGLE_NEWS = "https://news.google.com/rss/search";
 const STATE_KEY = "state:last_checked_at";
 const SOURCE_CURSOR_KEY = "state:source_cursor";
 const LAST_RUN_KEY = "state:last_run";
+const RUN_HISTORY_KEY = "state:run_history";
 const ROTATING_BATCH_SIZE = 20;
 // Conservative local defaults; production limits are configured by GitHub Actions.
 const MAX_ITEMS_PER_RUN = 4;
@@ -115,7 +127,12 @@ function element(xml: string, name: string): string {
   return match ? decodeEntities(match[1] ?? "") : "";
 }
 
-function parseFeed(xml: string, fallbackSource: string, expectedDomain: string): FeedItem[] {
+function parseFeed(
+  xml: string,
+  fallbackSource: string,
+  expectedDomain = "",
+  cityHint?: CityPattern,
+): FeedItem[] {
   const blocks = xml.match(/<item>[\s\S]*?<\/item>/gi) ?? [];
   return blocks.map((block) => {
     const sourceTag = block.match(/<source[^>]*>/i)?.[0] ?? "";
@@ -133,10 +150,13 @@ function parseFeed(xml: string, fallbackSource: string, expectedDomain: string):
       sourceName: element(block, "source") || fallbackSource,
       sourceDomain,
       description: element(block, "description"),
+      cityHint,
     };
   }).filter((item) => {
-    const sameSource = item.sourceDomain === expectedDomain || item.sourceDomain.endsWith(`.${expectedDomain}`);
-    return sameSource && item.title && item.link && item.publishedAt;
+    const sameSource = !expectedDomain
+      || item.sourceDomain === expectedDomain
+      || item.sourceDomain.endsWith(`.${expectedDomain}`);
+    return sameSource && item.sourceDomain && item.title && item.link && item.publishedAt;
   });
 }
 
@@ -220,6 +240,45 @@ async function fetchSource(source: NewsSource, queryDays: number): Promise<FeedI
   const xml = await response.text();
   if (xml.length > 2_000_000) throw new Error(`RSS ${source.domain} exceeded size limit`);
   return parseFeed(xml, source.name, source.domain);
+}
+
+async function fetchCityFeed(city: CityPattern, queryDays: number): Promise<FeedItem[]> {
+  const locationTerms = city.patterns.slice(0, 3).map((pattern) => `"${pattern}"`).join(" OR ");
+  const query = `(${QUERY_TERMS}) (${locationTerms}) when:${queryDays}d`;
+  const url = `${GOOGLE_NEWS}?q=${encodeURIComponent(query)}&hl=en-IN&gl=IN&ceid=IN:en`;
+  const response = await fetch(url, {
+    headers: { "User-Agent": "BrokketRealEstateMonitor/2.3" },
+  });
+  if (!response.ok) {
+    await discardResponse(response);
+    throw new Error(`City RSS ${city.code} returned ${response.status}`);
+  }
+  const xml = await response.text();
+  if (xml.length > 2_000_000) throw new Error(`City RSS ${city.code} exceeded size limit`);
+  return parseFeed(xml, `${city.name} real-estate news`, "", city);
+}
+
+async function allSettledWithConcurrency<T, R>(
+  values: readonly T[],
+  concurrency: number,
+  task: (value: T) => Promise<R>,
+): Promise<Array<PromiseSettledResult<R>>> {
+  const results: Array<PromiseSettledResult<R>> = new Array(values.length);
+  let nextIndex = 0;
+  const workers = Array.from({ length: Math.min(concurrency, values.length) }, async () => {
+    while (nextIndex < values.length) {
+      const index = nextIndex++;
+      const value = values[index];
+      if (value === undefined) continue;
+      try {
+        results[index] = { status: "fulfilled", value: await task(value) };
+      } catch (reason) {
+        results[index] = { status: "rejected", reason };
+      }
+    }
+  });
+  await Promise.all(workers);
+  return results;
 }
 
 function attribute(html: string, name: string): string {
@@ -412,27 +471,34 @@ async function fetchArticleMetadata(item: FeedItem): Promise<ArticleMetadata | n
 
 async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Promise<PushResult> {
   const cleanTitle = item.title.slice(0, 300);
+  const resultBase = {
+    title: cleanTitle,
+    cityCode: city.code,
+    cityName: city.name,
+    sourceName: item.sourceName,
+    publishedAt: new Date(item.publishedAt).toISOString(),
+  };
   const feedKey = await sha256(item.link);
   const titleKey = await sha256(normalizedTitle(cleanTitle));
   if (await env.NEWS_STATE.get(`senttitle:${titleKey}`)) {
     await env.NEWS_STATE.put(`seenfeed:${feedKey}`, "duplicate_title", { expirationTtl: 60 * 60 * 24 * 7 });
-    return { title: cleanTitle, status: "skipped" };
+    return { ...resultBase, status: "skipped" };
   }
   let article: ArticleMetadata | null;
   try {
     article = await fetchArticleMetadata(item);
   } catch (error) {
     await env.NEWS_STATE.put(`retry:${feedKey}`, "article_metadata", { expirationTtl: 60 * 30 });
-    return { title: cleanTitle, status: "failed", error: `article_metadata: ${error instanceof Error ? error.message : String(error)}` };
+    return { ...resultBase, status: "failed", error: `article_metadata: ${error instanceof Error ? error.message : String(error)}` };
   }
   if (!article) {
     await env.NEWS_STATE.put(`retry:${feedKey}`, "missing_valid_exact_article_thumbnail", { expirationTtl: 60 * 30 });
-    return { title: cleanTitle, status: "failed", error: "missing_valid_exact_article_thumbnail" };
+    return { ...resultBase, status: "failed", error: "missing_valid_exact_article_thumbnail" };
   }
   const idempotencyKey = await sha256(article.url);
   if (await env.NEWS_STATE.get(`sent:${idempotencyKey}`)) {
     await env.NEWS_STATE.put(`seenfeed:${feedKey}`, article.url, { expirationTtl: 60 * 60 * 24 * 7 });
-    return { title: cleanTitle, status: "skipped" };
+    return { ...resultBase, status: "skipped", articleUrl: article.url };
   }
   const description = decodeEntities(article.description).slice(0, 2_000);
   const source = sourceAsset(article.url, item.sourceName);
@@ -454,6 +520,7 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
     const headers: Record<string, string> = {
       "content-type": "application/json",
       "user-agent": "Mozilla/5.0 (compatible; BrokketNewsBot/2.2; +https://brokket.com)",
+      "x-idempotency-key": idempotencyKey,
     };
     if (env.BROKKET_API_KEY) headers.authorization = `Bearer ${env.BROKKET_API_KEY}`;
     const response = await fetch(env.BROKKET_API_URL, {
@@ -468,20 +535,90 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
       body = {};
     }
     if (!response.ok) throw new Error(`API ${response.status}: ${body.message ?? "unknown error"}`);
+    const sentAt = new Date().toISOString();
     await Promise.all([
       env.NEWS_STATE.put(`sent:${idempotencyKey}`, JSON.stringify({
+        version: 2,
         url: article.url,
         title: cleanTitle,
+        description,
+        thumbnailImage: article.image,
         apiCode: body.data?.code ?? null,
-        sentAt: new Date().toISOString(),
+        cityCode: city.code,
+        cityName: city.name,
+        sourceName: source.name,
+        sourceLogo: source.logo,
+        publishedAt: payload.publishedAt,
+        sentAt,
+        isActive: true,
       })),
       env.NEWS_STATE.put(`seenfeed:${feedKey}`, article.url, { expirationTtl: 60 * 60 * 24 * 7 }),
       env.NEWS_STATE.put(`senttitle:${titleKey}`, article.url),
     ]);
-    return { title: cleanTitle, status: "sent", code: body.data?.code };
+    return { ...resultBase, status: "sent", code: body.data?.code, articleUrl: article.url, sourceName: source.name };
   } catch (error) {
-    return { title: cleanTitle, status: "failed", error: error instanceof Error ? error.message : String(error) };
+    return { ...resultBase, status: "failed", articleUrl: article.url, error: error instanceof Error ? error.message : String(error) };
   }
+}
+
+type DailyStats = {
+  date: string;
+  runs: number;
+  discovered: number;
+  eligible: number;
+  sent: number;
+  skipped: number;
+  failed: number;
+  cities: Record<string, number>;
+  sources: Record<string, number>;
+  lastCheckedAt: string;
+};
+
+async function recordAnalytics(env: MonitorEnv, summary: RunSummary): Promise<void> {
+  const date = summary.checkedAt.slice(0, 10);
+  const dailyKey = `stats:daily:${date}`;
+  const existing = await env.NEWS_STATE.get<DailyStats>(dailyKey, "json");
+  const daily: DailyStats = existing ?? {
+    date,
+    runs: 0,
+    discovered: 0,
+    eligible: 0,
+    sent: 0,
+    skipped: 0,
+    failed: 0,
+    cities: {},
+    sources: {},
+    lastCheckedAt: summary.checkedAt,
+  };
+  daily.runs += 1;
+  daily.discovered += summary.discovered;
+  daily.eligible += summary.eligible;
+  daily.sent += summary.sent.length;
+  daily.skipped += summary.skipped.length;
+  daily.failed += summary.failures.length;
+  daily.lastCheckedAt = summary.checkedAt;
+  for (const item of summary.sent) {
+    daily.cities[item.cityCode] = (daily.cities[item.cityCode] ?? 0) + 1;
+    daily.sources[item.sourceName] = (daily.sources[item.sourceName] ?? 0) + 1;
+  }
+
+  const history = await env.NEWS_STATE.get<Array<Record<string, unknown>>>(RUN_HISTORY_KEY, "json") ?? [];
+  history.push({
+    checkedAt: summary.checkedAt,
+    discovered: summary.discovered,
+    eligible: summary.eligible,
+    sent: summary.sent,
+    skipped: summary.skipped.length,
+    failed: summary.failures.length,
+    publisherSourcesChecked: summary.publisherSourcesChecked,
+    cityFeedsChecked: summary.cityFeedsChecked,
+    publisherSourceFailures: summary.publisherSourceFailures,
+    cityFeedFailures: summary.cityFeedFailures,
+  });
+  await Promise.all([
+    env.NEWS_STATE.put(dailyKey, JSON.stringify(daily)),
+    env.NEWS_STATE.put(RUN_HISTORY_KEY, JSON.stringify(history.slice(-500))),
+  ]);
 }
 
 export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}): Promise<RunSummary> {
@@ -500,9 +637,27 @@ export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}):
     (_unused, offset) => ROTATING_SOURCES[(cursor + offset) % ROTATING_SOURCES.length])
     .filter((source): source is NewsSource => source !== undefined);
   const sources = [...CORE_SOURCES, ...rotating];
-  const feeds = await Promise.allSettled(sources.map((source) => fetchSource(source, queryDays)));
-  const items = feeds.flatMap((result) => result.status === "fulfilled" ? result.value : []);
-  const unique = new Map(items.map((item) => [item.link, item]));
+  const [feeds, cityFeeds] = await Promise.all([
+    allSettledWithConcurrency(sources, 32, (source) => fetchSource(source, queryDays)),
+    allSettledWithConcurrency(CITY_PATTERNS, 24, (city) => fetchCityFeed(city, queryDays)),
+  ]);
+  const items = [...feeds, ...cityFeeds]
+    .flatMap((result) => result.status === "fulfilled" ? result.value : []);
+  const unique = new Map<string, FeedItem>();
+  for (const item of items) {
+    const existing = unique.get(item.link);
+    if (!existing) {
+      unique.set(item.link, item);
+      continue;
+    }
+    if (!item.cityHint || existing.ambiguousCityHint) continue;
+    if (!existing.cityHint) {
+      existing.cityHint = item.cityHint;
+    } else if (existing.cityHint.code !== item.cityHint.code) {
+      existing.cityHint = undefined;
+      existing.ambiguousCityHint = true;
+    }
+  }
   const candidates: Array<{ item: FeedItem; city: CityPattern }> = [];
   for (const item of unique.values()) {
     const published = new Date(item.publishedAt);
@@ -510,7 +665,9 @@ export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}):
     if (published > runStarted || runStarted.getTime() - published.getTime() > maxAgeMs) continue;
     const searchable = `${item.title} ${item.description}`;
     if (!isRelevant(searchable)) continue;
-    const city = findCity(item.title) ?? findUnambiguousCity(item.description);
+    const city = findCity(item.title)
+      ?? findUnambiguousCity(item.description)
+      ?? (!item.ambiguousCityHint ? item.cityHint : undefined);
     if (!city) continue;
     const feedKey = await sha256(item.link);
     const titleKey = await sha256(normalizedTitle(item.title));
@@ -540,9 +697,12 @@ export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}):
     sent: results.filter((result) => result.status === "sent"),
     skipped: results.filter((result) => result.status === "skipped"),
     failures: results.filter((result) => result.status === "failed"),
-  };
-  // Per-URL KV keys provide deduplication. A rolling 72-hour search window means
-  // a source cannot lose articles while waiting for its round-robin turn.
+    publisherSourcesChecked: sources.length,
+    cityFeedsChecked: CITY_PATTERNS.length,
+    publisherSourceFailures: feeds.filter((result) => result.status === "rejected").length,
+    cityFeedFailures: cityFeeds.filter((result) => result.status === "rejected").length,
+  } satisfies RunSummary;
+  await recordAnalytics(env, summary);
   await Promise.all([
     env.NEWS_STATE.put(STATE_KEY, runStarted.toISOString()),
     env.NEWS_STATE.put(SOURCE_CURSOR_KEY, String((cursor + rotating.length) % ROTATING_SOURCES.length)),

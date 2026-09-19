@@ -86,28 +86,78 @@ async function api<T>(method: string, path: string, data?: unknown): Promise<T> 
 }
 
 export async function listNews(filters: NewsFilters): Promise<PageResult> {
-  const { sourceName, ...request } = filters;
+  const { sourceName, createdFrom, createdTo, ...request } = filters;
+  const needsClientFiltering = Boolean(sourceName || createdFrom || createdTo);
   if (sourceName && !request.searchQuery) request.searchQuery = sourceName;
-  const response = await api<unknown>("POST", "/api/feed-news/list", request);
+
+  const fetchPage = async (pageNumber: number, size: number): Promise<PageResult> => {
+    const response = await api<unknown>("POST", "/api/feed-news/list", {
+      ...request,
+      page: pageNumber,
+      size,
+    });
+    return normalisePage(response, pageNumber);
+  };
+
+  if (!needsClientFiltering) return fetchPage(filters.page, filters.size);
+
+  // The Feed API currently ignores date fields, so fetch the matching result set
+  // and apply source/date filtering locally before paginating it for the admin UI.
+  const batchSize = 200;
+  const first = await fetchPage(0, batchSize);
+  const pages = [first];
+  const safePageCount = Math.min(first.totalPages, 100);
+  for (let pageNumber = 1; pageNumber < safePageCount; pageNumber += 1) {
+    pages.push(await fetchPage(pageNumber, batchSize));
+  }
+
+  const unique = new Map<string, NewsItem>();
+  pages.flatMap((page) => page.content).forEach((item) => unique.set(item.code || item.id, item));
+  const filtered = [...unique.values()].filter((item) => {
+    if (sourceName && item.sourceName !== sourceName) return false;
+    const dateKey = publishedDateKey(item.publishedAt);
+    if (createdFrom && (!dateKey || dateKey < createdFrom)) return false;
+    if (createdTo && (!dateKey || dateKey > createdTo)) return false;
+    return true;
+  }).sort((left, right) => new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime());
+
+  const start = filters.page * filters.size;
+  return {
+    content: filtered.slice(start, start + filters.size),
+    page: filters.page,
+    totalPages: Math.ceil(filtered.length / filters.size),
+    totalElements: filtered.length,
+  };
+}
+
+function publishedDateKey(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((item) => item.type === type)?.value || "";
+  return `${part("year")}-${part("month")}-${part("day")}`;
+}
+
+function normalisePage(response: unknown, requestedPage: number): PageResult {
   const candidate = response && typeof response === "object" && "page" in response
     ? (response as { page: unknown }).page
     : response;
   if (Array.isArray(candidate)) {
-    const content = sourceName
-      ? (candidate as NewsItem[]).filter((item) => item.sourceName === sourceName)
-      : candidate as NewsItem[];
-    return { content, page: filters.page, totalPages: 1, totalElements: content.length };
+    const content = candidate as NewsItem[];
+    return { content, page: requestedPage, totalPages: 1, totalElements: content.length };
   }
   const page = candidate as Partial<PageResult> & { number?: number };
   const rawContent = Array.isArray(page.content) ? page.content : [];
-  const content = sourceName
-    ? rawContent.filter((item) => item.sourceName === sourceName)
-    : rawContent;
   return {
-    content,
-    page: page.page ?? page.number ?? filters.page,
+    content: rawContent,
+    page: page.page ?? page.number ?? requestedPage,
     totalPages: page.totalPages ?? 0,
-    totalElements: sourceName ? content.length : page.totalElements ?? 0,
+    totalElements: page.totalElements ?? 0,
   };
 }
 

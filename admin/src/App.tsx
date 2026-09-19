@@ -33,6 +33,22 @@ function displayDate(value: string): string {
   }).format(date);
 }
 
+function dateGroupKey(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "unknown";
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(date);
+}
+
+function dateGroupLabel(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Date unavailable";
+  return new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata", weekday: "long", day: "numeric", month: "long", year: "numeric",
+  }).format(date);
+}
+
 function TokenGate({ onReady }: { onReady: () => void }) {
   const [token, setToken] = useState("");
   return <main className="login-shell">
@@ -196,6 +212,16 @@ export function App() {
   }, [authenticated, filters, page]);
 
   useEffect(() => { const timer = setTimeout(load, 250); return () => clearTimeout(timer); }, [load]);
+  const dateGroups = useMemo(() => {
+    const groups: Array<{ key: string; label: string; items: NewsItem[] }> = [];
+    for (const item of items) {
+      const key = dateGroupKey(item.publishedAt);
+      const current = groups.at(-1);
+      if (!current || current.key !== key) groups.push({ key, label: dateGroupLabel(item.publishedAt), items: [item] });
+      else current.items.push(item);
+    }
+    return groups;
+  }, [items]);
   const setFilter = (key: keyof typeof filters, value: string) => { setPage(0); setFilters((current) => ({ ...current, [key]: value })); };
   const toggle = async (item: NewsItem) => {
     const next = !item.isActive;
@@ -225,7 +251,9 @@ export function App() {
         {error && <div className="alert">{error}</div>}
         <section className="news-card">
           <div className="table-head"><span>Image</span><span>Title</span><span>City</span><span>Source</span><span>Published</span><span>Status</span><span>Actions</span></div>
-          {loading && items.length === 0 ? <div className="empty"><LoaderCircle className="spin" />Loading news…</div> : items.length === 0 ? <div className="empty"><SlidersHorizontal />No news matches these filters.</div> : items.map((item) => <article className="news-row" key={item.id}>
+          {loading && items.length === 0 ? <div className="empty"><LoaderCircle className="spin" />Loading news…</div> : items.length === 0 ? <div className="empty"><SlidersHorizontal />No news matches these filters.</div> : dateGroups.map((group) => <div className="date-group" key={group.key}>
+            <div className="date-group-heading"><CalendarDays /><strong>{group.label}</strong><span>{group.items.length} {group.items.length === 1 ? "news" : "news items"} on this page</span></div>
+            {group.items.map((item) => <article className="news-row" key={item.id}>
             <div className="thumb">{item.thumbnailImage ? <img src={item.thumbnailImage} alt="" /> : <Newspaper />}</div>
             <div className="news-title"><strong>{item.title}</strong>{item.newsLink && <a href={item.newsLink} target="_blank" rel="noreferrer"><Link2 />{item.newsLink}</a>}</div>
             <span className="city-pill">{CITY_PATTERNS.find((city) => city.code === item.cityCode)?.name || item.cityCode || "—"}</span>
@@ -233,7 +261,8 @@ export function App() {
             <time>{displayDate(item.publishedAt)}</time>
             <button className={`status ${item.isActive ? "active" : "inactive"}`} onClick={() => toggle(item)}><CirclePower />{item.isActive ? "Active" : "Inactive"}</button>
             <div className="actions"><button className="icon-button" onClick={() => setEditor({ open: true, item })} aria-label="Edit"><FilePenLine /></button><button className="icon-button danger" onClick={() => item.isActive && toggle(item)} aria-label="Deactivate" disabled={!item.isActive}><Trash2 /></button></div>
-          </article>)}
+            </article>)}
+          </div>)}
           <footer className="pagination"><span>Showing {items.length} of {total.toLocaleString("en-IN")}</span><div><button disabled={page <= 0} onClick={() => setPage((value) => value - 1)}><ChevronLeft /></button><span>Page {page + 1} of {Math.max(totalPages, 1)}</span><button disabled={page + 1 >= totalPages} onClick={() => setPage((value) => value + 1)}><ChevronRight /></button></div></footer>
         </section>
       </>}

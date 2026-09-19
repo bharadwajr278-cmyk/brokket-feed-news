@@ -5,6 +5,10 @@
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817089998
     },
+    "retry:09d83226ce22dccb07d121e6f10d8ab9df5d5803fa75327a4e7144b67f23a8a8": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818306519
+    },
     "retry:0a3a3e63bb27560961d5377605709d7582d88cf1a9a056bf5a3585dfcd353cc6": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817269885
@@ -17,21 +21,77 @@
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817797078
     },
+    "retry:173d4a3098bd43fe30e69556de7356695c31e0b4baa182708a3516a51903d986": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818314470
+    },
+    "retry:1e8c6cbe60b93c5eee467b6bc4eeb7de4719eac1fe7218469bb6bcf3a7e1dbd8": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818310000
+    },
+    "retry:2b253489f914ab498fd093749a95fb1abcd090fae327cabc13835fcba6da0ab4": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818309725
+    },
     "retry:2bab37822721653727e7ad642d9894281ebe7eaf53a19693e385ff524647c1e2": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817278714
+    },
+    "retry:2cb26eac6bfb857e507b504fd6f5b88d71a3f0356ae685e13025b9367d57abe8": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818310249
+    },
+    "retry:3bece8070d9d9bdff22c79956ba1415eedb35d49e4f1ae0344c3b539fdc990c3": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818297667
+    },
+    "retry:3cb20084789b9aec6035c962744223e90c61bb54588d0cb603e125a46359729f": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818314210
     },
     "retry:3d33440cebbd27755d691338356583c922637ad38037c079b6bc342ed06ca094": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817271128
     },
+    "retry:42566a46f2749c5f846d1234411a87c49610771cbde7c17f21557de822b7b5e1": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818313454
+    },
     "retry:42664f71517cbbbe0b0c57b0b60ed00557c4a825a7b2688a9e662db7e9365f09": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817278938
     },
+    "retry:4e420628eccaa923b593249495b81531e6408a7395cb178704a6cddfc98467c2": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818313937
+    },
+    "retry:4e60dd51bc52eeb7c9f33dbcbd3c0748b72693f1bb59d49d6446cb8bb58ef0fa": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818303101
+    },
+    "retry:555442dc66768b640a2e154f40a4a272f64b15545ccb438a69f46283baccdf4e": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818309479
+    },
+    "retry:5a428348f3744c08cb49e85fa4db352dcccfcaab4c08fa2e37a63fdefb9342ec": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818308283
+    },
+    "retry:5aaad2d8b83dc601f4d5fdbc45a9ac7ffa4d2f773a48085fd57d38e304196dc1": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818311646
+    },
     "retry:5b06673324d247a1542a7030da1f1aeb19addd0a65cc64ec3ca8516332b4e0d7": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817796323
+    },
+    "retry:66152c692b163f3586a51b455f549b762ce1e283d0594f3cf872b76486020244": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818312170
+    },
+    "retry:6974812fae92fa97ecc28f31e72f23a9b4374fa3a23851142e126df0fc6f8b72": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818301855
     },
     "retry:7535d89a80832ef5b971e2de2230c0d3ce89ca73bfe58261106d9b9b153c8475": {
       "value": "missing_valid_exact_article_thumbnail",
@@ -44,6 +104,26 @@
     "retry:78acb8c391c4dc9fd9cd8632d1614a22447b29d293d68799b0f351d5fe0b079f": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817800837
+    },
+    "retry:7a0645866af5e5c52a12c93b7c663865f36f94231c961877d8bcac136648dc53": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818311904
+    },
+    "retry:7a0bb69c21618417d1e42d3e678882e125fa28e7bc7ea206027d2ef9877be902": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818304161
+    },
+    "retry:864ec82907499e2df08acb85881572f1fa3261d844a5105e0d789cdb37e5cf72": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818298915
+    },
+    "retry:89dddba3cdd86ee0ac1ba45c38f79b3cf73eb0acadd06d0ebeda2cadc5368ea9": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818313702
+    },
+    "retry:9fb795e159509d2a80372ed6726a3e98785cea5dab9b512a7b72925ace3b3786": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818315883
     },
     "retry:a3a8b221d7c1e6cfb043c975a1fd3dd06461d8da61b2895ef2896d02e0effd80": {
       "value": "missing_valid_exact_article_thumbnail",
@@ -69,9 +149,21 @@
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817103946
     },
+    "retry:ceb8cba58bb30fa8b094936b61a484e35607d04120d7612ec3f5d8ff78187fd5": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818308026
+    },
     "retry:e0fefcf35b60e55b814e24b91265ca392faf5f3a202ff74a253267fd5732bb1b": {
       "value": "missing_valid_exact_article_thumbnail",
       "expiresAt": 1789817270010
+    },
+    "retry:e3fe7b3594fcedd44a550eb726457a31daa1e3f5538e94f50ec50ca28e1c687c": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818310561
+    },
+    "retry:e4c142d596911d3e0094702fefe59f5cb525818ee763b52cc008e3d5ba01f246": {
+      "value": "missing_valid_exact_article_thumbnail",
+      "expiresAt": 1789818300627
     },
     "retry:e5375c6866970a2723ae55481f834d20f566309328c8990a66c20115c9168b4d": {
       "value": "missing_valid_exact_article_thumbnail",
@@ -171,7 +263,7 @@
     },
     "seenfeed:ebd7084fde82a86790da3bde4d71ac2577d100011794bc064e887b3c8cb8e908": {
       "value": "https://realtynmore.com/tier-2-cities-outpace-top-markets-in-residential/",
-      "expiresAt": 1790421275254
+      "expiresAt": 1790421297391
     },
     "seenfeed:f7d5790d9245a4f49377922110eee3e1427629503d60246c6bcde188fa060c83": {
       "value": "https://realtyquarter.com/maharashtra-forms-sit-to-examine-174-acre-kalyan-land-transaction/",
@@ -563,7 +655,7 @@
       "value": "imported-from-cloudflare-kv"
     },
     "sent:ebd7084fde82a86790da3bde4d71ac2577d100011794bc064e887b3c8cb8e908": {
-      "value": "{\"url\":\"https://realtynmore.com/tier-2-cities-outpace-top-markets-in-residential/\",\"title\":\"Tier-2 Cities Outpace Top Markets In Residential Price Growth; Rise 63% In Five Years: CII-Knight Frank India\",\"apiCode\":\"NEWS-KMXJKR59\",\"sentAt\":\"2026-09-19T11:14:35.254Z\"}"
+      "value": "{\"url\":\"https://realtynmore.com/tier-2-cities-outpace-top-markets-in-residential/\",\"title\":\"Tier-2 Cities Outpace Top Markets In Residential Price Growth; Rise 63% In Five Years: CII-Knight Frank India\",\"apiCode\":\"NEWS-PCB4YVTY\",\"sentAt\":\"2026-09-19T11:14:57.391Z\"}"
     },
     "sent:ec99e88576d778a998502e4554a675d683f2ecd136da05d4108ef3efd4811d70": {
       "value": "imported-from-cloudflare-kv"
@@ -1004,10 +1096,10 @@
       "value": "imported-from-cloudflare-kv"
     },
     "state:last_checked_at": {
-      "value": "2026-09-19T11:14:31.676Z"
+      "value": "2026-09-19T11:14:51.617Z"
     },
     "state:last_run": {
-      "value": "{\"checkedAt\":\"2026-09-19T11:14:31.676Z\",\"discovered\":395,\"eligible\":1,\"sent\":[{\"title\":\"Tier-2 Cities Outpace Top Markets In Residential Price Growth; Rise 63% In Five Years: CII-Knight Frank India\",\"status\":\"sent\",\"code\":\"NEWS-KMXJKR59\"}],\"skipped\":[],\"failures\":[],\"sources\":[\"Hindustan Times\",\"The Times of India\",\"The Economic Times\",\"ETRealty\",\"SwarajyaMag\",\"ETRealty Commercial Feed\",\"ETRealty Infrastructure Feed\",\"ETRealty Industry Feed\",\"ETRealty Regulatory Feed\",\"Hindustan Times Noida\",\"Hindustan Times Noida Topic\",\"Hindustan Times Greater Noida\",\"Hindustan Times Noida Authority\",\"Hindustan Times Greater Noida Authority\",\"Hindustan Times Yamuna Expressway\",\"Hindustan Times Jewar Airport\",\"Hindustan Times YEIDA\",\"Noida International Airport News\",\"YEIDA News\",\"YEIDA Announcements\",\"Greater Noida Authority Announcements\",\"ATS Greens Blog\",\"Mahagun Media\",\"Prateek Group Blog\",\"Gulshan Group\",\"Indian Express Noida Authority\",\"Indian Express Greater Noida Authority\",\"Times of India Noida\",\"The Hindu\",\"The Indian Express\",\"The New Indian Express\",\"Business Standard\",\"Financial Express\",\"Mint\",\"BusinessLine\",\"Moneycontrol\",\"NDTV Profit\",\"Construction World\",\"Realty Plus\",\"Deccan Herald\",\"Deccan Chronicle\",\"The Tribune\",\"Telangana Today\",\"News Karnataka\",\"The Assam Tribune\",\"Odisha TV\",\"The Statesman\",\"Free Press Journal\",\"Haryana RERA\",\"Madhya Pradesh RERA\",\"Andhra Pradesh RERA\",\"Assam RERA / GMDA\",\"Chandigarh RERA\",\"Chhattisgarh RERA\",\"DNH & Daman Diu Administration\",\"Delhi RERA\",\"Goa RERA\",\"Gujarat RERA\",\"Jharkhand RERA\",\"Kerala RERA\",\"Karnataka RERA\",\"Himachal Pradesh RERA\",\"Punjab RERA\",\"Tamil Nadu RERA\",\"Telangana RERA\",\"West Bengal RERA\",\"Tripura RERA\",\"Maharashtra RERA\",\"Odisha RERA\",\"Uttarakhand RERA\",\"Puducherry Registration Department\",\"Rajasthan RERA\",\"Uttar Pradesh RERA\",\"Press Information Bureau\",\"Ministry of Housing and Urban Affairs\",\"Ministry of Road Transport and Highways\",\"National Highways Authority of India\",\"NCRTC / Namo Bharat\",\"Airports Authority of India\",\"Dedicated Freight Corridor Corporation\",\"Delhi Development Authority\",\"Delhi Metro Rail Corporation\",\"NOIDA Authority\",\"Greater Noida Authority\",\"YEIDA\",\"GMDA Gurugram\",\"HSVP Haryana\",\"DTCP Haryana\",\"MMRDA\",\"CIDCO\",\"PMRDA\",\"Nagpur Metro\",\"APCRDA\",\"GVMC\",\"Hyderabad Metropolitan Development Authority\",\"Bangalore Development Authority\",\"Bengaluru Metro Rail Corporation\",\"Chennai Metropolitan Development Authority\",\"Chennai Metro Rail\",\"Ahmedabad Urban Development Authority\",\"Gujarat Infrastructure Development Board\",\"Kolkata Metropolitan Development Authority\",\"HIDCO West Bengal\",\"Jaipur Development Authority\",\"RIICO\",\"Punjab Urban Planning and Development Authority\",\"Uttar Pradesh State Industrial Development Authority\",\"Lucknow Development Authority\",\"Jharkhand Urban Infrastructure Development Company\",\"Odisha Housing & Urban Development\",\"Bhubaneswar Development Authority\",\"Kochi Metro Rail\",\"Goa Town and Country Planning\",\"Uttarakhand Urban Development Directorate\",\"Chandigarh Administration\",\"Puducherry Public Works Department\",\"DLF Limited\",\"M3M India\",\"Godrej Properties\",\"Macrotech Developers / Lodha\",\"Prestige Estates Projects\",\"Sobha Limited\",\"Oberoi Realty\",\"Emaar India\",\"Tata Housing\",\"Mahindra Lifespace Developers\",\"Adani Realty\",\"Brigade Enterprises\",\"Puravankara Limited\",\"Embassy Group\",\"K Raheja Corp\",\"Hiranandani Group\",\"Shapoorji Pallonji Real Estate\",\"L&T Realty\",\"Birla Estates\",\"Raymond Realty\",\"Piramal Realty\",\"Runwal Realty\",\"Kalpataru\",\"Kolte-Patil Developers\",\"Ajmera Realty\",\"NCC Urban\",\"Sattva Group\",\"RMZ Corp\",\"CapitaLand India\",\"Sumadhura Group\",\"Casagrand\",\"TVS Emerald\",\"Radiance Realty\",\"Ramky Estates\",\"My Home Constructions\",\"Aparna Constructions\",\"Rajapushpa Properties\",\"Phoenix Group Hyderabad\",\"Rustomjee\",\"Wadhwa Group\",\"VTP Realty\",\"Kohinoor Group Pune\",\"Smartworld Developers\",\"Elan Group\",\"BPTP\",\"Whiteland Corporation\",\"Central Park\",\"ATS Infrastructure\",\"ACE Group\",\"County Group\",\"Gaurs Group\",\"Eldeco Group\",\"Supertech\",\"Sikka Group\",\"Saya Group\",\"ABA Corp\",\"Mahagun Group\",\"Shalimar Corp\",\"Sushma Group\",\"GBP Group\",\"Hero Realty\",\"Ashiana Housing\",\"Manglam Group\",\"Mahima Group\",\"Pacifica Companies\",\"Arvind SmartSpaces\",\"Shivalik Group\",\"Bakeri Group\",\"PS Group\",\"Merlin Group\",\"Srijan Realty\",\"Ambuja Neotia\",\"Assotech\",\"DN Homes\",\"Malabar Developers\",\"Asset Homes\",\"Confident Group\",\"Amolik Group\",\"MagicBricks News Feed\",\"Hindustan Times Real Estate\",\"Hindustan Times Gurugram Feed\",\"Hindustan Times Faridabad\",\"Hindustan Times Faridabad Feed\",\"Hindustan Times Real Estate Feed\",\"Economic Times Property\",\"Economic Times Property Feed\",\"Economic Times Corporate Trends\",\"CNBC-TV18 Real Estate\",\"Times of India Real Estate\",\"Times of India Real Estate Feed\",\"Indian Express Delhi Feed\",\"ETRealty Gurugram\",\"ETRealty Faridabad\",\"ETRealty Residential\",\"ETRealty Commercial\",\"ETRealty Infrastructure\",\"ETRealty Industry\",\"ETRealty Top Stories Feed\",\"Moneycontrol Real Estate\",\"Business Standard Real Estate Feed\",\"Business Standard Latest Feed\",\"Construction World Real Estate\",\"Outlook Money Real Estate\",\"Tribune Real Estate\",\"Swarajya Stories Feed\",\"Business of Food - Food Service\",\"Torbit Realty Gurugram\",\"Indian Infrastructure\",\"Urban Transport News\",\"Metro Rail News\",\"The Metro Rail Guy\",\"Rail Analysis India\",\"Realty & More\",\"Realty & More Feed\",\"RealtyNXT\",\"Track2Realty\",\"Prop News Time\",\"Realty Quarter Feed\",\"BPTP Media\",\"DLF Media\",\"M3M Media\",\"Smartworld Developers Media\",\"Signature Global\",\"Central Park Media\",\"Godrej Properties Media\",\"Max Estates Media\",\"Birla Estates Media\",\"Puri Constructions\",\"Omaxe\",\"RPS Group India\",\"Times of India Noida Feed\",\"Hindustan Times Noida Feed\",\"ETRealty Noida\",\"ETRealty Greater Noida\",\"ETRealty Greater Noida AMP\",\"ETRealty Jewar\",\"ETRealty Yamuna Expressway\",\"ETRealty Noida Airport\",\"ETRealty Noida Authority\",\"ETRealty Greater Noida Authority\",\"ETRealty YEIDA\",\"ETRealty Residential Feed\"]}"
+      "value": "{\"checkedAt\":\"2026-09-19T11:14:51.617Z\",\"discovered\":392,\"eligible\":24,\"sent\":[{\"title\":\"Tier-2 Cities Outpace Top Markets In Residential Price Growth; Rise 63% In Five Years: CII-Knight Frank India\",\"status\":\"sent\",\"code\":\"NEWS-PCB4YVTY\"}],\"skipped\":[],\"failures\":[{\"title\":\"DRA buys 10-acre Chennai land parcel for Rs 159 crore to develop housing project\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Mohali: GMADA fails to answer IT City plot owners’ queries, public hearing postponed to Sept 29\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Delay in nod for phase-II tender holds up new metro work in Gurugram\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Chandigarh housing board set to widen scope of need-based changes for independent homes\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Andhra Pradesh CM to distribute 26,426 house site pattas in Visakhapatnam on September 19\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Lucknow development body to take over stalled Ansal township\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Rehabilitation colony ownership move closer to reality, Chandigarh administration sends rules to centre\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Over 100 owners remove stilt violations ahead of enforcement drive in Gurugram\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Embassy Developments to invest Rs 2,000 cr in 85-acre Bengaluru project phase 1\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Ghaziabad: Indirapuram highrise residents seek action on encroachment, transport, fire safety\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Mumbai sees redevelopment boom as 1,000-plus projects reshape housing market\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"UP RERA approves 13 realty projects worth Rs 2,380 cr; Barabanki tops list\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Kotak Realty Fund invests Rs 800 crore in Smartworld Sky Arc and Trump Residences\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Hyderabad's GCC boom is making its office advantage pricier\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Indore civic body seals Apollo Tower over fire safety violations\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"CBI searches 12 locations in Bengaluru, Mumbai, Pune over builder-financial institution nexus\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Hiranandani Communities enters Goa property market through two partnerships\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Dehradun PGs ‘flout’ norms, fire safety a concern\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Gurugram has jobs, Faridabad space: How connectivity and changing buyer needs are reshaping NCR housing\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Accenture, House of Hiranandani ink three lakh sq ft Thane office deal\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"M3M acquires Noida land for record Rs 2,000 crore\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"House of Hiranandani leases 2.7 lakh sq ft of office space to Accenture in Mumbai Metropolitan Region\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"},{\"title\":\"Belagavi IT Park proposal gets fresh push, Kanabargi emerges as new site\",\"status\":\"failed\",\"error\":\"missing_valid_exact_article_thumbnail\"}],\"sources\":[\"Hindustan Times\",\"The Times of India\",\"The Economic Times\",\"ETRealty\",\"SwarajyaMag\",\"ETRealty Commercial Feed\",\"ETRealty Infrastructure Feed\",\"ETRealty Industry Feed\",\"ETRealty Regulatory Feed\",\"Hindustan Times Noida\",\"Hindustan Times Noida Topic\",\"Hindustan Times Greater Noida\",\"Hindustan Times Noida Authority\",\"Hindustan Times Greater Noida Authority\",\"Hindustan Times Yamuna Expressway\",\"Hindustan Times Jewar Airport\",\"Hindustan Times YEIDA\",\"Noida International Airport News\",\"YEIDA News\",\"YEIDA Announcements\",\"Greater Noida Authority Announcements\",\"ATS Greens Blog\",\"Mahagun Media\",\"Prateek Group Blog\",\"Gulshan Group\",\"Indian Express Noida Authority\",\"Indian Express Greater Noida Authority\",\"Times of India Noida\",\"The Hindu\",\"The Indian Express\",\"The New Indian Express\",\"Business Standard\",\"Financial Express\",\"Mint\",\"BusinessLine\",\"Moneycontrol\",\"NDTV Profit\",\"Construction World\",\"Realty Plus\",\"Deccan Herald\",\"Deccan Chronicle\",\"The Tribune\",\"Telangana Today\",\"News Karnataka\",\"The Assam Tribune\",\"Odisha TV\",\"The Statesman\",\"Free Press Journal\",\"Haryana RERA\",\"Madhya Pradesh RERA\",\"Andhra Pradesh RERA\",\"Assam RERA / GMDA\",\"Chandigarh RERA\",\"Chhattisgarh RERA\",\"DNH & Daman Diu Administration\",\"Delhi RERA\",\"Goa RERA\",\"Gujarat RERA\",\"Jharkhand RERA\",\"Kerala RERA\",\"Karnataka RERA\",\"Himachal Pradesh RERA\",\"Punjab RERA\",\"Tamil Nadu RERA\",\"Telangana RERA\",\"West Bengal RERA\",\"Tripura RERA\",\"Maharashtra RERA\",\"Odisha RERA\",\"Uttarakhand RERA\",\"Puducherry Registration Department\",\"Rajasthan RERA\",\"Uttar Pradesh RERA\",\"Press Information Bureau\",\"Ministry of Housing and Urban Affairs\",\"Ministry of Road Transport and Highways\",\"National Highways Authority of India\",\"NCRTC / Namo Bharat\",\"Airports Authority of India\",\"Dedicated Freight Corridor Corporation\",\"Delhi Development Authority\",\"Delhi Metro Rail Corporation\",\"NOIDA Authority\",\"Greater Noida Authority\",\"YEIDA\",\"GMDA Gurugram\",\"HSVP Haryana\",\"DTCP Haryana\",\"MMRDA\",\"CIDCO\",\"PMRDA\",\"Nagpur Metro\",\"APCRDA\",\"GVMC\",\"Hyderabad Metropolitan Development Authority\",\"Bangalore Development Authority\",\"Bengaluru Metro Rail Corporation\",\"Chennai Metropolitan Development Authority\",\"Chennai Metro Rail\",\"Ahmedabad Urban Development Authority\",\"Gujarat Infrastructure Development Board\",\"Kolkata Metropolitan Development Authority\",\"HIDCO West Bengal\",\"Jaipur Development Authority\",\"RIICO\",\"Punjab Urban Planning and Development Authority\",\"Uttar Pradesh State Industrial Development Authority\",\"Lucknow Development Authority\",\"Jharkhand Urban Infrastructure Development Company\",\"Odisha Housing & Urban Development\",\"Bhubaneswar Development Authority\",\"Kochi Metro Rail\",\"Goa Town and Country Planning\",\"Uttarakhand Urban Development Directorate\",\"Chandigarh Administration\",\"Puducherry Public Works Department\",\"DLF Limited\",\"M3M India\",\"Godrej Properties\",\"Macrotech Developers / Lodha\",\"Prestige Estates Projects\",\"Sobha Limited\",\"Oberoi Realty\",\"Emaar India\",\"Tata Housing\",\"Mahindra Lifespace Developers\",\"Adani Realty\",\"Brigade Enterprises\",\"Puravankara Limited\",\"Embassy Group\",\"K Raheja Corp\",\"Hiranandani Group\",\"Shapoorji Pallonji Real Estate\",\"L&T Realty\",\"Birla Estates\",\"Raymond Realty\",\"Piramal Realty\",\"Runwal Realty\",\"Kalpataru\",\"Kolte-Patil Developers\",\"Ajmera Realty\",\"NCC Urban\",\"Sattva Group\",\"RMZ Corp\",\"CapitaLand India\",\"Sumadhura Group\",\"Casagrand\",\"TVS Emerald\",\"Radiance Realty\",\"Ramky Estates\",\"My Home Constructions\",\"Aparna Constructions\",\"Rajapushpa Properties\",\"Phoenix Group Hyderabad\",\"Rustomjee\",\"Wadhwa Group\",\"VTP Realty\",\"Kohinoor Group Pune\",\"Smartworld Developers\",\"Elan Group\",\"BPTP\",\"Whiteland Corporation\",\"Central Park\",\"ATS Infrastructure\",\"ACE Group\",\"County Group\",\"Gaurs Group\",\"Eldeco Group\",\"Supertech\",\"Sikka Group\",\"Saya Group\",\"ABA Corp\",\"Mahagun Group\",\"Shalimar Corp\",\"Sushma Group\",\"GBP Group\",\"Hero Realty\",\"Ashiana Housing\",\"Manglam Group\",\"Mahima Group\",\"Pacifica Companies\",\"Arvind SmartSpaces\",\"Shivalik Group\",\"Bakeri Group\",\"PS Group\",\"Merlin Group\",\"Srijan Realty\",\"Ambuja Neotia\",\"Assotech\",\"DN Homes\",\"Malabar Developers\",\"Asset Homes\",\"Confident Group\",\"Amolik Group\",\"MagicBricks News Feed\",\"Hindustan Times Real Estate\",\"Hindustan Times Gurugram Feed\",\"Hindustan Times Faridabad\",\"Hindustan Times Faridabad Feed\",\"Hindustan Times Real Estate Feed\",\"Economic Times Property\",\"Economic Times Property Feed\",\"Economic Times Corporate Trends\",\"CNBC-TV18 Real Estate\",\"Times of India Real Estate\",\"Times of India Real Estate Feed\",\"Indian Express Delhi Feed\",\"ETRealty Gurugram\",\"ETRealty Faridabad\",\"ETRealty Residential\",\"ETRealty Commercial\",\"ETRealty Infrastructure\",\"ETRealty Industry\",\"ETRealty Top Stories Feed\",\"Moneycontrol Real Estate\",\"Business Standard Real Estate Feed\",\"Business Standard Latest Feed\",\"Construction World Real Estate\",\"Outlook Money Real Estate\",\"Tribune Real Estate\",\"Swarajya Stories Feed\",\"Business of Food - Food Service\",\"Torbit Realty Gurugram\",\"Indian Infrastructure\",\"Urban Transport News\",\"Metro Rail News\",\"The Metro Rail Guy\",\"Rail Analysis India\",\"Realty & More\",\"Realty & More Feed\",\"RealtyNXT\",\"Track2Realty\",\"Prop News Time\",\"Realty Quarter Feed\",\"BPTP Media\",\"DLF Media\",\"M3M Media\",\"Smartworld Developers Media\",\"Signature Global\",\"Central Park Media\",\"Godrej Properties Media\",\"Max Estates Media\",\"Birla Estates Media\",\"Puri Constructions\",\"Omaxe\",\"RPS Group India\",\"Times of India Noida Feed\",\"Hindustan Times Noida Feed\",\"ETRealty Noida\",\"ETRealty Greater Noida\",\"ETRealty Greater Noida AMP\",\"ETRealty Jewar\",\"ETRealty Yamuna Expressway\",\"ETRealty Noida Airport\",\"ETRealty Noida Authority\",\"ETRealty Greater Noida Authority\",\"ETRealty YEIDA\",\"ETRealty Residential Feed\"]}"
     },
     "state:source_cursor": {
       "value": "64"

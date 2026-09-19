@@ -535,7 +535,7 @@ export const CITY_PATTERNS: readonly CityPattern[] = [
     ]
   },
   {
-    "name": "Gurgaon",
+    "name": "Gurugram",
     "code": "gurugram",
     "patterns": [
       "gurugram",
@@ -1657,4 +1657,3 @@ export const CITY_PATTERNS: readonly CityPattern[] = [
     ]
   }
 ] as const;
-

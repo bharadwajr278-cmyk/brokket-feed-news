@@ -4,13 +4,26 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "tsc --noEmit",
+    "build": "pnpm build:news && pnpm build:admin",
+    "build:news": "tsc --noEmit",
+    "build:admin": "vite build",
     "check": "pnpm build",
+    "admin:dev": "vite",
+    "admin:preview": "vite preview",
     "news:run": "tsx src/github-runner.ts",
     "report": "tsx src/report.ts",
     "state:merge": "tsx src/merge-state.ts"
   },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "lucide-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "vite": "latest"
+  },
   "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
     "@types/node": "latest",
     "tsx": "^4.23.13",
     "typescript": "latest"

@@ -33,3 +33,17 @@ pnpm report -- --source ETRealty --format csv
 ```
 
 Legacy hashes imported from the old runtime remain protected against duplicates, but records that were originally stored only as hashes cannot be retroactively given reliable city metadata. All new deliveries contain the complete reporting fields.
+
+## News admin panel
+
+The repository includes a responsive React admin panel for controlling the feed. It provides city- and source-specific filtering, date and status filters, pagination, article activation/deactivation, manual article creation, full article editing, thumbnail and publisher-logo upload/URL controls, and a searchable directory of every configured source.
+
+Run it locally with the Brokket API proxy:
+
+```bash
+pnpm admin:dev
+```
+
+Then open `http://localhost:4173`. The panel uses the same `admin_access_token` browser storage key and API routes as the existing Brokket admin application. The token is stored only in the browser and is never added to this repository.
+
+For production, build with `pnpm build`; the static admin bundle is written to `dist/admin`. It must be served from the Brokket web origin (or the Brokket API must explicitly allow the chosen origin through CORS) so authenticated API calls and image uploads work correctly.

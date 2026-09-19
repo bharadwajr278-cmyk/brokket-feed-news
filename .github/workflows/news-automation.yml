@@ -57,10 +57,13 @@ jobs:
         run: |
           git config user.name "brokket-news-bot"
           git config user.email "actions@users.noreply.github.com"
+          cp state/news-state.json "$RUNNER_TEMP/news-state-local.json"
+          git restore state/news-state.json
+          git pull --rebase origin main
+          pnpm state:merge "$RUNNER_TEMP/news-state-local.json" state/news-state.json
           git add state/news-state.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: update news automation state [skip ci]"
-            git pull --rebase origin main
             git push origin HEAD:main
           fi
       - name: Report delivery failure

@@ -267,6 +267,9 @@
     "sent:39a94db90d28f8550d6d7fd45a1f6eed72365b085062c62eb8310c297a18e235": {
       "value": "imported-from-cloudflare-kv"
     },
+    "sent:3a39dd58ed26d7aa57bea58b82366b03b18711dfe8597921a1150e1427a6c798": {
+      "value": "{\"url\":\"https://realtyquarter.com/century-mills-redevelopment-gets-bmc-approval-%E2%82%B91351-crore-bid-selected/\",\"title\":\"Century Mills Redevelopment Gets BMC Approval; ₹1,351-Crore Bid Selected\",\"apiCode\":\"NEWS-B5SFXQJ3\",\"sentAt\":\"2026-09-19T11:07:31.884Z\"}"
+    },
     "sent:3accbf43ffc293fc62d8bd575b074586f8a54c23682804aa23512d428492a7e9": {
       "value": "imported-from-cloudflare-kv"
     },
@@ -353,6 +356,9 @@
     },
     "sent:7c2fc319ddba4db0bae72249ffbd0aeaf38f822af034e05073d87a0986608376": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "sent:807a177b3a0ea957f1d60b9e327cdd6965d40d282d215b9f6bf33b29f87870c7": {
+      "value": "{\"url\":\"https://realty.economictimes.indiatimes.com/news/industry/embassy-developments-to-invest-2000-crore-in-85-acre-bengaluru-housing-project/134261049\",\"title\":\"Embassy Developments to invest ₹2,000 crore in 85-acre Bengaluru housing project\",\"apiCode\":\"NEWS-N3MHMMVK\",\"sentAt\":\"2026-09-19T11:07:31.884Z\"}"
     },
     "sent:809bb356ad5f5a39c7d41b91265bfb579581c5208128fa94d85cdf82fbc9e8c1": {
       "value": "imported-from-cloudflare-kv"
@@ -534,6 +540,9 @@
     "sent:dcfb6cd86e75febb0b122c094e2c59e9af2ab416b1ba71d259c9e2aa90e93a08": {
       "value": "imported-from-cloudflare-kv"
     },
+    "sent:e0b9a46d8e333fb883c957e050d909f4d5b2db78cc6397816359bd10ab05ffb1": {
+      "value": "{\"url\":\"https://realtyquarter.com/mumbais-old-buildings-become-a-major-source-of-new-housing/\",\"title\":\"Mumbai’s Old Buildings Become a Major Source of New Housing\",\"apiCode\":\"NEWS-FRYNRLFU\",\"sentAt\":\"2026-09-19T11:07:31.884Z\"}"
+    },
     "sent:e208fd1249d11225311910406819c52aff8f95f9a592f7507456a3e3c277654b": {
       "value": "imported-from-cloudflare-kv"
     },
@@ -597,6 +606,9 @@
     "senttitle:0b7cac077a135099a2bbeca941112273a008d1cc996e541e1a06242598213af1": {
       "value": "imported-from-cloudflare-kv"
     },
+    "senttitle:1010578143f6d10f43d90df37693223db02c9f435194a7cc4e86b16bb8dbdc7e": {
+      "value": "backfill-api:NEWS-FRYNRLFU"
+    },
     "senttitle:11d7b0d67997cbe0d54ee6f7edc5dc93c958f92c5e7170c9ffd7e7a617981577": {
       "value": "https://realty.economictimes.indiatimes.com/news/regulatory/lucknow-civic-body-collects-6-50-crore-property-tax-under-ots-scheme/134338071"
     },
@@ -638,6 +650,9 @@
     },
     "senttitle:2ea9be481b2ac960ef60ef63e88e12e042b7916c8b13b26cfb71de36a471d835": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "senttitle:2f9194b3288459d465d31474fcfa2b754cb9488d0dfaedec9da525fac299a36a": {
+      "value": "backfill-api:NEWS-N3MHMMVK"
     },
     "senttitle:31195330dbe82d65c324ced00e82d49ec413d7db72a1662079b3727a9b34e79e": {
       "value": "imported-from-cloudflare-kv"
@@ -962,6 +977,9 @@
     },
     "senttitle:f59b436fe3b821b881c8f867dc5e15d9079193767668a5a246c523a37fcc68d9": {
       "value": "imported-from-cloudflare-kv"
+    },
+    "senttitle:f5d3692e9c6cf4ebb289ec97dba4a22be7fb75c65231e3a851d027d8cb232d30": {
+      "value": "backfill-api:NEWS-B5SFXQJ3"
     },
     "senttitle:f86745c33384055fa09b9ae0bc6b6a818c3f54b017e690846a28bb1d94213144": {
       "value": "imported-from-cloudflare-kv"

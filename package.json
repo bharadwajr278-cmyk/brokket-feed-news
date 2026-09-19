@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc --noEmit",
     "check": "pnpm build",
-    "news:run": "tsx src/github-runner.ts"
+    "news:run": "tsx src/github-runner.ts",
+    "state:merge": "tsx src/merge-state.ts"
   },
   "devDependencies": {
     "@types/node": "latest",

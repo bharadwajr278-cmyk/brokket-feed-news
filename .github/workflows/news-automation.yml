@@ -1,0 +1,59 @@
+name: Brokket news automation
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "state/**"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: brokket-news-production
+  cancel-in-progress: false
+
+jobs:
+  publish-news:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      NEWS_API_ENDPOINT: http://13.126.103.246/api/feed-news
+      NEWS_STATE_PATH: state/news-state.json
+      MAX_AGE_HOURS: "72"
+      SOURCE_BATCH_SIZE: "50"
+      MAX_ITEMS_PER_RUN: "12"
+      MAX_ATTEMPTS_PER_RUN: "20"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - id: publish
+        continue-on-error: true
+        run: pnpm news:run
+      - name: Persist deduplication state
+        if: always()
+        shell: bash
+        run: |
+          git config user.name "brokket-news-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add state/news-state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update news automation state [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Report delivery failure
+        if: steps.publish.outcome == 'failure'
+        run: exit 1

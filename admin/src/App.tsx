@@ -214,7 +214,7 @@ export function App() {
   const [totalPages, setTotalPages] = useState(0);
   const [total, setTotal] = useState(0);
   const [editor, setEditor] = useState<{ open: boolean; item: NewsItem | null }>({ open: false, item: null });
-  const [filters, setFilters] = useState({ search: "", status: "all", city: "", source: "", from: "", to: "" });
+  const [filters, setFilters] = useState({ search: "", status: "active", city: "", source: "", from: "", to: "" });
 
   useEffect(() => {
     const storedToken = getAdminToken();

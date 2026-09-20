@@ -93,6 +93,7 @@ const EXCLUDED_TERMS = [
   "child safety", "pocso", "district jail", "prison inspection",
   "salesforce", "artificial intelligence", "ai deployment", "insurance",
   "insurer", "restaurant", "cafe", "food outlet", "dosa", "recipe",
+  "donor heart", "ambulance", "flight schedule", "weekly flight", "no-fly day",
 ];
 const QUERY_TERMS = [
   '"real estate"', "property", "housing", "RERA", "homebuyers", "redevelopment",

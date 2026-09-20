@@ -67,6 +67,8 @@ const STATE_KEY = "state:last_checked_at";
 const SOURCE_CURSOR_KEY = "state:source_cursor";
 const LAST_RUN_KEY = "state:last_run";
 const RUN_HISTORY_KEY = "state:run_history";
+const LEGACY_IMAGE_RETRY = "missing_valid_exact_article_thumbnail";
+const IMAGE_RETRY = "missing_valid_exact_article_thumbnail:v2";
 const ROTATING_BATCH_SIZE = 20;
 // Conservative local defaults; production limits are configured by GitHub Actions.
 const MAX_ITEMS_PER_RUN = 4;
@@ -539,7 +541,7 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
     return { ...resultBase, status: "failed", error: `article_metadata: ${error instanceof Error ? error.message : String(error)}` };
   }
   if (!article) {
-    await env.NEWS_STATE.put(`retry:${feedKey}`, "missing_valid_exact_article_thumbnail", { expirationTtl: 60 * 30 });
+    await env.NEWS_STATE.put(`retry:${feedKey}`, IMAGE_RETRY, { expirationTtl: 60 * 10 });
     return { ...resultBase, status: "failed", error: "missing_valid_exact_article_thumbnail" };
   }
   const idempotencyKey = await sha256(article.url);
@@ -747,7 +749,9 @@ export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}):
       env.NEWS_STATE.get(`retry:${feedKey}`),
       env.NEWS_STATE.get(`senttitle:${titleKey}`),
     ]);
-    if (seen || coolingDown || sentTitle) continue;
+    // Retry legacy image failures immediately after the v2 OG-image fallback
+    // rollout; all current retry reasons still respect their cooldown.
+    if (seen || (coolingDown && coolingDown !== LEGACY_IMAGE_RETRY) || sentTitle) continue;
     candidates.push({ item, city });
   }
   candidates.sort((a, b) => Date.parse(b.item.publishedAt) - Date.parse(a.item.publishedAt));

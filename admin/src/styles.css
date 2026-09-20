@@ -58,13 +58,16 @@ aside nav button.active, aside nav button:hover { background: rgba(255,255,255,.
 .view-tabs button.active { color: var(--red); border-color: var(--red); }
 .view-tabs span { padding: .15rem .45rem; margin-left: .3rem; border-radius: 999px; background: #eef2f6; font-size: .68rem; }
 
-.toolbar { display: grid; grid-template-columns: minmax(16rem,2fr) repeat(3,minmax(9rem,1fr)) auto auto auto; gap: .7rem; align-items: center; padding: 1rem; margin-bottom: 1rem; background: white; border: 1px solid var(--line); border-radius: 1rem; }
+.toolbar { display: grid; grid-template-columns: minmax(15rem,2fr) repeat(3,minmax(8rem,1fr)) 2.8rem; gap: .7rem; align-items: center; padding: 1rem; margin-bottom: 1rem; background: white; border: 1px solid var(--line); border-radius: 1rem; }
+.toolbar>* { min-width: 0; }
 .toolbar input, .toolbar select, fieldset input, fieldset select, fieldset textarea, .media-field>input { width: 100%; border: 1px solid #dce2ea; border-radius: .7rem; background: white; padding: .78rem .85rem; color: #344054; outline: none; }
 .toolbar input:focus, .toolbar select:focus, fieldset input:focus, fieldset select:focus, fieldset textarea:focus { border-color: #ef8e92; box-shadow: 0 0 0 3px rgba(228,37,42,.08); }
 .search-control, .date-control { display: flex; align-items: center; gap: .55rem; border: 1px solid #dce2ea; border-radius: .7rem; background: white; padding: 0 .75rem; color: #98a2b3; }
 .search-control input, .date-control input { border: 0; padding-left: 0; min-width: 0; box-shadow: none!important; }
+.date-range { grid-column: 1/-2; display: grid; grid-template-columns: minmax(12rem,1fr) auto minmax(12rem,1fr); gap: .7rem; align-items: center; }
+.date-control>span { flex: 0 0 auto; color: #667085; font-size: .72rem; font-weight: 800; }
 .date-dash { color: #98a2b3; }
-.refresh { width: 2.8rem; height: 2.8rem; }
+.refresh { width: 2.8rem; height: 2.8rem; grid-column: -2/-1; justify-self: end; }
 
 .news-card { border: 1px solid var(--line); border-radius: 1rem; overflow: hidden; background: white; box-shadow: 0 5px 18px rgba(16,24,40,.03); }
 .table-head, .news-row { display: grid; grid-template-columns: 5rem minmax(17rem,2.4fr) minmax(7rem,.7fr) minmax(10rem,1fr) 7rem 7rem 6rem; gap: 1rem; align-items: center; }
@@ -151,6 +154,8 @@ fieldset textarea { resize: vertical; min-height: 7rem; }
   .aside-foot>div { display: none; }
   .toolbar { grid-template-columns: repeat(3,minmax(0,1fr)); }
   .search-control { grid-column: span 2; }
+  .date-range { grid-column: 1/-1; }
+  .refresh { grid-column: auto; justify-self: start; }
   .table-head { display: none; }
   .news-row { grid-template-columns: 5rem minmax(15rem,1fr) 8rem 6rem; }
   .news-row>.city-pill, .news-row>.publisher, .news-row>time { display: none; }
@@ -168,6 +173,7 @@ fieldset textarea { resize: vertical; min-height: 7rem; }
   .stats { grid-template-columns: 1fr; }
   .toolbar, .source-toolbar { grid-template-columns: 1fr; }
   .search-control { grid-column: auto; }
+  .date-range { grid-template-columns: 1fr; }
   .date-dash { display: none; }
   .source-grid { grid-template-columns: 1fr; }
   .news-row { grid-template-columns: 4rem minmax(0,1fr) auto; gap: .7rem; }

@@ -283,7 +283,7 @@ export function App() {
           <select value={filters.status} onChange={(e) => setFilter("status", e.target.value)}><option value="all">All statuses</option><option value="active">Active</option><option value="inactive">Inactive</option></select>
           <select value={filters.city} onChange={(e) => setFilter("city", e.target.value)}><option value="">All {CITY_PATTERNS.length} cities</option>{CITY_PATTERNS.map((city) => <option key={city.code} value={city.code}>{city.name}</option>)}</select>
           <select value={filters.source} onChange={(e) => setFilter("source", e.target.value)}><option value="">All sources</option>{ALL_SOURCES.map((source) => <option key={`${source.name}-${source.url}`} value={source.name}>{source.name}</option>)}</select>
-          <label className="date-control"><CalendarDays /><input type="date" value={filters.from} onChange={(e) => setFilter("from", e.target.value)} /></label><span className="date-dash">—</span><label className="date-control"><CalendarDays /><input type="date" value={filters.to} onChange={(e) => setFilter("to", e.target.value)} /></label>
+          <div className="date-range"><label className="date-control"><span>From</span><CalendarDays /><input type="date" value={filters.from} onChange={(e) => setFilter("from", e.target.value)} /></label><span className="date-dash">—</span><label className="date-control"><span>To</span><CalendarDays /><input type="date" value={filters.to} onChange={(e) => setFilter("to", e.target.value)} /></label></div>
           <button className="icon-button refresh" onClick={load} aria-label="Refresh"><RefreshCw className={loading ? "spin" : ""} /></button>
         </section>
         {error && <div className="alert">{error}</div>}

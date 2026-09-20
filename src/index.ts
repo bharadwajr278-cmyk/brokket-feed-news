@@ -89,6 +89,8 @@ const EXCLUDED_TERMS = [
   "liquor", "monkey", "stunt", "book fair", "passenger robot",
   "vehicle dispatch", "vehicle dispatches", "carmaker", "automobile sales",
   "child safety", "pocso", "district jail", "prison inspection",
+  "salesforce", "artificial intelligence", "ai deployment", "insurance",
+  "insurer", "restaurant", "cafe", "food outlet", "dosa", "recipe",
 ];
 const QUERY_TERMS = [
   '"real estate"', "property", "housing", "RERA", "homebuyers", "redevelopment",
@@ -496,11 +498,16 @@ async function fetchArticleMetadata(item: FeedItem): Promise<ArticleMetadata | n
   const host = new URL(resolved).hostname.toLowerCase();
   if (host.endsWith("google.com")) return null;
   if (!(host === item.sourceDomain || host.endsWith(`.${item.sourceDomain}`))) return null;
+  const candidates = imageCandidates(html, resolved).slice(0, 8);
   let image: string | null = null;
-  for (const candidate of imageCandidates(html, resolved).slice(0, 8)) {
+  for (const candidate of candidates) {
     image = await validateThumbnail(candidate);
     if (image) break;
   }
+  // Some publishers reject bot-side image validation while their public OG
+  // image still loads normally in the mobile app. Keep that exact article
+  // image as the fallback instead of dropping an otherwise valid news item.
+  if (!image) image = candidates.find((candidate) => candidate.startsWith("https://")) ?? null;
   if (!image) return null;
   return {
     url: resolved,

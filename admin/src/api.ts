@@ -57,12 +57,37 @@ export function hasAdminToken(): boolean {
   return Boolean(localStorage.getItem(TOKEN_KEY));
 }
 
+export function getAdminToken(): string {
+  return localStorage.getItem(TOKEN_KEY) || "";
+}
+
 export function setAdminToken(token: string): void {
   localStorage.setItem(TOKEN_KEY, token.trim());
 }
 
 export function clearAdminToken(): void {
   localStorage.removeItem(TOKEN_KEY);
+}
+
+export async function validateAdminToken(token: string): Promise<void> {
+  const path = "/api/feed-news/list";
+  const requestPath = import.meta.env.DEV
+    ? path
+    : `/api/proxy?path=${encodeURIComponent(path)}`;
+  const response = await fetch(requestPath, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "X-PANEL-TOKEN": token.trim(),
+    },
+    body: JSON.stringify({ page: 0, size: 1 }),
+  });
+  if (response.ok) return;
+  const body = await response.json().catch(() => ({})) as { message?: string };
+  if (response.status === 401 || response.status === 403) {
+    throw new Error("Invalid admin access token");
+  }
+  throw new Error(body.message || "Unable to verify access token");
 }
 
 async function api<T>(method: string, path: string, data?: unknown): Promise<T> {

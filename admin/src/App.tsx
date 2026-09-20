@@ -7,8 +7,8 @@ import {
 import { CITY_PATTERNS, type CityPattern } from "../../src/cities";
 import { ALL_SOURCES, type NewsSource } from "../../src/sources";
 import {
-  clearAdminToken, createNews, hasAdminToken, listNews, setAdminToken,
-  updateNews, uploadImage, type NewsDraft, type NewsFilters, type NewsItem,
+  clearAdminToken, createNews, getAdminToken, hasAdminToken, listNews, setAdminToken,
+  updateNews, uploadImage, validateAdminToken, type NewsDraft, type NewsFilters, type NewsItem,
 } from "./api";
 
 const emptyDraft = (): NewsDraft => ({
@@ -61,19 +61,31 @@ function cityFromSearch(value: string): CityPattern | undefined {
 
 function TokenGate({ onReady }: { onReady: () => void }) {
   const [token, setToken] = useState("");
+  const [checking, setChecking] = useState(false);
+  const [error, setError] = useState("");
   return <main className="login-shell">
-    <form className="login-card" onSubmit={(event) => {
+    <form className="login-card" onSubmit={async (event) => {
       event.preventDefault();
       if (!token.trim()) return;
-      setAdminToken(token);
-      onReady();
+      try {
+        setChecking(true);
+        setError("");
+        await validateAdminToken(token);
+        setAdminToken(token);
+        onReady();
+      } catch (cause) {
+        setError(cause instanceof Error ? cause.message : "Unable to verify access token");
+      } finally {
+        setChecking(false);
+      }
     }}>
       <div className="brand-mark"><img src="/brokket-b-mark.png" alt="Brokket" /></div>
       <p className="eyebrow">BROKKET ADMIN</p>
       <h1>Brokket Feed News</h1>
       <p className="muted">Use the separate Feed admin access token. It stays only in this browser and is never committed to Git.</p>
+      {error && <div className="alert login-alert">{error}</div>}
       <label>Admin access token<input type="password" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Paste admin token" autoFocus /></label>
-      <button className="primary wide" type="submit">Connect securely</button>
+      <button className="primary wide" type="submit" disabled={checking}>{checking && <LoaderCircle className="spin" />}{checking ? "Verifying…" : "Connect securely"}</button>
     </form>
   </main>;
 }
@@ -192,7 +204,8 @@ function SourceCard({ source }: { source: NewsSource }) {
 }
 
 export function App() {
-  const [authenticated, setAuthenticated] = useState(hasAdminToken());
+  const [authenticated, setAuthenticated] = useState(false);
+  const [checkingAuthentication, setCheckingAuthentication] = useState(hasAdminToken());
   const [view, setView] = useState<"news" | "sources">("news");
   const [items, setItems] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -202,6 +215,18 @@ export function App() {
   const [total, setTotal] = useState(0);
   const [editor, setEditor] = useState<{ open: boolean; item: NewsItem | null }>({ open: false, item: null });
   const [filters, setFilters] = useState({ search: "", status: "all", city: "", source: "", from: "", to: "" });
+
+  useEffect(() => {
+    const storedToken = getAdminToken();
+    if (!storedToken) {
+      setCheckingAuthentication(false);
+      return;
+    }
+    validateAdminToken(storedToken)
+      .then(() => setAuthenticated(true))
+      .catch(() => clearAdminToken())
+      .finally(() => setCheckingAuthentication(false));
+  }, []);
 
   const load = useCallback(async () => {
     if (!authenticated) return;
@@ -244,6 +269,7 @@ export function App() {
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Status update failed"); }
   };
 
+  if (checkingAuthentication) return <main className="login-shell"><div className="auth-check"><LoaderCircle className="spin" /><strong>Verifying secure access…</strong></div></main>;
   if (!authenticated) return <TokenGate onReady={() => setAuthenticated(true)} />;
   return <div className="app-shell">
     <aside><div className="logo"><span><img src="/brokket-b-mark.png" alt="Brokket" /></span><strong>Brokket Feed News</strong></div><nav><button className={view === "news" ? "active" : ""} onClick={() => setView("news")}><Newspaper />News</button><button className={view === "sources" ? "active" : ""} onClick={() => setView("sources")}><Activity />Sources</button></nav><div className="aside-foot"><div><strong>20 min</strong><span>Automation cycle</span></div><button className="icon-button" aria-label="Log out" onClick={() => { clearAdminToken(); setAuthenticated(false); }}><LogOut /></button></div></aside>

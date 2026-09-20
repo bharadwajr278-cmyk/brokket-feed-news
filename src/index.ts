@@ -452,6 +452,18 @@ function imageCandidates(html: string, baseUrl: string): string[] {
   }).filter(Boolean))];
 }
 
+function isUsableImageUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:") return false;
+    const path = decodeURIComponent(url.pathname).toLowerCase();
+    return !/(^|\/)(null|undefined)(?:[./]|$)/.test(path)
+      && !/(^|[?&])(?:url|src|image)=(?:null|undefined)(?:&|$)/i.test(url.search);
+  } catch {
+    return false;
+  }
+}
+
 async function validateThumbnail(url: string): Promise<string | null> {
   let parsed: URL;
   try {
@@ -509,7 +521,7 @@ async function fetchArticleMetadata(item: FeedItem): Promise<ArticleMetadata | n
   // Some publishers reject bot-side image validation while their public OG
   // image still loads normally in the mobile app. Keep that exact article
   // image as the fallback instead of dropping an otherwise valid news item.
-  if (!image) image = candidates.find((candidate) => candidate.startsWith("https://")) ?? null;
+  if (!image) image = candidates.find(isUsableImageUrl) ?? null;
   if (!image) return null;
   return {
     url: resolved,

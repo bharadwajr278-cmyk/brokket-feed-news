@@ -52,6 +52,21 @@ type ApiEnvelope<T> = {
 };
 
 const TOKEN_KEY = "feed_admin_access_token";
+const ADMIN_RELEVANT_TERMS = [
+  "real estate", "property", "housing", "homebuyers", "homes", "flats",
+  "apartments", "rera", "redevelopment", "township", "project launch",
+  "land acquisition", "land parcel", "commercial lease", "office lease",
+  "possession", "handover", "project completion", "construction progress",
+  "construction", "building approval", "development agreement", "joint development",
+  "metro", "ring road", "expressway", "highway", "airport", "connectivity",
+  "infrastructure", "road project", "road widening", "flyover", "railway",
+  "urban development", "industrial corridor", "sewer", "water supply", "master plan",
+];
+const ADMIN_EXCLUDED_TERMS = [
+  "salesforce", "ai deployment", "property insurance", "insurer", "insurance rates",
+  "restaurant", "cafe", "food outlet", "dosa", "recipe", "donor heart", "ambulance",
+  "flight schedule", "weekly flight", "no-fly day",
+];
 
 export function hasAdminToken(): boolean {
   return Boolean(localStorage.getItem(TOKEN_KEY));
@@ -140,6 +155,9 @@ export async function listNews(filters: NewsFilters): Promise<PageResult> {
     if (!existing || preferItem(item, existing)) unique.set(key, item);
   });
   const filtered = [...unique.values()].filter((item) => {
+    const searchable = `${item.title} ${item.description}`.toLowerCase();
+    if (ADMIN_EXCLUDED_TERMS.some((term) => searchable.includes(term))) return false;
+    if (!ADMIN_RELEVANT_TERMS.some((term) => searchable.includes(term))) return false;
     if (sourceName && item.sourceName !== sourceName) return false;
     if (isActive !== undefined && item.isActive !== isActive) return false;
     const dateKey = publishedDateKey(item.publishedAt);

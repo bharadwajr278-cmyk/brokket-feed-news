@@ -111,6 +111,9 @@ const EXCLUDED_TERMS = [
   "ganeshotsav", "festival", "rains pound", "rainfall", "flood alert", "protesting",
   "protest", "injured", "booked over", "collapse at", "electoral roll", "hearing dates",
   "water samples", "theatre tax", "entertainment tax", "oil and gas", "gas discovery",
+  "bribery", "bribe", "cgst officer", "vending site", "vendor at", "ligo",
+  "credit rating", "ratings reaffirms", "appoints", "appointment", "chief business",
+  "chief executive", "battery-swapping", "battery swapping", "instamart",
 ];
 const QUERY_TERMS = [
   '"real estate"', "property", "housing", "RERA", "homebuyers", "redevelopment",

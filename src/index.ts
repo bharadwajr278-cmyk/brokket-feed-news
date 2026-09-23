@@ -73,15 +73,27 @@ const ROTATING_BATCH_SIZE = 20;
 // Conservative local defaults; production limits are configured by GitHub Actions.
 const MAX_ITEMS_PER_RUN = 4;
 const MAX_ATTEMPTS_PER_RUN = 5;
-const REAL_ESTATE_TERMS = [
+const PROPERTY_TERMS = [
   "real estate", "property", "housing", "homebuyers", "homes", "flats",
   "apartments", "rera", "redevelopment", "township", "project launch",
   "land acquisition", "land parcel", "commercial lease", "office lease",
   "possession", "handover", "project completion", "construction progress",
-  "building approval", "development agreement", "joint development",
+  "building approval", "development agreement", "joint development", "developer",
+  "floor space index", "fsi", "reit", "residential", "commercial project",
+];
+const INFRASTRUCTURE_ASSET_TERMS = [
   "metro", "ring road", "expressway", "highway", "airport", "connectivity",
   "infrastructure", "road project", "road widening", "flyover", "railway",
   "urban development", "industrial corridor", "sewer", "water supply", "master plan",
+];
+const DEVELOPMENT_ACTION_TERMS = [
+  "construct", "construction", "reconstruct", "redevelop", "development", "project",
+  "expand", "expansion", "widen", "widening", "upgrade", "modernisation", "modernization",
+  "build", "building", "built", "launch", "approve", "approval", "clearance",
+  "tender", "contract", "land acquisition", "foundation", "work begins", "work starts",
+  "commence", "commission", "inaugurat", "opening", "completion", "phase ii", "phase 2",
+  "new line", "new road", "new terminal", "new corridor", "new expressway", "new highway",
+  "tunnel", "station redevelopment", "repair", "revamp", "master plan",
 ];
 const EXCLUDED_TERMS = [
   "murder", "killed", "death", "dead body", "suicide", "crime", "arrested",
@@ -94,6 +106,11 @@ const EXCLUDED_TERMS = [
   "salesforce", "artificial intelligence", "ai deployment", "insurance",
   "insurer", "restaurant", "cafe", "food outlet", "dosa", "recipe",
   "donor heart", "ambulance", "flight schedule", "weekly flight", "no-fly day",
+  "duty-free", "duty free", "digiyatra", "face recognition", "flight service",
+  "flight operations", "naming airport", "name warangal airport", "reflect heritage",
+  "ganeshotsav", "festival", "rains pound", "rainfall", "flood alert", "protesting",
+  "protest", "injured", "booked over", "collapse at", "electoral roll", "hearing dates",
+  "water samples", "theatre tax", "entertainment tax", "oil and gas", "gas discovery",
 ];
 const QUERY_TERMS = [
   '"real estate"', "property", "housing", "RERA", "homebuyers", "redevelopment",
@@ -180,10 +197,12 @@ function findUnambiguousCity(text: string): CityPattern | undefined {
   return matches.length === 1 ? matches[0] : undefined;
 }
 
-function isRelevant(text: string): boolean {
+export function isRelevant(text: string): boolean {
   const value = text.toLocaleLowerCase("en-IN");
   if (EXCLUDED_TERMS.some((term) => value.includes(term))) return false;
-  return REAL_ESTATE_TERMS.some((term) => value.includes(term));
+  if (PROPERTY_TERMS.some((term) => value.includes(term))) return true;
+  return INFRASTRUCTURE_ASSET_TERMS.some((term) => value.includes(term))
+    && DEVELOPMENT_ACTION_TERMS.some((term) => value.includes(term));
 }
 
 function normalizedTitle(value: string): string {
@@ -587,6 +606,10 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
     };
   }
   const description = decodeEntities(article.description).slice(0, 2_000);
+  if (!isRelevant(`${cleanTitle} ${description}`)) {
+    await env.NEWS_STATE.put(`seenfeed:${feedKey}`, "irrelevant_article_metadata", { expirationTtl: 60 * 60 * 24 * 7 });
+    return { ...resultBase, status: "skipped", articleUrl: article.url };
+  }
   const source = sourceAsset(article.url, item.sourceName);
   const payload = {
     title: cleanTitle,

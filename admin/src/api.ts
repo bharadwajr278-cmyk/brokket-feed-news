@@ -52,20 +52,37 @@ type ApiEnvelope<T> = {
 };
 
 const TOKEN_KEY = "feed_admin_access_token";
-const ADMIN_RELEVANT_TERMS = [
+const ADMIN_PROPERTY_TERMS = [
   "real estate", "property", "housing", "homebuyers", "homes", "flats",
   "apartments", "rera", "redevelopment", "township", "project launch",
   "land acquisition", "land parcel", "commercial lease", "office lease",
   "possession", "handover", "project completion", "construction progress",
-  "construction", "building approval", "development agreement", "joint development",
+  "building approval", "development agreement", "joint development", "developer",
+  "floor space index", "fsi", "reit", "residential", "commercial project",
+];
+const ADMIN_INFRASTRUCTURE_TERMS = [
   "metro", "ring road", "expressway", "highway", "airport", "connectivity",
   "infrastructure", "road project", "road widening", "flyover", "railway",
   "urban development", "industrial corridor", "sewer", "water supply", "master plan",
+];
+const ADMIN_DEVELOPMENT_ACTION_TERMS = [
+  "construct", "construction", "reconstruct", "redevelop", "development", "project",
+  "expand", "expansion", "widen", "widening", "upgrade", "modernisation", "modernization",
+  "build", "building", "built", "launch", "approve", "approval", "clearance",
+  "tender", "contract", "land acquisition", "foundation", "work begins", "work starts",
+  "commence", "commission", "inaugurat", "opening", "completion", "phase ii", "phase 2",
+  "new line", "new road", "new terminal", "new corridor", "new expressway", "new highway",
+  "tunnel", "station redevelopment", "repair", "revamp", "master plan",
 ];
 const ADMIN_EXCLUDED_TERMS = [
   "salesforce", "ai deployment", "property insurance", "insurer", "insurance rates",
   "restaurant", "cafe", "food outlet", "dosa", "recipe", "donor heart", "ambulance",
   "flight schedule", "weekly flight", "no-fly day",
+  "duty-free", "duty free", "digiyatra", "face recognition", "flight service",
+  "flight operations", "naming airport", "name warangal airport", "reflect heritage",
+  "ganeshotsav", "festival", "rains pound", "rainfall", "flood alert", "protesting",
+  "protest", "injured", "booked over", "collapse at", "electoral roll", "hearing dates",
+  "water samples", "theatre tax", "entertainment tax", "oil and gas", "gas discovery",
 ];
 
 export function hasAdminToken(): boolean {
@@ -157,7 +174,10 @@ export async function listNews(filters: NewsFilters): Promise<PageResult> {
   const filtered = [...unique.values()].filter((item) => {
     const searchable = `${item.title} ${item.description}`.toLowerCase();
     if (ADMIN_EXCLUDED_TERMS.some((term) => searchable.includes(term))) return false;
-    if (!ADMIN_RELEVANT_TERMS.some((term) => searchable.includes(term))) return false;
+    const isPropertyNews = ADMIN_PROPERTY_TERMS.some((term) => searchable.includes(term));
+    const isDevelopmentNews = ADMIN_INFRASTRUCTURE_TERMS.some((term) => searchable.includes(term))
+      && ADMIN_DEVELOPMENT_ACTION_TERMS.some((term) => searchable.includes(term));
+    if (!isPropertyNews && !isDevelopmentNews) return false;
     if (sourceName && item.sourceName !== sourceName) return false;
     if (isActive !== undefined && item.isActive !== isActive) return false;
     const dateKey = publishedDateKey(item.publishedAt);

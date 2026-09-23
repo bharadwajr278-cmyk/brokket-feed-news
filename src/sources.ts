@@ -1,3 +1,5 @@
+import { USER_SUPPLIED_SOURCE_URLS } from "./user-supplied-sources";
+
 export type SourceType = "publisher" | "rera" | "infrastructure" | "government" | "developer";
 
 export type NewsSource = {
@@ -19,6 +21,31 @@ function source(name: string, type: SourceType, url: string, logo = ""): NewsSou
     logo: logo || `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128`,
     feed: /(?:\.rss(?:$|\?)|\.xml(?:$|\?)|\/rss(?:\/|$)|\/feed(?:\/|$)|rssfeed|rssfeeds)/i.test(url),
   };
+}
+
+function suppliedSource(url: string): NewsSource {
+  const parsed = new URL(url);
+  const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
+  const value = `${host}${parsed.pathname}`.toLowerCase();
+  const isPublisher = /(?:economictimes|timesofindia|hindustantimes|indianexpress|business-standard|livemint|tribuneindia|amarujala|housing\.com|propnewstime|realtynmore|realtynxt|realtyquarter)/.test(host);
+  const isRera = /(?:^|[./_-])rera(?:[./_-]|$)/.test(value);
+  const isOfficialInfrastructure = /(?:\.gov\.|\.gov$|\.nic\.|authority|metro|railway|rail|airport|port|tender|infrastructure|highway|expressway|urban|development)/.test(value);
+  const type: SourceType = isPublisher
+    ? "publisher"
+    : isRera
+      ? "rera"
+      : isOfficialInfrastructure
+        ? "infrastructure"
+        : "developer";
+  const pathLabel = decodeURIComponent(parsed.pathname)
+    .split("/")
+    .filter(Boolean)
+    .slice(-2)
+    .join(" ")
+    .replace(/[-_.]+/g, " ")
+    .trim();
+  const name = `User source · ${host}${pathLabel ? ` · ${pathLabel}` : ""}`;
+  return source(name, type, url);
 }
 
 // High-frequency editorial sources explicitly requested by the user.
@@ -314,6 +341,8 @@ export const SUPPLEMENTAL_SOURCES: readonly NewsSource[] = [
   source("Times of India Noida", "publisher", "https://timesofindia.indiatimes.com/city/noida"),
 ];
 
+export const USER_SUPPLIED_SOURCES: readonly NewsSource[] = USER_SUPPLIED_SOURCE_URLS.map(suppliedSource);
+
 function canonicalSourceUrl(url: string): string {
   const parsed = new URL(url);
   const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
@@ -337,6 +366,7 @@ export const ROTATING_SOURCES: readonly NewsSource[] = uniqueSources([
   ...RERA_SOURCES,
   ...INFRASTRUCTURE_SOURCES,
   ...DEVELOPER_SOURCES,
+  ...USER_SUPPLIED_SOURCES,
 ]);
 
 export const ALL_SOURCES: readonly NewsSource[] = uniqueSources([...CORE_SOURCES, ...ROTATING_SOURCES]);

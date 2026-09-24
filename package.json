@@ -11,6 +11,7 @@
     "admin:dev": "vite",
     "admin:preview": "vite preview",
     "news:run": "tsx src/github-runner.ts",
+    "news:activate": "tsx src/activate-relevant.ts",
     "report": "tsx src/report.ts",
     "state:merge": "tsx src/merge-state.ts"
   },

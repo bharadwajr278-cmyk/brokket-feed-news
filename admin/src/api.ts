@@ -86,6 +86,7 @@ const ADMIN_EXCLUDED_TERMS = [
   "bribery", "bribe", "cgst officer", "vending site", "vendor at", "ligo",
   "credit rating", "ratings reaffirms", "appoints", "appointment", "chief business",
   "chief executive", "battery-swapping", "battery swapping", "instamart",
+  "ed raid", "enforcement directorate", "pet dog", "dog bites", "police file fir",
 ];
 
 export function hasAdminToken(): boolean {

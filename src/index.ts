@@ -114,6 +114,7 @@ const EXCLUDED_TERMS = [
   "bribery", "bribe", "cgst officer", "vending site", "vendor at", "ligo",
   "credit rating", "ratings reaffirms", "appoints", "appointment", "chief business",
   "chief executive", "battery-swapping", "battery swapping", "instamart",
+  "ed raid", "enforcement directorate", "pet dog", "dog bites", "police file fir",
 ];
 const QUERY_TERMS = [
   '"real estate"', "property", "housing", "RERA", "homebuyers", "redevelopment",
@@ -282,7 +283,23 @@ function comparableUrl(value: string): string {
   }
 }
 
-async function alreadyExistsInFeed(env: MonitorEnv, title: string, articleUrl: string): Promise<boolean> {
+type ExistingFeedItem = {
+  code?: string;
+  title?: string;
+  description?: string;
+  isActive?: boolean;
+  newsLink?: string;
+  thumbnailImage?: string;
+  publisherName?: string;
+  publisherTagline?: string;
+  publisherLogo?: string;
+  sourceName?: string;
+  sourceLogo?: string;
+  publishedAt?: string;
+  cityCode?: string;
+};
+
+async function existingFeedItem(env: MonitorEnv, title: string, articleUrl: string): Promise<ExistingFeedItem | null> {
   const headers: Record<string, string> = {
     "content-type": "application/json",
     "user-agent": "Mozilla/5.0 (compatible; BrokketNewsBot/2.3; +https://brokket.com)",
@@ -298,15 +315,36 @@ async function alreadyExistsInFeed(env: MonitorEnv, title: string, articleUrl: s
     throw new Error(`Feed duplicate check returned ${response.status}`);
   }
   const body = await response.json() as {
-    data?: { page?: { content?: Array<{ title?: string; newsLink?: string }> } };
+    data?: { page?: { content?: ExistingFeedItem[] } };
   };
   const content = body.data?.page?.content ?? [];
   const expectedUrl = comparableUrl(articleUrl);
   const expectedTitle = normalizedTitle(title);
-  return content.some((item) =>
+  return content.find((item) =>
     Boolean(item.newsLink && comparableUrl(item.newsLink) === expectedUrl)
     || Boolean(item.title && normalizedTitle(item.title) === expectedTitle),
-  );
+  ) ?? null;
+}
+
+async function activateFeedItem(
+  env: MonitorEnv,
+  code: string,
+  payload: Record<string, unknown>,
+): Promise<void> {
+  const headers: Record<string, string> = {
+    "content-type": "application/json",
+    "user-agent": "Mozilla/5.0 (compatible; BrokketNewsBot/2.4; +https://brokket.com)",
+  };
+  if (env.BROKKET_API_KEY) headers.authorization = `Bearer ${env.BROKKET_API_KEY}`;
+  const response = await fetch(`${env.BROKKET_API_URL.replace(/\/+$/, "")}/${encodeURIComponent(code)}`, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ ...payload, isActive: true }),
+  });
+  const body = await response.json().catch(() => ({})) as { data?: { isActive?: boolean }; message?: string };
+  if (!response.ok || body.data?.isActive !== true) {
+    throw new Error(`Feed activation failed (${response.status}): ${body.message ?? "isActive was not saved"}`);
+  }
 }
 
 async function fetchCityFeed(city: CityPattern, queryDays: number): Promise<FeedItem[]> {
@@ -585,7 +623,23 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
     return { ...resultBase, status: "skipped", articleUrl: article.url };
   }
   try {
-    if (await alreadyExistsInFeed(env, cleanTitle, article.url)) {
+    const existing = await existingFeedItem(env, cleanTitle, article.url);
+    if (existing) {
+      if (!existing.isActive && existing.code) {
+        await activateFeedItem(env, existing.code, {
+          title: existing.title ?? cleanTitle,
+          description: existing.description ?? item.description,
+          newsLink: existing.newsLink ?? article.url,
+          thumbnailImage: existing.thumbnailImage ?? article.image,
+          publisherName: existing.publisherName ?? "Brokket News",
+          publisherTagline: existing.publisherTagline ?? "Real Estate Intelligence",
+          publisherLogo: existing.publisherLogo ?? "",
+          sourceName: existing.sourceName ?? item.sourceName,
+          sourceLogo: existing.sourceLogo ?? "",
+          publishedAt: existing.publishedAt ?? new Date(item.publishedAt).toISOString(),
+          cityCode: existing.cityCode ?? city.code,
+        });
+      }
       await Promise.all([
         env.NEWS_STATE.put(`sent:${idempotencyKey}`, JSON.stringify({
           version: 2,
@@ -647,6 +701,8 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
       body = {};
     }
     if (!response.ok) throw new Error(`API ${response.status}: ${body.message ?? "unknown error"}`);
+    if (!body.data?.code) throw new Error("API created news without returning a code");
+    await activateFeedItem(env, body.data.code, payload);
     const sentAt = new Date().toISOString();
     await Promise.all([
       env.NEWS_STATE.put(`sent:${idempotencyKey}`, JSON.stringify({

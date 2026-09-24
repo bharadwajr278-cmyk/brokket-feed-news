@@ -45,7 +45,11 @@ async function listPage(page: number): Promise<{ content: FeedNews[]; totalPages
   };
 }
 
-async function activate(item: FeedNews): Promise<void> {
+function wait(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function activate(item: FeedNews, attempt = 0): Promise<void> {
   const response = await fetch(`${endpoint}/${encodeURIComponent(item.code)}`, {
     method: "PUT",
     headers,
@@ -65,6 +69,13 @@ async function activate(item: FeedNews): Promise<void> {
     }),
   });
   const body = await response.json().catch(() => ({})) as { data?: { isActive?: boolean }; message?: string };
+  if (response.status === 429 && attempt < 3) {
+    const retryHeader = Number(response.headers.get("retry-after") || "0");
+    const retryMessage = Number(body.message?.match(/(\d+)\s*seconds?/i)?.[1] || "0");
+    const retrySeconds = Math.max(2, retryHeader, retryMessage);
+    await wait((retrySeconds + 1) * 1_000);
+    return activate(item, attempt + 1);
+  }
   if (!response.ok || body.data?.isActive !== true) {
     throw new Error(`${item.code}: ${body.message ?? `activation failed (${response.status})`}`);
   }
@@ -81,8 +92,8 @@ const inactiveRelevant = items.filter((item) =>
 );
 const failures: string[] = [];
 let activated = 0;
-for (let index = 0; index < inactiveRelevant.length; index += 8) {
-  const batch = inactiveRelevant.slice(index, index + 8);
+for (let index = 0; index < inactiveRelevant.length; index += 4) {
+  const batch = inactiveRelevant.slice(index, index + 4);
   const results = await Promise.allSettled(batch.map(activate));
   results.forEach((result) => {
     if (result.status === "fulfilled") activated += 1;

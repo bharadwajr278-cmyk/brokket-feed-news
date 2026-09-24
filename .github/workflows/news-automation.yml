@@ -1,9 +1,8 @@
 name: Brokket news automation
 
 on:
-  schedule:
-    # Explicit off-peak minutes reduce GitHub's top-of-hour scheduler delays.
-    - cron: "7,27,47 * * * *"
+  # Automation paused on the user's request. Keep manual dispatch available so
+  # the same workflow can be tested safely before scheduling is restored.
   workflow_dispatch:
     inputs:
       backfill_20_days:
@@ -11,10 +10,6 @@ on:
         required: false
         default: false
         type: boolean
-  push:
-    branches: [main]
-    paths-ignore:
-      - "state/**"
 
 permissions:
   contents: write

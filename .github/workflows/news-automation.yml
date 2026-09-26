@@ -1,15 +1,25 @@
 name: Brokket news automation
 
 on:
-  # Automation paused on the user's request. Keep manual dispatch available so
-  # the same workflow can be tested safely before scheduling is restored.
+  schedule:
+    # Explicit off-peak minutes reduce GitHub's top-of-hour scheduler delays.
+    - cron: "7,27,47 * * * *"
   workflow_dispatch:
     inputs:
+      recovery_since_pause:
+        description: "Recover the 72-hour pause window with a higher item limit"
+        required: false
+        default: false
+        type: boolean
       backfill_20_days:
         description: "Run a one-time scan covering the last 20 days"
         required: false
         default: false
         type: boolean
+  push:
+    branches: [main]
+    paths-ignore:
+      - "state/**"
 
 permissions:
   contents: write
@@ -28,8 +38,8 @@ jobs:
       NEWS_STATE_PATH: state/news-state.json
       MAX_AGE_HOURS: ${{ inputs.backfill_20_days && '480' || '72' }}
       SOURCE_BATCH_SIZE: "10000"
-      MAX_ITEMS_PER_RUN: ${{ inputs.backfill_20_days && '200' || '25' }}
-      MAX_ATTEMPTS_PER_RUN: ${{ inputs.backfill_20_days && '500' || '50' }}
+      MAX_ITEMS_PER_RUN: ${{ (inputs.backfill_20_days || inputs.recovery_since_pause) && '200' || '25' }}
+      MAX_ATTEMPTS_PER_RUN: ${{ (inputs.backfill_20_days || inputs.recovery_since_pause) && '500' || '50' }}
     steps:
       - uses: actions/checkout@v4
         with:

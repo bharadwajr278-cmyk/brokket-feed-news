@@ -71,7 +71,8 @@ const RUN_HISTORY_KEY = "state:run_history";
 const LEGACY_IMAGE_RETRY = "missing_valid_exact_article_thumbnail";
 const PREVIOUS_IMAGE_RETRY = "missing_valid_exact_article_thumbnail:v2";
 const PREVIOUS_IMAGE_RETRY_V3 = "missing_valid_exact_article_thumbnail:v3";
-const IMAGE_RETRY = "missing_valid_exact_article_thumbnail:v4";
+const PREVIOUS_IMAGE_RETRY_V4 = "missing_valid_exact_article_thumbnail:v4";
+const IMAGE_RETRY = "missing_valid_exact_article_thumbnail:v5";
 const ROTATING_BATCH_SIZE = 20;
 // Conservative local defaults; production limits are configured by GitHub Actions.
 const MAX_ITEMS_PER_RUN = 4;
@@ -118,6 +119,7 @@ const EXCLUDED_TERMS = [
   "credit rating", "ratings reaffirms", "appoints", "appointment", "chief business",
   "chief executive", "battery-swapping", "battery swapping", "instamart",
   "ed raid", "enforcement directorate", "pet dog", "dog bites", "police file fir",
+  "gangster", "henchman", "ethanol", "farm incomes",
 ];
 const QUERY_TERMS = [
   '"real estate"', "property", "housing", "RERA", "homebuyers", "redevelopment",
@@ -535,6 +537,18 @@ function isUsableImageUrl(value: string): boolean {
   }
 }
 
+function publisherDomain(value: string): string {
+  const parts = value.toLowerCase().replace(/^www\./, "").split(".").filter(Boolean);
+  const countrySecondLevel = parts.length >= 3
+    && parts.at(-1)?.length === 2
+    && ["co", "com", "org", "net", "gov", "ac"].includes(parts.at(-2) ?? "");
+  return parts.slice(countrySecondLevel ? -3 : -2).join(".");
+}
+
+function isSamePublisherHost(left: string, right: string): boolean {
+  return publisherDomain(left) === publisherDomain(right);
+}
+
 async function validateThumbnail(url: string): Promise<string | null> {
   let parsed: URL;
   try {
@@ -565,7 +579,7 @@ async function fetchArticleMetadata(item: FeedItem): Promise<ArticleMetadata | n
   const decodedUrl = await decodeGoogleNewsUrl(item.link);
   if (!decodedUrl) return null;
   const decodedHost = new URL(decodedUrl).hostname.toLowerCase().replace(/^www\./, "");
-  if (item.sourceDomain && decodedHost !== item.sourceDomain && !decodedHost.endsWith(`.${item.sourceDomain}`)) return null;
+  if (item.sourceDomain && !isSamePublisherHost(decodedHost, item.sourceDomain)) return null;
   const feedImage = item.image && isUsableImageUrl(item.image)
     ? await validateThumbnail(item.image).catch(() => null) ?? item.image
     : null;
@@ -592,7 +606,7 @@ async function fetchArticleMetadata(item: FeedItem): Promise<ArticleMetadata | n
   const resolved = canonicalUrl(html) || response.url;
   const host = new URL(resolved).hostname.toLowerCase();
   if (host.endsWith("google.com")) return feedFallback;
-  if (!(host === item.sourceDomain || host.endsWith(`.${item.sourceDomain}`))) return feedFallback;
+  if (!isSamePublisherHost(host, item.sourceDomain)) return feedFallback;
   const candidates = imageCandidates(html, resolved).slice(0, 8);
   let image: string | null = null;
   for (const candidate of candidates) {
@@ -870,6 +884,7 @@ export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}):
       LEGACY_IMAGE_RETRY,
       PREVIOUS_IMAGE_RETRY,
       PREVIOUS_IMAGE_RETRY_V3,
+      PREVIOUS_IMAGE_RETRY_V4,
     ].includes(coolingDown)) || sentTitle) continue;
     candidates.push({ item, city });
   }

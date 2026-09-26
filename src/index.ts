@@ -8,6 +8,7 @@ type FeedItem = {
   sourceName: string;
   sourceDomain: string;
   description: string;
+  image?: string;
   cityHint?: CityPattern;
   ambiguousCityHint?: boolean;
 };
@@ -68,7 +69,8 @@ const SOURCE_CURSOR_KEY = "state:source_cursor";
 const LAST_RUN_KEY = "state:last_run";
 const RUN_HISTORY_KEY = "state:run_history";
 const LEGACY_IMAGE_RETRY = "missing_valid_exact_article_thumbnail";
-const IMAGE_RETRY = "missing_valid_exact_article_thumbnail:v2";
+const PREVIOUS_IMAGE_RETRY = "missing_valid_exact_article_thumbnail:v2";
+const IMAGE_RETRY = "missing_valid_exact_article_thumbnail:v3";
 const ROTATING_BATCH_SIZE = 20;
 // Conservative local defaults; production limits are configured by GitHub Actions.
 const MAX_ITEMS_PER_RUN = 4;
@@ -169,13 +171,20 @@ function parseFeed(
     } catch {
       sourceDomain = expectedDomain;
     }
+    const description = element(block, "description");
+    const imageTags = block.match(/<(?:media:content|media:thumbnail|enclosure)\b[^>]*>/gi) ?? [];
+    const image = imageTags.map((tag) => attribute(tag, "url") || attribute(tag, "href"))
+      .find((value) => isUsableImageUrl(value))
+      ?? attribute(description.match(/<img\b[^>]*>/i)?.[0] ?? "", "src")
+      ?? "";
     return {
       title: element(block, "title").replace(/\s+-\s+[^-]+$/, "").trim(),
       link: element(block, "link"),
       publishedAt: element(block, "pubDate"),
       sourceName: element(block, "source") || fallbackSource,
       sourceDomain,
-      description: element(block, "description"),
+      description,
+      image: isUsableImageUrl(image) ? image : undefined,
       cityHint,
     };
   }).filter((item) => {
@@ -554,13 +563,23 @@ async function validateThumbnail(url: string): Promise<string | null> {
 async function fetchArticleMetadata(item: FeedItem): Promise<ArticleMetadata | null> {
   const decodedUrl = await decodeGoogleNewsUrl(item.link);
   if (!decodedUrl) return null;
+  const decodedHost = new URL(decodedUrl).hostname.toLowerCase().replace(/^www\./, "");
+  if (item.sourceDomain && decodedHost !== item.sourceDomain && !decodedHost.endsWith(`.${item.sourceDomain}`)) return null;
+  const feedImage = item.image && isUsableImageUrl(item.image)
+    ? await validateThumbnail(item.image).catch(() => null) ?? item.image
+    : null;
+  const feedFallback = feedImage ? {
+    url: decodedUrl,
+    description: item.description,
+    image: feedImage,
+  } : null;
   const response = await fetch(decodedUrl, {
     headers: { "User-Agent": "Mozilla/5.0 (compatible; BrokketRealEstateMonitor/1.0)" },
     redirect: "follow",
   });
   if (!response.ok) {
     await discardResponse(response);
-    return null;
+    return feedFallback;
   }
   const contentLength = Number(response.headers.get("content-length") || "0");
   if (contentLength > 2_000_000) {
@@ -582,8 +601,8 @@ async function fetchArticleMetadata(item: FeedItem): Promise<ArticleMetadata | n
   // Some publishers reject bot-side image validation while their public OG
   // image still loads normally in the mobile app. Keep that exact article
   // image as the fallback instead of dropping an otherwise valid news item.
-  if (!image) image = candidates.find(isUsableImageUrl) ?? null;
-  if (!image) return null;
+  if (!image) image = candidates.find(isUsableImageUrl) ?? feedImage;
+  if (!image) return feedFallback;
   return {
     url: resolved,
     description: metaContent(html, "og:description") || item.description,
@@ -846,7 +865,7 @@ export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}):
     ]);
     // Retry legacy image failures immediately after the v2 OG-image fallback
     // rollout; all current retry reasons still respect their cooldown.
-    if (seen || (coolingDown && coolingDown !== LEGACY_IMAGE_RETRY) || sentTitle) continue;
+    if (seen || (coolingDown && ![LEGACY_IMAGE_RETRY, PREVIOUS_IMAGE_RETRY].includes(coolingDown)) || sentTitle) continue;
     candidates.push({ item, city });
   }
   candidates.sort((a, b) => Date.parse(b.item.publishedAt) - Date.parse(a.item.publishedAt));

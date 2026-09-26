@@ -70,7 +70,8 @@ const LAST_RUN_KEY = "state:last_run";
 const RUN_HISTORY_KEY = "state:run_history";
 const LEGACY_IMAGE_RETRY = "missing_valid_exact_article_thumbnail";
 const PREVIOUS_IMAGE_RETRY = "missing_valid_exact_article_thumbnail:v2";
-const IMAGE_RETRY = "missing_valid_exact_article_thumbnail:v3";
+const PREVIOUS_IMAGE_RETRY_V3 = "missing_valid_exact_article_thumbnail:v3";
+const IMAGE_RETRY = "missing_valid_exact_article_thumbnail:v4";
 const ROTATING_BATCH_SIZE = 20;
 // Conservative local defaults; production limits are configured by GitHub Actions.
 const MAX_ITEMS_PER_RUN = 4;
@@ -584,14 +585,14 @@ async function fetchArticleMetadata(item: FeedItem): Promise<ArticleMetadata | n
   const contentLength = Number(response.headers.get("content-length") || "0");
   if (contentLength > 2_000_000) {
     await discardResponse(response);
-    return null;
+    return feedFallback;
   }
   const html = await response.text();
-  if (html.length > 2_000_000) return null;
+  if (html.length > 2_000_000) return feedFallback;
   const resolved = canonicalUrl(html) || response.url;
   const host = new URL(resolved).hostname.toLowerCase();
-  if (host.endsWith("google.com")) return null;
-  if (!(host === item.sourceDomain || host.endsWith(`.${item.sourceDomain}`))) return null;
+  if (host.endsWith("google.com")) return feedFallback;
+  if (!(host === item.sourceDomain || host.endsWith(`.${item.sourceDomain}`))) return feedFallback;
   const candidates = imageCandidates(html, resolved).slice(0, 8);
   let image: string | null = null;
   for (const candidate of candidates) {
@@ -865,7 +866,11 @@ export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}):
     ]);
     // Retry legacy image failures immediately after the v2 OG-image fallback
     // rollout; all current retry reasons still respect their cooldown.
-    if (seen || (coolingDown && ![LEGACY_IMAGE_RETRY, PREVIOUS_IMAGE_RETRY].includes(coolingDown)) || sentTitle) continue;
+    if (seen || (coolingDown && ![
+      LEGACY_IMAGE_RETRY,
+      PREVIOUS_IMAGE_RETRY,
+      PREVIOUS_IMAGE_RETRY_V3,
+    ].includes(coolingDown)) || sentTitle) continue;
     candidates.push({ item, city });
   }
   candidates.sort((a, b) => Date.parse(b.item.publishedAt) - Date.parse(a.item.publishedAt));

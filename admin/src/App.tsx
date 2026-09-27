@@ -260,7 +260,7 @@ function ReraMailPanel() {
           <code>{item.rera_number || "—"}</code>
           <div><strong>{item.city || "Unknown"}</strong><span>{item.registration_date || "Registration date unavailable"}</span></div>
           <div><span className="mail-sent-badge"><MailCheck /> Sent</span><time>{formatDateTime(item.sent_at)}</time></div>
-          <span>{item.source}</span>
+          <span className="rera-source">{item.source}</span>
         </article>)}
       <footer className="rera-footer">Showing {filtered.length.toLocaleString("en-IN")} of {projects.length.toLocaleString("en-IN")} successfully emailed projects</footer>
     </section>

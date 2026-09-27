@@ -123,7 +123,7 @@ aside nav button.active, aside nav button:hover { background: rgba(255,255,255,.
 .rera-toolbar { grid-template-columns: minmax(18rem,2fr) minmax(12rem,1fr) 2.8rem; }
 .rera-toolbar .refresh { grid-column: auto; }
 .rera-card { border: 1px solid var(--line); border-radius: 1rem; overflow: hidden; background: white; box-shadow: 0 5px 18px rgba(16,24,40,.03); }
-.rera-table-head, .rera-row { display: grid; grid-template-columns: minmax(17rem,2fr) minmax(12rem,1.2fr) minmax(9rem,.8fr) minmax(11rem,1fr) minmax(8rem,.7fr); gap: 1rem; align-items: center; }
+.rera-table-head, .rera-row { display: grid; grid-template-columns: minmax(13rem,2fr) minmax(9rem,1.25fr) minmax(7.5rem,.8fr) minmax(8.5rem,1fr) minmax(6rem,.65fr); gap: clamp(.55rem,1vw,1rem); align-items: center; }
 .rera-table-head { padding: .8rem 1rem; background: #f8fafc; border-bottom: 1px solid var(--line); color: #98a2b3; text-transform: uppercase; font-size: .65rem; font-weight: 800; letter-spacing: .08em; }
 .rera-row { min-height: 7rem; padding: 1rem; border-bottom: 1px solid var(--line); }
 .rera-row:hover { background: #fcfcfd; }
@@ -133,6 +133,7 @@ aside nav button.active, aside nav button:hover { background: rgba(255,255,255,.
 .rera-project a { display: inline-flex; align-items: center; gap: .3rem; width: fit-content; color: #175cd3; text-decoration: none; font-size: .72rem; font-weight: 700; }
 .rera-project a svg { width: .8rem; }
 .rera-row code { padding: .45rem .55rem; border-radius: .45rem; background: #f2f4f7; color: #344054; font-size: .72rem; font-weight: 700; overflow-wrap: anywhere; }
+.rera-source { min-width: 0; overflow-wrap: anywhere; font-weight: 700; line-height: 1.4; }
 .mail-sent-badge { width: fit-content; display: inline-flex!important; align-items: center; gap: .3rem; padding: .35rem .55rem; border-radius: 999px; background: #dcfae6; color: #067647!important; font-weight: 800; }
 .mail-sent-badge svg { width: .8rem; }
 .rera-footer { padding: 1rem; color: #667085; font-size: .78rem; }
@@ -207,6 +208,7 @@ fieldset textarea { resize: vertical; min-height: 7rem; }
   .rera-toolbar .search-control { grid-column: 1/-1; }
   .rera-row { grid-template-columns: 1fr; gap: .7rem; }
   .rera-row>code, .rera-row>div:nth-child(3) { display: block; }
+  .rera-row>.rera-source { display: block; }
   .news-row { grid-template-columns: 4rem minmax(0,1fr) auto; gap: .7rem; }
   .thumb { width: 3.7rem; height: 3rem; }
   .news-row>.status { display: none; }

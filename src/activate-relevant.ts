@@ -1,6 +1,7 @@
 import { isRelevant } from "./index";
+import { duplicateLoserCodes, type DeduplicationRecord } from "./deduplication";
 
-type FeedNews = {
+type FeedNews = DeduplicationRecord & {
   code: string;
   title: string;
   description: string;
@@ -87,8 +88,11 @@ for (let page = 1; page < first.totalPages; page += 1) {
   items.push(...(await listPage(page)).content);
 }
 
+const duplicateCodes = duplicateLoserCodes(items);
 const inactiveRelevant = items.filter((item) =>
-  !item.isActive && isRelevant(`${item.title} ${item.description}`),
+  !item.isActive
+  && !duplicateCodes.has(item.code)
+  && isRelevant(`${item.title} ${item.description}`),
 );
 const failures: string[] = [];
 let activated = 0;

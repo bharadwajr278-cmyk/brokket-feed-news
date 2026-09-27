@@ -60,6 +60,9 @@ jobs:
       - id: activate
         continue-on-error: true
         run: pnpm news:activate
+      - id: deduplicate
+        continue-on-error: true
+        run: pnpm news:deduplicate
       - name: Persist deduplication state
         if: always()
         shell: bash
@@ -76,5 +79,5 @@ jobs:
             git push origin HEAD:main
           fi
       - name: Report delivery failure
-        if: steps.publish.outcome == 'failure' || steps.activate.outcome == 'failure'
+        if: steps.publish.outcome == 'failure' || steps.activate.outcome == 'failure' || steps.deduplicate.outcome == 'failure'
         run: exit 1

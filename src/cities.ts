@@ -363,9 +363,16 @@ export const CITY_PATTERNS: readonly CityPattern[] = [
   },
   {
     "name": "New Delhi",
-    "code": "delhi",
+    "code": "new-delhi",
     "patterns": [
       "new delhi"
+    ]
+  },
+  {
+    "name": "Delhi",
+    "code": "delhi",
+    "patterns": [
+      "delhi"
     ]
   },
   {

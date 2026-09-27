@@ -45,6 +45,28 @@ export type PageResult = {
   totalElements: number;
 };
 
+export type ReraMailItem = {
+  id: string;
+  source: string;
+  project_name: string;
+  rera_number: string;
+  developer: string;
+  location: string;
+  city: string;
+  registration_date: string;
+  project_type: string;
+  official_url: string;
+  first_seen_at: string;
+  sent_at: string;
+  attempts: number;
+};
+
+export type ReraMailHistory = {
+  generated_at: string;
+  count: number;
+  projects: ReraMailItem[];
+};
+
 type ApiEnvelope<T> = {
   data?: T | { data?: T };
   message?: string;
@@ -126,6 +148,25 @@ export async function validateAdminToken(token: string): Promise<void> {
     throw new Error("Invalid admin access token");
   }
   throw new Error(body.message || "Unable to verify access token");
+}
+
+export async function listReraMailHistory(): Promise<ReraMailHistory> {
+  const token = localStorage.getItem(TOKEN_KEY);
+  const path = "/api/rera-mail-history";
+  const requestPath = import.meta.env.DEV
+    ? `https://raw.githubusercontent.com/bharadwajr278-cmyk/rera-new-projects/main/data/sent_notifications.json?ts=${Date.now()}`
+    : `/api/proxy?path=${encodeURIComponent(path)}`;
+  const response = await fetch(requestPath, {
+    headers: token ? { "X-PANEL-TOKEN": token } : {},
+    cache: "no-store",
+  });
+  const body = await response.json().catch(() => ({})) as Partial<ReraMailHistory> & { message?: string };
+  if (!response.ok) throw new Error(body.message || "Unable to load RERA mail history");
+  return {
+    generated_at: body.generated_at || "",
+    count: Number(body.count || 0),
+    projects: Array.isArray(body.projects) ? body.projects : [],
+  };
 }
 
 async function api<T>(method: string, path: string, data?: unknown): Promise<T> {

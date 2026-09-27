@@ -2,13 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Activity, Building2, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight,
   CirclePower, ExternalLink, FilePenLine, ImagePlus, Link2, LoaderCircle,
-  LogOut, Newspaper, Plus, RefreshCw, Search, SlidersHorizontal, Trash2, X,
+  LogOut, MailCheck, MapPin, Newspaper, Plus, RefreshCw, Search, SlidersHorizontal, Trash2, X,
 } from "lucide-react";
 import { CITY_PATTERNS, type CityPattern } from "../../src/cities";
 import { ALL_SOURCES, type NewsSource } from "../../src/sources";
 import {
-  clearAdminToken, createNews, getAdminToken, hasAdminToken, listNews, setAdminToken,
-  updateNews, uploadImage, validateAdminToken, type NewsDraft, type NewsFilters, type NewsItem,
+  clearAdminToken, createNews, getAdminToken, hasAdminToken, listNews, listReraMailHistory, setAdminToken,
+  updateNews, uploadImage, validateAdminToken, type NewsDraft, type NewsFilters, type NewsItem, type ReraMailItem,
 } from "./api";
 
 const emptyDraft = (): NewsDraft => ({
@@ -203,10 +203,74 @@ function SourceCard({ source }: { source: NewsSource }) {
   return <article className="source-card"><div className="source-logo"><img src={source.logo} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} /><Building2 /></div><div className="source-copy"><div><h3>{source.name}</h3><span className={`type-badge ${source.type}`}>{source.type}</span></div><p>{source.domain}</p><div className="source-status"><CheckCircle2 /> Monitored every 20 minutes</div></div><a href={source.url} target="_blank" rel="noreferrer" aria-label={`Open ${source.name}`}><ExternalLink /></a></article>;
 }
 
+function formatDateTime(value: string): string {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "—" : new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short",
+  }).format(date);
+}
+
+function ReraMailPanel() {
+  const [projects, setProjects] = useState<ReraMailItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [query, setQuery] = useState("");
+  const [city, setCity] = useState("all");
+
+  const loadHistory = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError("");
+      const history = await listReraMailHistory();
+      setProjects(history.projects);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Unable to load RERA mail history");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { loadHistory(); }, [loadHistory]);
+  const cities = useMemo(() => [...new Set(projects.map((item) => item.city).filter(Boolean))].sort(), [projects]);
+  const filtered = useMemo(() => projects.filter((item) => {
+    const searchable = `${item.project_name} ${item.rera_number} ${item.developer} ${item.city} ${item.source}`.toLowerCase();
+    return searchable.includes(query.trim().toLowerCase()) && (city === "all" || item.city === city);
+  }), [city, projects, query]);
+  const priorityCount = projects.filter((item) => /gurugram|gurgaon|faridabad|noida|gautam buddha/i.test(`${item.city} ${item.location}`)).length;
+  const latest = projects[0]?.sent_at;
+
+  return <>
+    <section className="stats rera-stats">
+      <article><span>Emails successfully sent</span><strong>{projects.length.toLocaleString("en-IN")}</strong><MailCheck /></article>
+      <article><span>Priority-city alerts</span><strong>{priorityCount.toLocaleString("en-IN")}</strong><MapPin /></article>
+      <article><span>Latest email</span><strong className="latest-mail-time">{latest ? formatDateTime(latest) : "No alerts yet"}</strong><CalendarDays /></article>
+    </section>
+    <section className="toolbar rera-toolbar">
+      <div className="search-control"><Search /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search project, RERA number or builder…" /></div>
+      <select value={city} onChange={(e) => setCity(e.target.value)}><option value="all">All emailed cities</option>{cities.map((item) => <option key={item} value={item}>{item}</option>)}</select>
+      <button className="icon-button refresh" onClick={loadHistory} aria-label="Refresh RERA mail history"><RefreshCw className={loading ? "spin" : ""} /></button>
+    </section>
+    {error && <div className="alert">{error}</div>}
+    <section className="rera-card">
+      <div className="rera-table-head"><span>Project</span><span>RERA number</span><span>City</span><span>Email sent</span><span>Source</span></div>
+      {loading && projects.length === 0 ? <div className="empty"><LoaderCircle className="spin" />Loading sent-mail history…</div>
+        : filtered.length === 0 ? <div className="empty"><MailCheck />{projects.length === 0 ? "No real new-project email has been sent yet." : "No emailed project matches these filters."}</div>
+        : filtered.map((item) => <article className="rera-row" key={item.id}>
+          <div className="rera-project"><strong>{item.project_name}</strong><span>{item.developer || "Builder not available"}</span>{item.official_url && <a href={item.official_url} target="_blank" rel="noreferrer">Official RERA record <ExternalLink /></a>}</div>
+          <code>{item.rera_number || "—"}</code>
+          <div><strong>{item.city || "Unknown"}</strong><span>{item.registration_date || "Registration date unavailable"}</span></div>
+          <div><span className="mail-sent-badge"><MailCheck /> Sent</span><time>{formatDateTime(item.sent_at)}</time></div>
+          <span>{item.source}</span>
+        </article>)}
+      <footer className="rera-footer">Showing {filtered.length.toLocaleString("en-IN")} of {projects.length.toLocaleString("en-IN")} successfully emailed projects</footer>
+    </section>
+  </>;
+}
+
 export function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [checkingAuthentication, setCheckingAuthentication] = useState(hasAdminToken());
-  const [view, setView] = useState<"news" | "sources">("news");
+  const [view, setView] = useState<"news" | "sources" | "rera">("news");
   const [items, setItems] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -271,13 +335,15 @@ export function App() {
 
   if (checkingAuthentication) return <main className="login-shell"><div className="auth-check"><LoaderCircle className="spin" /><strong>Verifying secure access…</strong></div></main>;
   if (!authenticated) return <TokenGate onReady={() => setAuthenticated(true)} />;
+  const viewTitle = view === "news" ? "News management" : view === "sources" ? "Source directory" : "RERA mail history";
+  const viewDescription = view === "news" ? "Review, edit and control every article shown in the Brokket app." : view === "sources" ? "Every publisher, developer and official channel monitored by automation." : "Only new RERA projects successfully emailed to your account.";
   return <div className="app-shell">
-    <aside><div className="logo"><span><img src="/brokket-b-mark.png" alt="Brokket" /></span><strong>Brokket Feed News</strong></div><nav><button className={view === "news" ? "active" : ""} onClick={() => setView("news")}><Newspaper />News</button><button className={view === "sources" ? "active" : ""} onClick={() => setView("sources")}><Activity />Sources</button></nav><div className="aside-foot"><div><strong>20 min</strong><span>Automation cycle</span></div><button className="icon-button" aria-label="Log out" onClick={() => { clearAdminToken(); setAuthenticated(false); }}><LogOut /></button></div></aside>
+    <aside><div className="logo"><span><img src="/brokket-b-mark.png" alt="Brokket" /></span><strong>Brokket Feed News</strong></div><nav><button className={view === "news" ? "active" : ""} onClick={() => setView("news")}><Newspaper />News</button><button className={view === "sources" ? "active" : ""} onClick={() => setView("sources")}><Activity />Sources</button><button className={view === "rera" ? "active" : ""} onClick={() => setView("rera")}><MailCheck />RERA mail history</button></nav><div className="aside-foot"><div><strong>20 min</strong><span>Automation cycle</span></div><button className="icon-button" aria-label="Log out" onClick={() => { clearAdminToken(); setAuthenticated(false); }}><LogOut /></button></div></aside>
     <main className="main-content">
-      <header className="topbar"><div><p className="eyebrow">BROKKET FEED NEWS</p><h1>{view === "news" ? "News management" : "Source directory"}</h1><p>{view === "news" ? "Review, edit and control every article shown in the Brokket app." : "Every publisher, developer and official channel monitored by automation."}</p></div>{view === "news" && <button className="primary" onClick={() => setEditor({ open: true, item: null })}><Plus />Add news</button>}</header>
-      <section className="stats"><article><span>Total results</span><strong>{total.toLocaleString("en-IN")}</strong><Newspaper /></article><article><span>Configured cities</span><strong>{CITY_PATTERNS.length}</strong><Building2 /></article><article><span>Monitored sources</span><strong>{ALL_SOURCES.length}</strong><Activity /></article></section>
-      <div className="view-tabs"><button className={view === "news" ? "active" : ""} onClick={() => setView("news")}>Feed news</button><button className={view === "sources" ? "active" : ""} onClick={() => setView("sources")}>All sources <span>{ALL_SOURCES.length}</span></button></div>
-      {view === "sources" ? <SourcesPanel /> : <>
+      <header className="topbar"><div><p className="eyebrow">BROKKET FEED NEWS</p><h1>{viewTitle}</h1><p>{viewDescription}</p></div>{view === "news" && <button className="primary" onClick={() => setEditor({ open: true, item: null })}><Plus />Add news</button>}</header>
+      {view !== "rera" && <section className="stats"><article><span>Total results</span><strong>{total.toLocaleString("en-IN")}</strong><Newspaper /></article><article><span>Configured cities</span><strong>{CITY_PATTERNS.length}</strong><Building2 /></article><article><span>Monitored sources</span><strong>{ALL_SOURCES.length}</strong><Activity /></article></section>}
+      {view !== "rera" && <div className="view-tabs"><button className={view === "news" ? "active" : ""} onClick={() => setView("news")}>Feed news</button><button className={view === "sources" ? "active" : ""} onClick={() => setView("sources")}>All sources <span>{ALL_SOURCES.length}</span></button></div>}
+      {view === "rera" ? <ReraMailPanel /> : view === "sources" ? <SourcesPanel /> : <>
         <section className="toolbar">
           <div className="search-control"><Search /><input value={filters.search} onChange={(e) => setFilter("search", e.target.value)} placeholder="Search title, city or author…" /></div>
           <select value={filters.status} onChange={(e) => setFilter("status", e.target.value)}><option value="all">All statuses</option><option value="active">Active</option><option value="inactive">Inactive</option></select>

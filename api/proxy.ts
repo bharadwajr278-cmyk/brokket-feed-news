@@ -1,11 +1,13 @@
 const FEED_ORIGIN = "http://ec2-13-126-103-246.ap-south-1.compute.amazonaws.com";
 const MEDIA_ORIGIN = "https://www.brokket.app";
+const RERA_HISTORY_URL = "https://api.github.com/repos/bharadwajr278-cmyk/rera-new-projects/contents/data/sent_notifications.json?ref=main";
 
 const ALLOWED_ROUTES = [
   /^\/api\/feed-news$/,
   /^\/api\/feed-news\/list$/,
   /^\/api\/feed-news\/NEWS-[A-Za-z0-9_-]+$/,
   /^\/admin\/api\/projects\/photos$/,
+  /^\/api\/rera-mail-history$/,
 ];
 
 const ALLOWED_METHODS = new Set(["GET", "POST", "PUT", "OPTIONS"]);
@@ -36,6 +38,30 @@ export default async function handler(request: Request): Promise<Response> {
   const expectedPanelToken = process.env.PANEL_ACCESS_TOKEN || "";
   if (!expectedPanelToken || !safeEqual(panelToken, expectedPanelToken)) {
     return Response.json({ message: "Invalid admin access token" }, { status: 401 });
+  }
+
+  if (path === "/api/rera-mail-history") {
+    try {
+      const history = await fetch(RERA_HISTORY_URL, {
+        headers: {
+          accept: "application/vnd.github+json",
+          "user-agent": "brokket-rera-mail-history",
+        },
+        cache: "no-store",
+      });
+      if (!history.ok) {
+        return Response.json({ message: "RERA mail history is temporarily unavailable" }, { status: 502 });
+      }
+      const file = await history.json() as { content?: string; encoding?: string };
+      if (file.encoding !== "base64" || !file.content) {
+        return Response.json({ message: "RERA mail history returned an invalid document" }, { status: 502 });
+      }
+      const decoded = atob(file.content.replace(/\s/g, ""));
+      const ledger = JSON.parse(decoded) as unknown;
+      return Response.json(ledger, { headers: { "cache-control": "private, no-store" } });
+    } catch {
+      return Response.json({ message: "RERA mail history is temporarily unavailable" }, { status: 502 });
+    }
   }
 
   const headers = new Headers();

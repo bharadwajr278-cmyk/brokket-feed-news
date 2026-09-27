@@ -87,6 +87,8 @@ const ADMIN_EXCLUDED_TERMS = [
   "credit rating", "ratings reaffirms", "appoints", "appointment", "chief business",
   "chief executive", "battery-swapping", "battery swapping", "instamart",
   "ed raid", "enforcement directorate", "pet dog", "dog bites", "police file fir",
+  "armed men", "loot", "robbery", "robbed", "break into", "broke into",
+  "tie him", "tied him", "gangster", "henchman",
 ];
 
 export function hasAdminToken(): boolean {

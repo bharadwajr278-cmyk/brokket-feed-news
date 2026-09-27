@@ -120,6 +120,8 @@ const EXCLUDED_TERMS = [
   "chief executive", "battery-swapping", "battery swapping", "instamart",
   "ed raid", "enforcement directorate", "pet dog", "dog bites", "police file fir",
   "gangster", "henchman", "ethanol", "farm incomes",
+  "armed men", "loot", "robbery", "robbed", "break into", "broke into",
+  "tie him", "tied him",
 ];
 const QUERY_TERMS = [
   '"real estate"', "property", "housing", "RERA", "homebuyers", "redevelopment",
@@ -225,6 +227,24 @@ function normalizedTitle(value: string): string {
   return value.toLocaleLowerCase("en-IN").replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ").trim();
 }
 
+const TITLE_STOP_WORDS = new Set([
+  "a", "an", "and", "as", "at", "by", "for", "from", "his", "in", "into",
+  "is", "new", "of", "on", "rs", "s", "the", "their", "to", "with",
+]);
+
+function titleTokens(value: string): Set<string> {
+  return new Set(normalizedTitle(value).split(" ").filter((token) => token.length > 1 && !TITLE_STOP_WORDS.has(token)));
+}
+
+function isNearDuplicateTitle(left: string, right: string): boolean {
+  const leftTokens = titleTokens(left);
+  const rightTokens = titleTokens(right);
+  if (leftTokens.size < 5 || rightTokens.size < 5) return false;
+  const shared = [...leftTokens].filter((token) => rightTokens.has(token)).length;
+  const union = new Set([...leftTokens, ...rightTokens]).size;
+  return shared >= 5 && shared / union >= 0.72;
+}
+
 async function discardResponse(response: Response): Promise<void> {
   try {
     await response.body?.cancel();
@@ -311,7 +331,12 @@ type ExistingFeedItem = {
   cityCode?: string;
 };
 
-async function existingFeedItem(env: MonitorEnv, title: string, articleUrl: string): Promise<ExistingFeedItem | null> {
+async function existingFeedItem(
+  env: MonitorEnv,
+  title: string,
+  articleUrl: string,
+  cityCode: string,
+): Promise<ExistingFeedItem | null> {
   const headers: Record<string, string> = {
     "content-type": "application/json",
     "user-agent": "Mozilla/5.0 (compatible; BrokketNewsBot/2.3; +https://brokket.com)",
@@ -320,7 +345,7 @@ async function existingFeedItem(env: MonitorEnv, title: string, articleUrl: stri
   const response = await fetch(`${env.BROKKET_API_URL.replace(/\/+$/, "")}/list`, {
     method: "POST",
     headers,
-    body: JSON.stringify({ page: 0, size: 50, searchQuery: title }),
+    body: JSON.stringify({ page: 0, size: 100, cityCode }),
   });
   if (!response.ok) {
     await discardResponse(response);
@@ -334,7 +359,10 @@ async function existingFeedItem(env: MonitorEnv, title: string, articleUrl: stri
   const expectedTitle = normalizedTitle(title);
   return content.find((item) =>
     Boolean(item.newsLink && comparableUrl(item.newsLink) === expectedUrl)
-    || Boolean(item.title && normalizedTitle(item.title) === expectedTitle),
+    || Boolean(item.title && (
+      normalizedTitle(item.title) === expectedTitle
+      || isNearDuplicateTitle(item.title, title)
+    )),
   ) ?? null;
 }
 
@@ -657,7 +685,7 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
     return { ...resultBase, status: "skipped", articleUrl: article.url };
   }
   try {
-    const existing = await existingFeedItem(env, cleanTitle, article.url);
+    const existing = await existingFeedItem(env, cleanTitle, article.url, city.code);
     if (existing) {
       if (!existing.isActive && existing.code) {
         await activateFeedItem(env, existing.code, {

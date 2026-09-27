@@ -358,14 +358,18 @@ export const CITY_PATTERNS: readonly CityPattern[] = [
     "name": "Delhi NCR",
     "code": "delhi-ncr",
     "patterns": [
-      "delhi ncr"
+      "national capital region",
+      "delhi ncr",
+      "ncr"
     ]
   },
   {
     "name": "New Delhi",
     "code": "new-delhi",
     "patterns": [
-      "new delhi"
+      "new delhi",
+      "lutyens delhi",
+      "ndmc"
     ]
   },
   {

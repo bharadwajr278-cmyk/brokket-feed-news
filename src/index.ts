@@ -1,5 +1,6 @@
 import { CITY_PATTERNS, CityPattern } from "./cities";
 import { ALL_SOURCES, CORE_SOURCES, NewsSource, ROTATING_SOURCES } from "./sources";
+import { isNearDuplicateHeadline } from "./deduplication";
 
 type FeedItem = {
   title: string;
@@ -227,24 +228,6 @@ function normalizedTitle(value: string): string {
   return value.toLocaleLowerCase("en-IN").replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ").trim();
 }
 
-const TITLE_STOP_WORDS = new Set([
-  "a", "an", "and", "as", "at", "by", "for", "from", "his", "in", "into",
-  "is", "new", "of", "on", "rs", "s", "the", "their", "to", "with",
-]);
-
-function titleTokens(value: string): Set<string> {
-  return new Set(normalizedTitle(value).split(" ").filter((token) => token.length > 1 && !TITLE_STOP_WORDS.has(token)));
-}
-
-function isNearDuplicateTitle(left: string, right: string): boolean {
-  const leftTokens = titleTokens(left);
-  const rightTokens = titleTokens(right);
-  if (leftTokens.size < 5 || rightTokens.size < 5) return false;
-  const shared = [...leftTokens].filter((token) => rightTokens.has(token)).length;
-  const union = new Set([...leftTokens, ...rightTokens]).size;
-  return shared >= 5 && shared / union >= 0.72;
-}
-
 async function discardResponse(response: Response): Promise<void> {
   try {
     await response.body?.cancel();
@@ -361,7 +344,7 @@ async function existingFeedItem(
     Boolean(item.newsLink && comparableUrl(item.newsLink) === expectedUrl)
     || Boolean(item.title && (
       normalizedTitle(item.title) === expectedTitle
-      || isNearDuplicateTitle(item.title, title)
+      || isNearDuplicateHeadline(item.title, title)
     )),
   ) ?? null;
 }

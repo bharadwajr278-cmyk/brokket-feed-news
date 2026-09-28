@@ -18,6 +18,14 @@ const STOP_WORDS = new Set([
   "a", "an", "and", "as", "at", "by", "for", "from", "his", "in", "into",
   "is", "new", "of", "on", "rs", "s", "the", "their", "to", "with",
 ]);
+const GENERIC_EVENT_WORDS = new Set([
+  "build", "crore", "develop", "development", "housing", "invest", "investment",
+  "launch", "luxury", "makes", "project", "projects", "properties", "property",
+  "realty", "residential", "scheme", "worth",
+]);
+const GENERIC_AUTHORITY_WORDS = new Set([
+  "authority", "court", "department", "government", "govt", "municipal", "police", "rera",
+]);
 
 function normalisedTitle(value: string): string {
   return value.toLocaleLowerCase("en-IN")
@@ -33,11 +41,44 @@ function titleTokens(value: string): Set<string> {
 function amountAnchors(value: string): Set<string> {
   const anchors = new Set<string>();
   for (const match of value.toLocaleLowerCase("en-IN").matchAll(
-    /(\d[\d,]*(?:\.\d+)?)\s*(crores?|lakhs?|millions?|billions?|acres?|sq\.?\s*ft|square\s+feet|km|kilometres?)/g,
+    /(\d[\d,]*(?:\.\d+)?)\s*(cr(?:ore)?s?|lakhs?|millions?|billions?|acres?|sq\.?\s*ft|square\s+feet|km|kilometres?)/g,
   )) {
-    anchors.add(`${match[1]!.replace(/,/g, "")}:${match[2]!.replace(/[.\s]+/g, "")}`);
+    const rawUnit = match[2]!.replace(/[.\s]+/g, "");
+    const unit = /^cr(?:ore)?s?$/.test(rawUnit)
+      ? "crore"
+      : /^lakhs?$/.test(rawUnit) ? "lakh" : rawUnit.replace(/s$/, "");
+    anchors.add(`${match[1]!.replace(/,/g, "")}:${unit}`);
   }
   return anchors;
+}
+
+function entityPrefix(value: string): string {
+  return [...titleTokens(value)].slice(0, 2).join(" ");
+}
+
+export function isNearDuplicateHeadline(left: string, right: string): boolean {
+  const leftTokens = titleTokens(left);
+  const rightTokens = titleTokens(right);
+  if (leftTokens.size < 5 || rightTokens.size < 5) return false;
+  const leftAmounts = amountAnchors(left);
+  const rightAmounts = amountAnchors(right);
+  const sharedAmounts = [...leftAmounts].filter((value) => rightAmounts.has(value));
+  const shared = [...leftTokens].filter((token) => rightTokens.has(token));
+  const union = new Set([...leftTokens, ...rightTokens]).size;
+  if (shared.length >= 5 && shared.length / union >= 0.72) {
+    return !(leftAmounts.size && rightAmounts.size && sharedAmounts.length === 0);
+  }
+  const leftEntity = entityPrefix(left);
+  const entityIsAuthority = leftEntity.split(" ").some((token) => GENERIC_AUTHORITY_WORDS.has(token));
+  const sameEntity = leftEntity.length >= 5 && !entityIsAuthority && leftEntity === entityPrefix(right);
+  if (!sameEntity) return false;
+  const entityWords = new Set(entityPrefix(left).split(" "));
+  const sharedSpecific = shared.filter((token) =>
+    !entityWords.has(token)
+    && !GENERIC_EVENT_WORDS.has(token)
+    && !/^\d+$/.test(token),
+  );
+  return sharedAmounts.length > 0 || sharedSpecific.length >= 2;
 }
 
 function canonicalUrl(value: string): string {
@@ -73,15 +114,7 @@ function isNearDuplicate(left: DeduplicationRecord, right: DeduplicationRecord):
   const leftTime = timestamp(left.publishedAt);
   const rightTime = timestamp(right.publishedAt);
   if (leftTime && rightTime && Math.abs(leftTime - rightTime) > 7 * 24 * 60 * 60 * 1_000) return false;
-  const leftTokens = titleTokens(left.title);
-  const rightTokens = titleTokens(right.title);
-  if (leftTokens.size < 5 || rightTokens.size < 5) return false;
-  const leftAmounts = amountAnchors(left.title);
-  const rightAmounts = amountAnchors(right.title);
-  if (leftAmounts.size && rightAmounts.size && ![...leftAmounts].some((value) => rightAmounts.has(value))) return false;
-  const shared = [...leftTokens].filter((token) => rightTokens.has(token)).length;
-  const union = new Set([...leftTokens, ...rightTokens]).size;
-  return shared >= 5 && shared / union >= 0.72;
+  return isNearDuplicateHeadline(left.title, right.title);
 }
 
 function sameStory(left: DeduplicationRecord, right: DeduplicationRecord): boolean {

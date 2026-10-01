@@ -90,12 +90,12 @@ const ROTATING_BATCH_SIZE = 20;
 const MAX_ITEMS_PER_RUN = 4;
 const MAX_ATTEMPTS_PER_RUN = 5;
 const PROPERTY_TERMS = [
-  "real estate", "property", "housing", "homebuyers", "homes", "flats",
+  "real estate", "property", "properties", "housing", "homebuyers", "homes", "flats",
   "apartments", "rera", "redevelopment", "township", "project launch",
   "land acquisition", "land parcel", "commercial lease", "office lease",
   "possession", "handover", "project completion", "construction progress",
   "building approval", "development agreement", "joint development", "developer",
-  "floor space index", "fsi", "reit", "residential", "commercial project",
+  "floor space index", "fsi", "reit", "residential", "commercial project", "commercial site",
 ];
 const INFRASTRUCTURE_ASSET_TERMS = [
   "metro", "ring road", "expressway", "highway", "airport", "connectivity",
@@ -133,7 +133,9 @@ const EXCLUDED_TERMS = [
   "ed raid", "enforcement directorate", "pet dog", "dog bites", "police file fir",
   "gangster", "henchman", "ethanol", "farm incomes",
   "armed men", "loot", "robbery", "robbed", "break into", "broke into",
-  "tie him", "tied him",
+  "tie him", "tied him", "court acquits", "cops", "narcotics", "drug smuggler", "drug trafficking",
+  "seized property", "property seized", "property seizure", "family property dispute",
+  "eviction of children", "evict children", "bars ews residents", "abduction", "snatching",
 ];
 const QUERY_TERMS = [
   '"real estate"', "property", "housing", "RERA", "homebuyers", "redevelopment",
@@ -227,9 +229,18 @@ function findUnambiguousCity(text: string): CityPattern | undefined {
   return matches.length === 1 ? matches[0] : undefined;
 }
 
+export function hasExcludedContent(text: string): boolean {
+  const value = text.toLocaleLowerCase("en-IN");
+  return [...EXCLUDED_TERMS, ...REGIONAL_EXCLUDED_TERMS].some((term) => {
+    if (/[^\x00-\x7F]/.test(term)) return value.includes(term);
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(`(?:^|[^\\p{L}\\p{N}])${escaped}(?:$|[^\\p{L}\\p{N}])`, "iu").test(value);
+  });
+}
+
 export function isRelevant(text: string): boolean {
   const value = text.toLocaleLowerCase("en-IN");
-  if ([...EXCLUDED_TERMS, ...REGIONAL_EXCLUDED_TERMS].some((term) => value.includes(term))) return false;
+  if (hasExcludedContent(value)) return false;
   if ([...PROPERTY_TERMS, ...REGIONAL_PROPERTY_TERMS].some((term) => value.includes(term))) return true;
   return [...INFRASTRUCTURE_ASSET_TERMS, ...REGIONAL_INFRASTRUCTURE_TERMS].some((term) => value.includes(term))
     && [...DEVELOPMENT_ACTION_TERMS, ...REGIONAL_DEVELOPMENT_ACTION_TERMS].some((term) => value.includes(term));

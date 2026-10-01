@@ -82,12 +82,12 @@ type ApiEnvelope<T> = {
 
 const TOKEN_KEY = "feed_admin_access_token";
 const ADMIN_PROPERTY_TERMS = [
-  "real estate", "property", "housing", "homebuyers", "homes", "flats",
+  "real estate", "property", "properties", "housing", "homebuyers", "homes", "flats",
   "apartments", "rera", "redevelopment", "township", "project launch",
   "land acquisition", "land parcel", "commercial lease", "office lease",
   "possession", "handover", "project completion", "construction progress",
   "building approval", "development agreement", "joint development", "developer",
-  "floor space index", "fsi", "reit", "residential", "commercial project",
+  "floor space index", "fsi", "reit", "residential", "commercial project", "commercial site",
 ];
 const ADMIN_INFRASTRUCTURE_TERMS = [
   "metro", "ring road", "expressway", "highway", "airport", "connectivity",
@@ -119,7 +119,10 @@ const ADMIN_EXCLUDED_TERMS = [
   "chief executive", "battery-swapping", "battery swapping", "instamart",
   "ed raid", "enforcement directorate", "pet dog", "dog bites", "police file fir",
   "armed men", "loot", "robbery", "robbed", "break into", "broke into",
-  "tie him", "tied him", "gangster", "henchman",
+  "tie him", "tied him", "gangster", "henchman", "court acquits", "cops", "narcotics",
+  "drug smuggler", "drug trafficking", "seized property", "property seized", "property seizure",
+  "family property dispute", "eviction of children", "evict children", "bars ews residents",
+  "abduction", "snatching",
 ];
 
 export function hasAdminToken(): boolean {
@@ -227,9 +230,15 @@ export async function listNews(filters: NewsFilters): Promise<PageResult> {
     const existing = unique.get(key);
     if (!existing || preferItem(item, existing)) unique.set(key, item);
   });
+  const hasExcludedContent = (value: string): boolean =>
+    [...ADMIN_EXCLUDED_TERMS, ...REGIONAL_EXCLUDED_TERMS].some((term) => {
+      if (/[^\x00-\x7F]/.test(term)) return value.includes(term);
+      const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return new RegExp(`(?:^|[^\\p{L}\\p{N}])${escaped}(?:$|[^\\p{L}\\p{N}])`, "iu").test(value);
+    });
   const filtered = [...unique.values()].filter((item) => {
     const searchable = `${item.title} ${item.description}`.toLowerCase();
-    if ([...ADMIN_EXCLUDED_TERMS, ...REGIONAL_EXCLUDED_TERMS].some((term) => searchable.includes(term))) return false;
+    if (hasExcludedContent(searchable)) return false;
     const isPropertyNews = [...ADMIN_PROPERTY_TERMS, ...REGIONAL_PROPERTY_TERMS]
       .some((term) => searchable.includes(term));
     const isDevelopmentNews = [...ADMIN_INFRASTRUCTURE_TERMS, ...REGIONAL_INFRASTRUCTURE_TERMS]

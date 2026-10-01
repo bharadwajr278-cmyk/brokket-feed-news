@@ -23,6 +23,9 @@ assert.equal(isRelevant("ಮೈಸೂರು ಮೂಲಸೌಕರ್ಯ ನಿ�
 assert.equal(isRelevant("കൊച്ചിയിൽ മെട്രോ നിർമ്മാണം പദ്ധതി വികസനം"), true);
 
 assert.equal(isRelevant("प्रॉपर्टी डीलर के घर चोरी और लूट, आरोपी गिरफ्तार"), false);
+assert.equal(isRelevant("नशे के कारोबार की कमाई पर पुलिस का शिकंजा, 40 लाख की संपत्ति जब्त"), false);
+assert.equal(isRelevant("पत्नी के पिता के पैसों से खरीदी संपत्ति पर हाईकोर्ट का फैसला"), false);
+assert.equal(isRelevant("भू-माफिया का अवैध कब्जा, करोड़ों की संपत्ति जब्त"), false);
 assert.equal(isRelevant("கட்டிடத்தில் கொலை மற்றும் கொள்ளை தொடர்பாக கைது"), false);
 assert.equal(isRelevant("ఆస్తి వివాదంలో హత్య కేసు అరెస్ట్"), false);
 assert.equal(isRelevant("ಜಮೀನು ವಿವಾದದಲ್ಲಿ ಕೊಲೆ ಮತ್ತು ಬಂಧನ"), false);

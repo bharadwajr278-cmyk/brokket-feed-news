@@ -234,7 +234,11 @@ function findUnambiguousCity(text: string): CityPattern | undefined {
 export function hasExcludedContent(text: string): boolean {
   const value = text.toLocaleLowerCase("en-IN");
   return [...EXCLUDED_TERMS, ...REGIONAL_EXCLUDED_TERMS].some((term) => {
-    if (/[^\x00-\x7F]/.test(term)) return value.includes(term);
+    if (/[^\x00-\x7F]/.test(term)) {
+      const compactValue = value.replace(/[^\p{L}\p{N}\p{M}]+/gu, "");
+      const compactTerm = term.toLocaleLowerCase("en-IN").replace(/[^\p{L}\p{N}\p{M}]+/gu, "");
+      return compactValue.includes(compactTerm);
+    }
     const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     return new RegExp(`(?:^|[^\\p{L}\\p{N}])${escaped}(?:$|[^\\p{L}\\p{N}])`, "iu").test(value);
   });

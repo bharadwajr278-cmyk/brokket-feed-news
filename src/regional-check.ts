@@ -42,6 +42,8 @@ assert.equal(isRelevant("पत्नी के पिता के पैसो
 assert.equal(isRelevant("भू-माफिया का अवैध कब्जा, करोड़ों की संपत्ति जब्त"), false);
 assert.equal(isRelevant("கட்டிடத்தில் கொலை மற்றும் கொள்ளை தொடர்பாக கைது"), false);
 assert.equal(isRelevant("ఆస్తి వివాదంలో హత్య కేసు అరెస్ట్"), false);
+assert.equal(isRelevant("ఆస్తి లాక్కోవాలని చూస్తున్నారు"), false);
+assert.equal(isRelevant("ఆస్తి కోసం కన్నవారినే చం*పాలని చూస్తున్న కొడుకు"), false);
 assert.equal(isRelevant("ಜಮೀನು ವಿವಾದದಲ್ಲಿ ಕೊಲೆ ಮತ್ತು ಬಂಧನ"), false);
 assert.equal(isRelevant("വസ്തു തർക്കത്തിൽ കൊലപാതകം, അറസ്റ്റ്"), false);
 

@@ -24,12 +24,12 @@ const GENERIC_EVENT_WORDS = new Set([
   "realty", "residential", "scheme", "worth",
 ]);
 const GENERIC_AUTHORITY_WORDS = new Set([
-  "authority", "court", "department", "government", "govt", "municipal", "police", "rera",
+  "authority", "court", "department", "government", "govt", "municipal", "news", "police", "rera",
 ]);
 
 function normalisedTitle(value: string): string {
   return value.toLocaleLowerCase("en-IN")
-    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
 }

@@ -1,4 +1,5 @@
 import { USER_SUPPLIED_SOURCE_URLS } from "./user-supplied-sources";
+import type { NewsLanguage } from "./regional";
 
 export type SourceType = "publisher" | "rera" | "infrastructure" | "government" | "developer";
 
@@ -9,9 +10,10 @@ export type NewsSource = {
   domain: string;
   logo: string;
   feed: boolean;
+  language: NewsLanguage;
 };
 
-function source(name: string, type: SourceType, url: string, logo = ""): NewsSource {
+function source(name: string, type: SourceType, url: string, logo = "", language: NewsLanguage = "en"): NewsSource {
   const domain = new URL(url).hostname.toLowerCase().replace(/^www\./, "");
   return {
     name,
@@ -20,7 +22,23 @@ function source(name: string, type: SourceType, url: string, logo = ""): NewsSou
     domain,
     logo: logo || `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128`,
     feed: /(?:\.rss(?:$|\?)|\.xml(?:$|\?)|\/rss(?:\/|$)|\/feed(?:\/|$)|rssfeed|rssfeeds)/i.test(url),
+    language,
   };
+}
+
+function inferredLanguage(host: string): NewsLanguage {
+  if (/livehindustan|amarujala|jagran|bhaskar|patrika|hindi\./.test(host)) return "hi";
+  if (/dinamalar|dinamani|hindutamil|maalaimalar/.test(host)) return "ta";
+  if (/eenadu|sakshi|andhrajyothy/.test(host)) return "te";
+  if (/lokmat|loksatta|maharashtratimes/.test(host)) return "mr";
+  if (/divyabhaskar|gujaratsamachar|sandesh/.test(host)) return "gu";
+  if (/anandabazar|eisamay|sangbadpratidin/.test(host)) return "bn";
+  if (/prajavani|vijaykarnataka|kannadaprabha/.test(host)) return "kn";
+  if (/manoramaonline|mathrubhumi|malayalam\./.test(host)) return "ml";
+  if (/sambad|dharitri|odishabhaskar/.test(host)) return "or";
+  if (/punjabijagran|ajitjalandhar/.test(host)) return "pa";
+  if (/asomiyapratidin|niyomiyabarta/.test(host)) return "as";
+  return "en";
 }
 
 function suppliedSource(url: string): NewsSource {
@@ -45,7 +63,7 @@ function suppliedSource(url: string): NewsSource {
     .replace(/[-_.]+/g, " ")
     .trim();
   const name = `User source · ${host}${pathLabel ? ` · ${pathLabel}` : ""}`;
-  return source(name, type, url);
+  return source(name, type, url, "", inferredLanguage(host));
 }
 
 // High-frequency editorial sources explicitly requested by the user.
@@ -81,6 +99,58 @@ export const EDITORIAL_SOURCES: readonly NewsSource[] = [
   source("Odisha TV", "publisher", "https://odishatv.in"),
   source("The Statesman", "publisher", "https://www.thestatesman.com"),
   source("Free Press Journal", "publisher", "https://www.freepressjournal.in"),
+];
+
+// Regional-language publishers are queried in their own Google News locale.
+// Every result still passes exact-article, city, relevance, crime, image and
+// duplicate checks before it can reach the Brokket API.
+export const REGIONAL_EDITORIAL_SOURCES: readonly NewsSource[] = [
+  source("Live Hindustan Real Estate", "publisher", "https://www.livehindustan.com/business/real-estate", "", "hi"),
+  source("Amar Ujala", "publisher", "https://www.amarujala.com", "", "hi"),
+  source("Dainik Jagran", "publisher", "https://www.jagran.com", "", "hi"),
+  source("Dainik Bhaskar", "publisher", "https://www.bhaskar.com", "", "hi"),
+  source("Rajasthan Patrika", "publisher", "https://www.patrika.com", "", "hi"),
+  source("Business Standard Hindi Real Estate", "publisher", "https://hindi.business-standard.com/business-news/real-estate", "", "hi"),
+  source("ET Now Swadesh Real Estate", "publisher", "https://hindi.etnownews.com/real-estate", "", "hi"),
+
+  source("Dinamalar", "publisher", "https://www.dinamalar.com", "", "ta"),
+  source("Dinamani", "publisher", "https://www.dinamani.com", "", "ta"),
+  source("Hindu Tamil Thisai", "publisher", "https://www.hindutamil.in", "", "ta"),
+  source("Maalai Malar", "publisher", "https://www.maalaimalar.com", "", "ta"),
+
+  source("Eenadu", "publisher", "https://www.eenadu.net", "", "te"),
+  source("Sakshi Telugu", "publisher", "https://www.sakshi.com", "", "te"),
+  source("Andhra Jyothy", "publisher", "https://www.andhrajyothy.com", "", "te"),
+
+  source("Lokmat Real Estate", "publisher", "https://www.lokmat.com/real-estate", "", "mr"),
+  source("Loksatta Real Estate", "publisher", "https://www.loksatta.com/about/real-estate", "", "mr"),
+  source("Maharashtra Times", "publisher", "https://maharashtratimes.com", "", "mr"),
+
+  source("Divya Bhaskar", "publisher", "https://www.divyabhaskar.co.in", "", "gu"),
+  source("Gujarat Samachar", "publisher", "https://www.gujaratsamachar.com", "", "gu"),
+  source("Sandesh", "publisher", "https://sandesh.com", "", "gu"),
+
+  source("Anandabazar Patrika", "publisher", "https://www.anandabazar.com", "", "bn"),
+  source("Ei Samay", "publisher", "https://eisamay.com", "", "bn"),
+  source("Sangbad Pratidin", "publisher", "https://www.sangbadpratidin.in", "", "bn"),
+
+  source("Prajavani", "publisher", "https://www.prajavani.net", "", "kn"),
+  source("Vijaya Karnataka", "publisher", "https://vijaykarnataka.com", "", "kn"),
+  source("Kannada Prabha", "publisher", "https://www.kannadaprabha.com", "", "kn"),
+
+  source("Malayala Manorama", "publisher", "https://www.manoramaonline.com", "", "ml"),
+  source("Mathrubhumi", "publisher", "https://www.mathrubhumi.com", "", "ml"),
+  source("Asianet News Malayalam", "publisher", "https://www.asianetnews.com", "", "ml"),
+
+  source("Sambad", "publisher", "https://sambad.in", "", "or"),
+  source("Dharitri", "publisher", "https://www.dharitri.com", "", "or"),
+  source("Odisha Bhaskar", "publisher", "https://odishabhaskar.in", "", "or"),
+
+  source("Punjabi Jagran", "publisher", "https://www.punjabijagran.com", "", "pa"),
+  source("Ajit", "publisher", "https://www.ajitjalandhar.com", "", "pa"),
+
+  source("Asomiya Pratidin", "publisher", "https://www.asomiyapratidin.in", "", "as"),
+  source("Niyomiya Barta", "publisher", "https://niyomiyabarta.com", "", "as"),
 ];
 
 // State RERA and equivalent official property-regulation channels for every
@@ -363,6 +433,7 @@ function uniqueSources(sources: readonly NewsSource[]): NewsSource[] {
 export const ROTATING_SOURCES: readonly NewsSource[] = uniqueSources([
   ...SUPPLEMENTAL_SOURCES,
   ...EDITORIAL_SOURCES,
+  ...REGIONAL_EDITORIAL_SOURCES,
   ...RERA_SOURCES,
   ...INFRASTRUCTURE_SOURCES,
   ...DEVELOPER_SOURCES,

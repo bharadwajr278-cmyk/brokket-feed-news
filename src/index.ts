@@ -1,6 +1,17 @@
 import { CITY_PATTERNS, CityPattern } from "./cities";
 import { ALL_SOURCES, CORE_SOURCES, NewsSource, ROTATING_SOURCES } from "./sources";
 import { isNearDuplicateHeadline } from "./deduplication";
+import {
+  googleNewsLocale,
+  languageProfile,
+  languageQuery,
+  languagesForCity,
+  REGIONAL_DEVELOPMENT_ACTION_TERMS,
+  REGIONAL_EXCLUDED_TERMS,
+  REGIONAL_INFRASTRUCTURE_TERMS,
+  REGIONAL_PROPERTY_TERMS,
+  type LanguageProfile,
+} from "./regional";
 
 type FeedItem = {
   title: string;
@@ -218,14 +229,14 @@ function findUnambiguousCity(text: string): CityPattern | undefined {
 
 export function isRelevant(text: string): boolean {
   const value = text.toLocaleLowerCase("en-IN");
-  if (EXCLUDED_TERMS.some((term) => value.includes(term))) return false;
-  if (PROPERTY_TERMS.some((term) => value.includes(term))) return true;
-  return INFRASTRUCTURE_ASSET_TERMS.some((term) => value.includes(term))
-    && DEVELOPMENT_ACTION_TERMS.some((term) => value.includes(term));
+  if ([...EXCLUDED_TERMS, ...REGIONAL_EXCLUDED_TERMS].some((term) => value.includes(term))) return false;
+  if ([...PROPERTY_TERMS, ...REGIONAL_PROPERTY_TERMS].some((term) => value.includes(term))) return true;
+  return [...INFRASTRUCTURE_ASSET_TERMS, ...REGIONAL_INFRASTRUCTURE_TERMS].some((term) => value.includes(term))
+    && [...DEVELOPMENT_ACTION_TERMS, ...REGIONAL_DEVELOPMENT_ACTION_TERMS].some((term) => value.includes(term));
 }
 
 function normalizedTitle(value: string): string {
-  return value.toLocaleLowerCase("en-IN").replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ").trim();
+  return value.toLocaleLowerCase("en-IN").replace(/[^\p{L}\p{N}]+/gu, " ").replace(/\s+/g, " ").trim();
 }
 
 async function discardResponse(response: Response): Promise<void> {
@@ -266,13 +277,16 @@ async function fetchSource(source: NewsSource, queryDays: number): Promise<FeedI
     if (xml.length > 2_000_000) throw new Error(`Feed ${source.url} exceeded size limit`);
     return parseFeed(xml, source.name, source.domain);
   }
-  const terms = source.type === "developer"
-    ? DEVELOPER_QUERY_TERMS
-    : source.type === "publisher" ? QUERY_TERMS : OFFICIAL_QUERY_TERMS;
+  const profile = languageProfile(source.language);
+  const terms = source.language === "en"
+    ? source.type === "developer"
+      ? DEVELOPER_QUERY_TERMS
+      : source.type === "publisher" ? QUERY_TERMS : OFFICIAL_QUERY_TERMS
+    : languageQuery(profile);
   const sourceUrl = new URL(source.url);
   const scopedPath = sourceUrl.pathname !== "/" ? sourceUrl.pathname.replace(/\/+$/, "") : "";
   const query = `(${terms}) site:${source.domain}${scopedPath} when:${queryDays}d`;
-  const url = `${GOOGLE_NEWS}?q=${encodeURIComponent(query)}&hl=en-IN&gl=IN&ceid=IN:en`;
+  const url = `${GOOGLE_NEWS}?q=${encodeURIComponent(query)}&${googleNewsLocale(profile)}`;
   const response = await fetch(url, {
     headers: { "User-Agent": "BrokketRealEstateMonitor/1.0" },
   });
@@ -370,20 +384,21 @@ async function activateFeedItem(
   }
 }
 
-async function fetchCityFeed(city: CityPattern, queryDays: number): Promise<FeedItem[]> {
+async function fetchCityFeed(city: CityPattern, profile: LanguageProfile, queryDays: number): Promise<FeedItem[]> {
   const locationTerms = city.patterns.slice(0, 3).map((pattern) => `"${pattern}"`).join(" OR ");
-  const query = `(${QUERY_TERMS}) (${locationTerms}) when:${queryDays}d`;
-  const url = `${GOOGLE_NEWS}?q=${encodeURIComponent(query)}&hl=en-IN&gl=IN&ceid=IN:en`;
+  const terms = profile.code === "en" ? QUERY_TERMS : languageQuery(profile);
+  const query = `(${terms}) (${locationTerms}) when:${queryDays}d`;
+  const url = `${GOOGLE_NEWS}?q=${encodeURIComponent(query)}&${googleNewsLocale(profile)}`;
   const response = await fetch(url, {
     headers: { "User-Agent": "BrokketRealEstateMonitor/2.3" },
   });
   if (!response.ok) {
     await discardResponse(response);
-    throw new Error(`City RSS ${city.code} returned ${response.status}`);
+    throw new Error(`City RSS ${city.code}/${profile.code} returned ${response.status}`);
   }
   const xml = await response.text();
   if (xml.length > 2_000_000) throw new Error(`City RSS ${city.code} exceeded size limit`);
-  return parseFeed(xml, `${city.name} real-estate news`, "", city);
+  return parseFeed(xml, `${city.name} ${profile.name} real-estate news`, "", city);
 }
 
 async function allSettledWithConcurrency<T, R>(
@@ -850,9 +865,12 @@ export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}):
     (_unused, offset) => ROTATING_SOURCES[(cursor + offset) % ROTATING_SOURCES.length])
     .filter((source): source is NewsSource => source !== undefined);
   const sources = [...CORE_SOURCES, ...rotating];
+  const cityLanguageFeeds = CITY_PATTERNS.flatMap((city) =>
+    languagesForCity(city.code).map((profile) => ({ city, profile })),
+  );
   const [feeds, cityFeeds] = await Promise.all([
     allSettledWithConcurrency(sources, 32, (source) => fetchSource(source, queryDays)),
-    allSettledWithConcurrency(CITY_PATTERNS, 24, (city) => fetchCityFeed(city, queryDays)),
+    allSettledWithConcurrency(cityLanguageFeeds, 24, ({ city, profile }) => fetchCityFeed(city, profile, queryDays)),
   ]);
   const items = [...feeds, ...cityFeeds]
     .flatMap((result) => result.status === "fulfilled" ? result.value : []);
@@ -918,7 +936,7 @@ export async function runMonitor(env: MonitorEnv, options: MonitorOptions = {}):
     skipped: results.filter((result) => result.status === "skipped"),
     failures: results.filter((result) => result.status === "failed"),
     publisherSourcesChecked: sources.length,
-    cityFeedsChecked: CITY_PATTERNS.length,
+    cityFeedsChecked: cityLanguageFeeds.length,
     publisherSourceFailures: feeds.filter((result) => result.status === "rejected").length,
     cityFeedFailures: cityFeeds.filter((result) => result.status === "rejected").length,
   } satisfies RunSummary;

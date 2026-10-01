@@ -13,6 +13,7 @@
     "news:run": "tsx src/github-runner.ts",
     "news:activate": "tsx src/activate-relevant.ts",
     "news:deduplicate": "tsx src/deduplicate-feed.ts",
+    "news:check-regional": "tsx src/regional-check.ts",
     "report": "tsx src/report.ts",
     "state:merge": "tsx src/merge-state.ts"
   },

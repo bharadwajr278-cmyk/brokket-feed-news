@@ -1,12 +1,12 @@
 # Brokket real-estate news automation
 
-This repository discovers recent Indian real-estate and infrastructure news, validates the city and exact article thumbnail, removes duplicates, and publishes accepted items to the Brokket API.
+This repository discovers recent Indian real-estate and infrastructure news in English, Hindi and state-specific regional languages, validates the city and exact article thumbnail, removes duplicates, and publishes accepted items to the Brokket API.
 
 ## Production automation
 
-GitHub Actions is the only production runtime. The scheduled workflow runs every 20 minutes and scans the complete catalogue of 258 publisher, developer, infrastructure, and government sources. It also runs a dedicated real-estate/infrastructure search for every one of the 232 configured cities and geographies.
+GitHub Actions is the only production runtime. The scheduled workflow runs every 20 minutes and scans the complete catalogue of publisher, regional-language, developer, infrastructure, and government sources. It also runs dedicated English, Hindi and mapped state-language real-estate/infrastructure searches for every configured city and geography.
 
-Every run performs a clean TypeScript build before publishing. It accepts only recent real-estate and infrastructure stories, rejects crime and unrelated content, requires a valid article thumbnail, assigns a configured city code, and sends accepted stories to the Brokket API.
+Every run performs a clean TypeScript build before publishing. It accepts only recent real-estate and infrastructure stories, applies multilingual crime and relevance rules, requires a valid exact-article thumbnail and original canonical article URL, assigns a configured city code, and sends accepted stories to the Brokket API. Regional copies are allowed alongside English coverage, while same-language duplicate stories are collapsed.
 
 Duplicate protection is persistent: canonical article URL and normalized-title SHA-256 hashes are stored in `state/news-state.json` without expiry. The workflow commits that state after every run, safely merges concurrent state changes, and prevents overlapping publishers from racing each other.
 

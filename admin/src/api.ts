@@ -1,3 +1,10 @@
+import {
+  REGIONAL_DEVELOPMENT_ACTION_TERMS,
+  REGIONAL_EXCLUDED_TERMS,
+  REGIONAL_INFRASTRUCTURE_TERMS,
+  REGIONAL_PROPERTY_TERMS,
+} from "../../src/regional";
+
 export type NewsItem = {
   id: string;
   code: string;
@@ -97,6 +104,8 @@ const ADMIN_DEVELOPMENT_ACTION_TERMS = [
   "tunnel", "station redevelopment", "repair", "revamp", "master plan",
 ];
 const ADMIN_EXCLUDED_TERMS = [
+  "murder", "killed", "death", "dead body", "suicide", "crime", "arrested",
+  "rape", "assault", "crash", "accident", "smuggling", "theft", "stolen",
   "salesforce", "ai deployment", "property insurance", "insurer", "insurance rates",
   "restaurant", "cafe", "food outlet", "dosa", "recipe", "donor heart", "ambulance",
   "flight schedule", "weekly flight", "no-fly day",
@@ -220,10 +229,13 @@ export async function listNews(filters: NewsFilters): Promise<PageResult> {
   });
   const filtered = [...unique.values()].filter((item) => {
     const searchable = `${item.title} ${item.description}`.toLowerCase();
-    if (ADMIN_EXCLUDED_TERMS.some((term) => searchable.includes(term))) return false;
-    const isPropertyNews = ADMIN_PROPERTY_TERMS.some((term) => searchable.includes(term));
-    const isDevelopmentNews = ADMIN_INFRASTRUCTURE_TERMS.some((term) => searchable.includes(term))
-      && ADMIN_DEVELOPMENT_ACTION_TERMS.some((term) => searchable.includes(term));
+    if ([...ADMIN_EXCLUDED_TERMS, ...REGIONAL_EXCLUDED_TERMS].some((term) => searchable.includes(term))) return false;
+    const isPropertyNews = [...ADMIN_PROPERTY_TERMS, ...REGIONAL_PROPERTY_TERMS]
+      .some((term) => searchable.includes(term));
+    const isDevelopmentNews = [...ADMIN_INFRASTRUCTURE_TERMS, ...REGIONAL_INFRASTRUCTURE_TERMS]
+      .some((term) => searchable.includes(term))
+      && [...ADMIN_DEVELOPMENT_ACTION_TERMS, ...REGIONAL_DEVELOPMENT_ACTION_TERMS]
+        .some((term) => searchable.includes(term));
     if (!isPropertyNews && !isDevelopmentNews) return false;
     if (sourceName && item.sourceName !== sourceName) return false;
     if (isActive !== undefined && item.isActive !== isActive) return false;
@@ -255,7 +267,7 @@ function duplicateKey(item: NewsItem): string {
       // Fall through to the title key for malformed legacy URLs.
     }
   }
-  const title = item.title.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const title = item.title.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
   return `title:${title}|${item.cityCode}|${publishedDateKey(item.publishedAt)}`;
 }
 

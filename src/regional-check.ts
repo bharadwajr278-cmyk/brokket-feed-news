@@ -3,6 +3,7 @@ import { isRelevant } from "./index";
 import { CITY_PATTERNS } from "./cities";
 import { hasConfiguredRegionalLanguage, languagesForCity } from "./regional";
 import { REGIONAL_CITY_SOURCES } from "./sources";
+import { isCrossLanguageDuplicate } from "./deduplication";
 
 const codes = (city: string): string[] => languagesForCity(city).map(({ code }) => code);
 
@@ -43,5 +44,48 @@ assert.equal(isRelevant("கட்டிடத்தில் கொலை ம�
 assert.equal(isRelevant("ఆస్తి వివాదంలో హత్య కేసు అరెస్ట్"), false);
 assert.equal(isRelevant("ಜಮೀನು ವಿವಾದದಲ್ಲಿ ಕೊಲೆ ಮತ್ತು ಬಂಧನ"), false);
 assert.equal(isRelevant("വസ്തു തർക്കത്തിൽ കൊലപാതകം, അറസ്റ്റ്"), false);
+
+assert.equal(isCrossLanguageDuplicate(
+  {
+    title: "Uttar Pradesh CM launches housing projects worth ₹12,000 crore in Lucknow",
+    description: "New housing projects were launched in Lucknow.",
+    cityCode: "lucknow",
+    publishedAt: "2026-09-25T08:49:11+05:30",
+  },
+  {
+    title: "लखनऊ में 12,000 करोड़ रुपये की आवास परियोजनाओं की शुरुआत",
+    description: "मुख्यमंत्री ने नई आवासीय परियोजना शुरू की।",
+    cityCode: "lucknow",
+    publishedAt: "2026-09-25T11:00:00+05:30",
+  },
+), true);
+assert.equal(isCrossLanguageDuplicate(
+  {
+    title: "Mumbai housing registrations cross 12,600 in September",
+    description: "Housing registrations reached a new record.",
+    cityCode: "mumbai",
+    publishedAt: "2026-09-30T12:00:00+05:30",
+  },
+  {
+    title: "मुंबई में सितंबर में घरों की बिक्री ने नया रिकॉर्ड बनाया",
+    description: "प्रॉपर्टी रजिस्ट्रेशन 12,600 के पार पहुंचा।",
+    cityCode: "mumbai",
+    publishedAt: "2026-09-30T18:35:07+05:30",
+  },
+), true);
+assert.equal(isCrossLanguageDuplicate(
+  {
+    title: "Pune Metro receives ₹180 crore for expansion",
+    description: "Three corridors will be expanded.",
+    cityCode: "pune",
+    publishedAt: "2026-09-30T12:00:00+05:30",
+  },
+  {
+    title: "पुणे में 180 करोड़ रुपये की अलग आवास योजना मंजूर",
+    description: "नई आवास परियोजना को मंजूरी मिली।",
+    cityCode: "pune",
+    publishedAt: "2026-09-30T12:00:00+05:30",
+  },
+), false);
 
 console.log("Regional-language configuration and relevance checks passed.");

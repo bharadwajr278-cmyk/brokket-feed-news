@@ -1,6 +1,6 @@
 import { CITY_PATTERNS, CityPattern } from "./cities";
 import { ALL_SOURCES, CORE_SOURCES, NewsSource, ROTATING_SOURCES } from "./sources";
-import { isNearDuplicateHeadline } from "./deduplication";
+import { isCrossLanguageDuplicate, isNearDuplicateHeadline } from "./deduplication";
 import {
   googleNewsLocale,
   languageProfile,
@@ -348,8 +348,10 @@ type ExistingFeedItem = {
 async function existingFeedItem(
   env: MonitorEnv,
   title: string,
+  description: string,
   articleUrl: string,
   cityCode: string,
+  publishedAt: string,
 ): Promise<ExistingFeedItem | null> {
   const headers: Record<string, string> = {
     "content-type": "application/json",
@@ -371,13 +373,26 @@ async function existingFeedItem(
   const content = body.data?.page?.content ?? [];
   const expectedUrl = comparableUrl(articleUrl);
   const expectedTitle = normalizedTitle(title);
-  return content.find((item) =>
+  const exact = content.find((item) =>
     Boolean(item.newsLink && comparableUrl(item.newsLink) === expectedUrl)
-    || Boolean(item.title && (
-      normalizedTitle(item.title) === expectedTitle
-      || isNearDuplicateHeadline(item.title, title)
-    )),
-  ) ?? null;
+    || Boolean(item.title && normalizedTitle(item.title) === expectedTitle),
+  );
+  if (exact) return exact;
+  // An inactive near-match is normally an older duplicate loser. Never revive
+  // it while checking a new article; only an active semantic match blocks the
+  // new delivery.
+  return content.find((item) => item.isActive && Boolean(item.title && (
+    isNearDuplicateHeadline(item.title, title)
+    || isCrossLanguageDuplicate(
+      {
+        title: item.title,
+        description: item.description ?? "",
+        cityCode: item.cityCode ?? cityCode,
+        publishedAt: item.publishedAt ?? "",
+      },
+      { title, description, cityCode, publishedAt },
+    )
+  ))) ?? null;
 }
 
 async function activateFeedItem(
@@ -700,7 +715,14 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
     return { ...resultBase, status: "skipped", articleUrl: article.url };
   }
   try {
-    const existing = await existingFeedItem(env, cleanTitle, article.url, city.code);
+    const existing = await existingFeedItem(
+      env,
+      cleanTitle,
+      decodeEntities(article.description).slice(0, 2_000),
+      article.url,
+      city.code,
+      new Date(item.publishedAt).toISOString(),
+    );
     if (existing) {
       if (!existing.isActive && existing.code) {
         await activateFeedItem(env, existing.code, {

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { isRelevant } from "./index";
 import { CITY_PATTERNS } from "./cities";
 import { hasConfiguredRegionalLanguage, languagesForCity } from "./regional";
+import { REGIONAL_CITY_SOURCES } from "./sources";
 
 const codes = (city: string): string[] => languagesForCity(city).map(({ code }) => code);
 
@@ -14,6 +15,18 @@ assert.deepEqual(
   CITY_PATTERNS.filter((city) => !hasConfiguredRegionalLanguage(city.code)).map((city) => city.code),
   [],
   "Every configured city must have an explicit state/regional language mapping",
+);
+
+const configuredCityCodes = new Set(CITY_PATTERNS.map((city) => city.code));
+assert.deepEqual(
+  REGIONAL_CITY_SOURCES.filter((entry) => !entry.cityCode || !configuredCityCodes.has(entry.cityCode)).map((entry) => entry.name),
+  [],
+  "Every geography-scoped source must reference a configured city code",
+);
+assert.equal(
+  new Set(REGIONAL_CITY_SOURCES.map((entry) => entry.url.replace(/\/+$/, "").toLowerCase())).size,
+  REGIONAL_CITY_SOURCES.length,
+  "Geography-scoped source URLs must be unique",
 );
 
 assert.equal(isRelevant("लखनऊ में नया आवास और मेट्रो निर्माण परियोजना मंजूर"), true);

@@ -273,6 +273,9 @@ async function sha256(value: string): Promise<string> {
 }
 
 async function fetchSource(source: NewsSource, queryDays: number): Promise<FeedItem[]> {
+  const cityHint = source.cityCode
+    ? CITY_PATTERNS.find((city) => city.code === source.cityCode)
+    : undefined;
   if (source.feed) {
     const response = await fetch(source.url, {
       headers: {
@@ -286,7 +289,7 @@ async function fetchSource(source: NewsSource, queryDays: number): Promise<FeedI
     }
     const xml = await response.text();
     if (xml.length > 2_000_000) throw new Error(`Feed ${source.url} exceeded size limit`);
-    return parseFeed(xml, source.name, source.domain);
+    return parseFeed(xml, source.name, source.domain, cityHint);
   }
   const profile = languageProfile(source.language);
   const terms = source.language === "en"
@@ -296,7 +299,10 @@ async function fetchSource(source: NewsSource, queryDays: number): Promise<FeedI
     : languageQuery(profile);
   const sourceUrl = new URL(source.url);
   const scopedPath = sourceUrl.pathname !== "/" ? sourceUrl.pathname.replace(/\/+$/, "") : "";
-  const query = `(${terms}) site:${source.domain}${scopedPath} when:${queryDays}d`;
+  const cityTerms = cityHint
+    ? ` (${[cityHint.name, ...cityHint.patterns].map((term) => `\"${term}\"`).join(" OR ")})`
+    : "";
+  const query = `(${terms})${cityTerms} site:${source.domain}${scopedPath} when:${queryDays}d`;
   const url = `${GOOGLE_NEWS}?q=${encodeURIComponent(query)}&${googleNewsLocale(profile)}`;
   const response = await fetch(url, {
     headers: { "User-Agent": "BrokketRealEstateMonitor/1.0" },
@@ -307,7 +313,7 @@ async function fetchSource(source: NewsSource, queryDays: number): Promise<FeedI
   }
   const xml = await response.text();
   if (xml.length > 2_000_000) throw new Error(`RSS ${source.domain} exceeded size limit`);
-  return parseFeed(xml, source.name, source.domain);
+  return parseFeed(xml, source.name, source.domain, cityHint);
 }
 
 function comparableUrl(value: string): string {

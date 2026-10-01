@@ -11,9 +11,17 @@ export type NewsSource = {
   logo: string;
   feed: boolean;
   language: NewsLanguage;
+  cityCode?: string;
 };
 
-function source(name: string, type: SourceType, url: string, logo = "", language: NewsLanguage = "en"): NewsSource {
+function source(
+  name: string,
+  type: SourceType,
+  url: string,
+  logo = "",
+  language: NewsLanguage = "en",
+  cityCode?: string,
+): NewsSource {
   const domain = new URL(url).hostname.toLowerCase().replace(/^www\./, "");
   return {
     name,
@@ -23,6 +31,7 @@ function source(name: string, type: SourceType, url: string, logo = "", language
     logo: logo || `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128`,
     feed: /(?:\.rss(?:$|\?)|\.xml(?:$|\?)|\/rss(?:\/|$)|\/feed(?:\/|$)|rssfeed|rssfeeds)/i.test(url),
     language,
+    cityCode,
   };
 }
 
@@ -151,6 +160,41 @@ export const REGIONAL_EDITORIAL_SOURCES: readonly NewsSource[] = [
 
   source("Asomiya Pratidin", "publisher", "https://www.asomiyapratidin.in", "", "as"),
   source("Niyomiya Barta", "publisher", "https://niyomiyabarta.com", "", "as"),
+];
+
+// Geography-scoped regional editions. Unlike a publisher homepage, each entry
+// has a fixed configured city. The collector still verifies the resolved
+// article, topic, image and publication date before delivery.
+export const REGIONAL_CITY_SOURCES: readonly NewsSource[] = [
+  source("Dainik Jagran Lucknow", "publisher", "https://www.jagran.com/uttar-pradesh/lucknow-city", "", "hi", "lucknow"),
+  source("Dainik Jagran Noida", "publisher", "https://www.jagran.com/uttar-pradesh/noida", "", "hi", "noida"),
+  source("Dainik Jagran Meerut", "publisher", "https://www.jagran.com/uttar-pradesh/meerut-city", "", "hi", "meerut"),
+  source("Dainik Jagran Kanpur", "publisher", "https://www.jagran.com/uttar-pradesh/kanpur-city", "", "hi", "kanpur"),
+  source("Dainik Jagran Prayagraj", "publisher", "https://www.jagran.com/uttar-pradesh/prayagraj", "", "hi", "prayagraj"),
+  source("Dainik Bhaskar Meerut", "publisher", "https://www.bhaskar.com/local/uttar-pradesh/meerut", "", "hi", "meerut"),
+  source("Dainik Bhaskar Prayagraj", "publisher", "https://www.bhaskar.com/local/uttar-pradesh/prayagraj", "", "hi", "prayagraj"),
+  source("Dainik Bhaskar Bhopal", "publisher", "https://www.bhaskar.com/local/madhya-pradesh/bhopal", "", "hi", "bhopal"),
+  source("Dainik Bhaskar Indore", "publisher", "https://www.bhaskar.com/local/madhya-pradesh/indore", "", "hi", "indore"),
+  source("Dainik Bhaskar Jaipur", "publisher", "https://www.bhaskar.com/local/rajasthan/jaipur", "", "hi", "jaipur"),
+  source("Dainik Bhaskar Jodhpur", "publisher", "https://www.bhaskar.com/local/rajasthan/jodhpur", "", "hi", "jodhpur"),
+
+  source("Dinamalar Chennai", "publisher", "https://www.dinamalar.com/news/tamil-nadu-district-news-chennai", "", "ta", "chennai"),
+  source("Dinamalar Coimbatore", "publisher", "https://www.dinamalar.com/news/tamil-nadu-district-news-coimbatore", "", "ta", "coimbatore"),
+  source("Dinamalar Madurai", "publisher", "https://www.dinamalar.com/news/tamil-nadu-district-news-madurai", "", "ta", "madurai"),
+  source("Dinamalar Tiruchirappalli", "publisher", "https://www.dinamalar.com/news/tamil-nadu-district-news-trichy", "", "ta", "tiruchirappalli"),
+
+  source("Loksatta Mumbai", "publisher", "https://www.loksatta.com/mumbai", "", "mr", "mumbai"),
+  source("Loksatta Pune", "publisher", "https://www.loksatta.com/pune", "", "mr", "pune"),
+  source("Loksatta Nagpur", "publisher", "https://www.loksatta.com/nagpur", "", "mr", "nagpur"),
+  source("Lokmat Nashik", "publisher", "https://www.lokmat.com/nashik", "", "mr", "nashik"),
+
+  source("Anandabazar Kolkata", "publisher", "https://www.anandabazar.com/west-bengal/kolkata", "", "bn", "kolkata"),
+  source("Prajavani Bengaluru", "publisher", "https://www.prajavani.net/district/bengaluru-city", "", "kn", "bengaluru"),
+  source("Prajavani Mysuru", "publisher", "https://www.prajavani.net/district/mysuru", "", "kn", "mysuru"),
+  source("Malayala Manorama Kochi", "publisher", "https://www.manoramaonline.com/district-news/ernakulam", "", "ml", "kochi"),
+  source("Malayala Manorama Thiruvananthapuram", "publisher", "https://www.manoramaonline.com/district-news/thiruvananthapuram", "", "ml", "thiruvananthapuram"),
+  source("Divya Bhaskar Ahmedabad", "publisher", "https://www.divyabhaskar.co.in/local/gujarat/ahmedabad", "", "gu", "ahmedabad"),
+  source("Divya Bhaskar Surat", "publisher", "https://www.divyabhaskar.co.in/local/gujarat/surat", "", "gu", "surat"),
 ];
 
 // State RERA and equivalent official property-regulation channels for every
@@ -434,6 +478,7 @@ export const ROTATING_SOURCES: readonly NewsSource[] = uniqueSources([
   ...SUPPLEMENTAL_SOURCES,
   ...EDITORIAL_SOURCES,
   ...REGIONAL_EDITORIAL_SOURCES,
+  ...REGIONAL_CITY_SOURCES,
   ...RERA_SOURCES,
   ...INFRASTRUCTURE_SOURCES,
   ...DEVELOPER_SOURCES,

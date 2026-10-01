@@ -112,6 +112,8 @@ aside nav button.active, aside nav button:hover { background: rgba(255,255,255,.
 .source-copy>div { display: flex; align-items: center; gap: .45rem; }
 .source-copy h3 { margin: 0; font-size: .88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .source-copy p { margin: .3rem 0 .6rem; color: var(--muted); font-size: .7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.source-meta { display: flex; flex-wrap: wrap; gap: .3rem; margin: -.2rem 0 .55rem; }
+.source-meta span { padding: .12rem .38rem; border-radius: 999px; background: #eef2ff; color: #475467; font-size: .58rem; font-weight: 800; text-transform: uppercase; }
 .type-badge { flex: 0 0 auto; padding: .17rem .4rem; border-radius: 999px; background: #eef2ff; color: #3538cd; font-size: .58rem; text-transform: uppercase; font-weight: 800; }
 .type-badge.developer { background: #fff4e8; color: #b54708; }
 .type-badge.government, .type-badge.rera { background: #ecfdf3; color: #067647; }

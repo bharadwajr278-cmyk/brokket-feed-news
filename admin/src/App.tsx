@@ -180,7 +180,7 @@ function MediaField({ label, value, loading, onChange, onUpload }: { label: stri
     <label className="upload-box" htmlFor={id}>{loading ? <LoaderCircle className="spin" /> : <ImagePlus />} {loading ? "Uploading…" : `Upload ${label}`}</label>
     <input id={id} className="sr-only" type="file" accept="image/*" onChange={(e) => onUpload(e.target.files?.[0])} />
     <input type="url" value={value} onChange={(e) => onChange(e.target.value)} placeholder="Or paste image URL" />
-    {value && <div className="media-preview"><img src={value} alt="Preview" /><span>{label} ready</span><button onClick={() => onChange("")} aria-label={`Remove ${label}`}><Trash2 /></button></div>}
+    {value && <div className="media-preview"><img src={displayImageUrl(value)} alt="Preview" /><span>{label} ready</span><button onClick={() => onChange("")} aria-label={`Remove ${label}`}><Trash2 /></button></div>}
   </div>;
 }
 
@@ -188,7 +188,7 @@ function SourcesPanel() {
   const [query, setQuery] = useState("");
   const [type, setType] = useState("all");
   const sources = useMemo(() => ALL_SOURCES.filter((source) => {
-    const haystack = `${source.name} ${source.domain} ${source.type}`.toLowerCase();
+    const haystack = `${source.name} ${source.domain} ${source.type} ${source.language} ${source.cityCode || ""}`.toLowerCase();
     return haystack.includes(query.toLowerCase()) && (type === "all" || source.type === type);
   }), [query, type]);
   const types = [...new Set(ALL_SOURCES.map((source) => source.type))];
@@ -200,7 +200,20 @@ function SourcesPanel() {
 }
 
 function SourceCard({ source }: { source: NewsSource }) {
-  return <article className="source-card"><div className="source-logo"><img src={source.logo} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} /><Building2 /></div><div className="source-copy"><div><h3>{source.name}</h3><span className={`type-badge ${source.type}`}>{source.type}</span></div><p>{source.domain}</p><div className="source-status"><CheckCircle2 /> Monitored every 20 minutes</div></div><a href={source.url} target="_blank" rel="noreferrer" aria-label={`Open ${source.name}`}><ExternalLink /></a></article>;
+  const cityName = source.cityCode ? CITY_PATTERNS.find((city) => city.code === source.cityCode)?.name : "";
+  return <article className="source-card"><div className="source-logo"><img src={source.logo} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} /><Building2 /></div><div className="source-copy"><div><h3>{source.name}</h3><span className={`type-badge ${source.type}`}>{source.type}</span></div><p>{source.domain}</p><div className="source-meta"><span>{source.language.toUpperCase()}</span>{cityName && <span>{cityName} city edition</span>}</div><div className="source-status"><CheckCircle2 /> Monitored every 20 minutes</div></div><a href={source.url} target="_blank" rel="noreferrer" aria-label={`Open ${source.name}`}><ExternalLink /></a></article>;
+}
+
+function displayImageUrl(value: string): string {
+  try {
+    const url = new URL(value);
+    if (url.hostname.toLowerCase() === "assets.eenadu.net") {
+      return `/api/image-proxy?url=${encodeURIComponent(url.toString())}`;
+    }
+  } catch {
+    return value;
+  }
+  return value;
 }
 
 function formatDateTime(value: string): string {
@@ -358,7 +371,7 @@ export function App() {
           {loading && items.length === 0 ? <div className="empty"><LoaderCircle className="spin" />Loading news…</div> : items.length === 0 ? <div className="empty"><SlidersHorizontal />No news matches these filters.</div> : dateGroups.map((group) => <div className="date-group" key={group.key}>
             <div className="date-group-heading"><CalendarDays /><strong>{group.label}</strong><span>{group.items.length} {group.items.length === 1 ? "news" : "news items"} on this page</span></div>
             {group.items.map((item) => <article className="news-row" key={item.id}>
-            <div className="thumb">{item.thumbnailImage ? <img src={item.thumbnailImage} alt="" /> : <Newspaper />}</div>
+            <div className="thumb">{item.thumbnailImage ? <img src={displayImageUrl(item.thumbnailImage)} alt="" onError={(event) => { event.currentTarget.style.display = "none"; }} /> : <Newspaper />}</div>
             <div className="news-title"><strong>{item.title}</strong>{item.newsLink && <a href={item.newsLink} target="_blank" rel="noreferrer"><Link2 />{item.newsLink}</a>}</div>
             <span className="city-pill">{CITY_PATTERNS.find((city) => city.code === item.cityCode)?.name || item.cityCode || "—"}</span>
             <div className="publisher">{item.sourceLogo ? <img src={item.sourceLogo} alt="" /> : <Building2 />}<span>{item.sourceName || "Unknown source"}</span></div>

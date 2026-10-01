@@ -76,6 +76,8 @@ export type MonitorEnv = {
 };
 
 const GOOGLE_NEWS = "https://news.google.com/rss/search";
+const PUBLIC_IMAGE_PROXY = "https://brokket-feed-news.vercel.app/api/image-proxy";
+const PROXIED_IMAGE_HOSTS = new Set(["assets.eenadu.net"]);
 const STATE_KEY = "state:last_checked_at";
 const SOURCE_CURSOR_KEY = "state:source_cursor";
 const LAST_RUN_KEY = "state:last_run";
@@ -265,6 +267,18 @@ function sourceAsset(url: string, sourceName: string): { name: string; logo: str
     name: configured?.name ?? sourceName,
     logo: configured?.logo ?? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128`,
   };
+}
+
+function deliveryThumbnailUrl(value: string): string {
+  try {
+    const url = new URL(value);
+    if (PROXIED_IMAGE_HOSTS.has(url.hostname.toLowerCase())) {
+      return `${PUBLIC_IMAGE_PROXY}?url=${encodeURIComponent(url.toString())}`;
+    }
+  } catch {
+    return value;
+  }
+  return value;
 }
 
 async function sha256(value: string): Promise<string> {
@@ -729,7 +743,7 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
           title: existing.title ?? cleanTitle,
           description: existing.description ?? item.description,
           newsLink: existing.newsLink ?? article.url,
-          thumbnailImage: existing.thumbnailImage ?? article.image,
+          thumbnailImage: deliveryThumbnailUrl(existing.thumbnailImage ?? article.image),
           publisherName: existing.publisherName ?? "Brokket News",
           publisherTagline: existing.publisherTagline ?? "Real Estate Intelligence",
           publisherLogo: existing.publisherLogo ?? "",
@@ -770,7 +784,7 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
   const payload = {
     title: cleanTitle,
     description,
-    thumbnailImage: article.image,
+    thumbnailImage: deliveryThumbnailUrl(article.image),
     newsLink: article.url,
     publisherName: "Brokket News",
     publisherTagline: "Real Estate Intelligence",
@@ -809,7 +823,7 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
         url: article.url,
         title: cleanTitle,
         description,
-        thumbnailImage: article.image,
+        thumbnailImage: deliveryThumbnailUrl(article.image),
         apiCode: body.data?.code ?? null,
         cityCode: city.code,
         cityName: city.name,

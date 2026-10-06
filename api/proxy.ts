@@ -1,4 +1,5 @@
-const FEED_ORIGIN = "http://65.2.3.60";
+// Vercel Edge blocks literal IP origins. This AWS hostname resolves to 65.2.3.60.
+const FEED_ORIGIN = "http://ec2-65-2-3-60.ap-south-1.compute.amazonaws.com";
 const MEDIA_ORIGIN = "https://www.brokket.app";
 const RERA_HISTORY_URL = "https://api.github.com/repos/bharadwajr278-cmyk/rera-new-projects/contents/data/sent_notifications.json?ref=main";
 
@@ -11,6 +12,8 @@ const ALLOWED_ROUTES = [
 ];
 
 const ALLOWED_METHODS = new Set(["GET", "POST", "PUT", "OPTIONS"]);
+
+export const config = { runtime: "edge" };
 
 function safeEqual(left: string, right: string): boolean {
   if (!left || left.length !== right.length) return false;

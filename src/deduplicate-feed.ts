@@ -5,7 +5,7 @@ type ListResponse = {
 };
 
 const endpoint = (process.env.NEWS_API_ENDPOINT
-  || "http://ec2-13-126-103-246.ap-south-1.compute.amazonaws.com/api/feed-news").replace(/\/+$/, "");
+  || "http://65.2.3.60/api/feed-news").replace(/\/+$/, "");
 const headers: Record<string, string> = { "content-type": "application/json" };
 const apiKey = process.env.NEWS_API_KEY?.trim();
 if (apiKey) headers.authorization = `Bearer ${apiKey}`;

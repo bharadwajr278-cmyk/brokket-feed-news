@@ -1,4 +1,4 @@
-const FEED_ORIGIN = "http://ec2-13-126-103-246.ap-south-1.compute.amazonaws.com";
+const FEED_ORIGIN = "http://65.2.3.60";
 const MEDIA_ORIGIN = "https://www.brokket.app";
 const RERA_HISTORY_URL = "https://api.github.com/repos/bharadwajr278-cmyk/rera-new-projects/contents/data/sent_notifications.json?ref=main";
 

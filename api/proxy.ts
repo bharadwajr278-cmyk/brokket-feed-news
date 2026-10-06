@@ -12,8 +12,6 @@ const ALLOWED_ROUTES = [
 
 const ALLOWED_METHODS = new Set(["GET", "POST", "PUT", "OPTIONS"]);
 
-export const config = { runtime: "edge" };
-
 function safeEqual(left: string, right: string): boolean {
   if (!left || left.length !== right.length) return false;
   let difference = 0;

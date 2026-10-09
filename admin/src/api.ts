@@ -5,6 +5,7 @@ import {
   REGIONAL_PROPERTY_TERMS,
 } from "../../src/regional";
 import { publisherNameForCity } from "../../src/cities";
+import { duplicateLoserCodes } from "../../src/deduplication";
 
 export type NewsItem = {
   id: string;
@@ -124,6 +125,7 @@ const ADMIN_EXCLUDED_TERMS = [
   "drug smuggler", "drug trafficking", "seized property", "property seized", "property seizure",
   "family property dispute", "eviction of children", "evict children", "bars ews residents",
   "abduction", "snatching",
+  "stocks to watch", "stock market", "share price", "market outlook", "trading call",
 ];
 
 export function hasAdminToken(): boolean {
@@ -241,7 +243,10 @@ export async function listNews(filters: NewsFilters): Promise<PageResult> {
       const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       return new RegExp(`(?:^|[^\\p{L}\\p{N}])${escaped}(?:$|[^\\p{L}\\p{N}])`, "iu").test(value);
     });
-  const filtered = [...unique.values()].filter((item) => {
+  const uniqueItems = [...unique.values()];
+  const semanticDuplicateCodes = duplicateLoserCodes(uniqueItems);
+  const filtered = uniqueItems.filter((item) => {
+    if (semanticDuplicateCodes.has(item.code)) return false;
     const searchable = `${item.title} ${item.description}`.toLowerCase();
     if (hasExcludedContent(searchable)) return false;
     const isPropertyNews = [...ADMIN_PROPERTY_TERMS, ...REGIONAL_PROPERTY_TERMS]

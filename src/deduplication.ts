@@ -111,13 +111,35 @@ export function isCrossLanguageDuplicate(
 
 function normalisedTitle(value: string): string {
   return value.toLocaleLowerCase("en-IN")
-    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    // Keep combining marks: stripping Hindi matras changes otherwise identical
+    // words and prevents regional-language duplicate matching.
+    .replace(/[^\p{L}\p{N}\p{M}]+/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
 
 function titleTokens(value: string): Set<string> {
   return new Set(normalisedTitle(value).split(" ").filter((token) => token.length > 1 && !STOP_WORDS.has(token)));
+}
+
+function titleTokenSequence(value: string): string[] {
+  return normalisedTitle(value).split(" ").filter((token) => token.length > 1 && !STOP_WORDS.has(token));
+}
+
+function longestSharedTokenRun(left: string[], right: string[]): number {
+  let longest = 0;
+  let previous = new Array(right.length + 1).fill(0) as number[];
+  for (const leftToken of left) {
+    const current = new Array(right.length + 1).fill(0) as number[];
+    right.forEach((rightToken, index) => {
+      if (leftToken === rightToken) {
+        current[index + 1] = previous[index]! + 1;
+        longest = Math.max(longest, current[index + 1]!);
+      }
+    });
+    previous = current;
+  }
+  return longest;
 }
 
 function amountAnchors(value: string): Set<string> {
@@ -139,6 +161,8 @@ function entityPrefix(value: string): string {
 }
 
 export function isNearDuplicateHeadline(left: string, right: string): boolean {
+  const leftSequence = titleTokenSequence(left);
+  const rightSequence = titleTokenSequence(right);
   const leftTokens = titleTokens(left);
   const rightTokens = titleTokens(right);
   if (leftTokens.size < 5 || rightTokens.size < 5) return false;
@@ -147,6 +171,12 @@ export function isNearDuplicateHeadline(left: string, right: string): boolean {
   const sharedAmounts = [...leftAmounts].filter((value) => rightAmounts.has(value));
   const shared = [...leftTokens].filter((token) => rightTokens.has(token));
   const union = new Set([...leftTokens, ...rightTokens]).size;
+  // Regional publishers commonly publish the same story as both an article and
+  // a video while adding a different prefix/suffix. A long identical phrase is
+  // a safer signal than whole-title Jaccard similarity for those headlines.
+  if (longestSharedTokenRun(leftSequence, rightSequence) >= 6) {
+    return !(leftAmounts.size && rightAmounts.size && sharedAmounts.length === 0);
+  }
   if (shared.length >= 5 && shared.length / union >= 0.72) {
     return !(leftAmounts.size && rightAmounts.size && sharedAmounts.length === 0);
   }

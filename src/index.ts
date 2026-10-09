@@ -138,6 +138,7 @@ const EXCLUDED_TERMS = [
   "tie him", "tied him", "court acquits", "cops", "narcotics", "drug smuggler", "drug trafficking",
   "seized property", "property seized", "property seizure", "family property dispute",
   "eviction of children", "evict children", "bars ews residents", "abduction", "snatching",
+  "stocks to watch", "stock market", "share price", "market outlook", "trading call",
 ];
 const QUERY_TERMS = [
   '"real estate"', "property", "housing", "RERA", "homebuyers", "redevelopment",

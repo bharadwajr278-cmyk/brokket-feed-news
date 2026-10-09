@@ -1,4 +1,4 @@
-import { hasExcludedContent } from "./index";
+import { isRelevant } from "./index";
 import type { DeduplicationRecord } from "./deduplication";
 
 type FeedNews = DeduplicationRecord & {
@@ -56,7 +56,7 @@ const first = await listPage(0);
 const items = [...first.content];
 for (let page = 1; page < first.totalPages; page += 1) items.push(...(await listPage(page)).content);
 
-const activeIrrelevant = items.filter((item) => item.isActive && hasExcludedContent(`${item.title} ${item.description}`));
+const activeIrrelevant = items.filter((item) => item.isActive && !isRelevant(`${item.title} ${item.description}`));
 const failures: string[] = [];
 let deactivated = 0;
 if (!dryRun) {

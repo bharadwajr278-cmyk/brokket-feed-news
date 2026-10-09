@@ -4,7 +4,7 @@ import {
   CirclePower, ExternalLink, FilePenLine, ImagePlus, Link2, LoaderCircle,
   LogOut, MailCheck, MapPin, Newspaper, Plus, RefreshCw, Search, SlidersHorizontal, Trash2, X,
 } from "lucide-react";
-import { CITY_PATTERNS, type CityPattern } from "../../src/cities";
+import { CITY_PATTERNS, publisherNameForCity, type CityPattern } from "../../src/cities";
 import { ALL_SOURCES, type NewsSource } from "../../src/sources";
 import {
   clearAdminToken, createNews, getAdminToken, hasAdminToken, listNews, listReraMailHistory, setAdminToken,
@@ -17,7 +17,7 @@ const emptyDraft = (): NewsDraft => ({
   isActive: true,
   newsLink: "",
   thumbnailImage: "",
-  publisherName: "Brokket News",
+  publisherName: "",
   publisherTagline: "Real Estate Intelligence",
   publisherLogo: "",
   sourceName: "",
@@ -100,7 +100,7 @@ function NewsEditor({ item, onClose, onSaved }: EditorProps) {
   const [draft, setDraft] = useState<NewsDraft>(() => item ? {
     title: item.title || "", description: item.description || "", isActive: item.isActive,
     newsLink: item.newsLink || "", thumbnailImage: item.thumbnailImage || "",
-    publisherName: item.publisherName || "Brokket News", publisherTagline: item.publisherTagline || "Real Estate Intelligence",
+    publisherName: publisherNameForCity(item.cityCode), publisherTagline: item.publisherTagline || "Real Estate Intelligence",
     publisherLogo: item.publisherLogo || "", sourceName: item.sourceName || "", sourceLogo: item.sourceLogo || "",
     cityCode: item.cityCode || "",
     publishedAt: item.publishedAt ? new Date(item.publishedAt).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16),
@@ -136,8 +136,11 @@ function NewsEditor({ item, onClose, onSaved }: EditorProps) {
     }
   };
   const selectCity = (code: string) => {
-    const city = CITY_PATTERNS.find((candidate) => candidate.code === code);
-    setDraft((current) => ({ ...current, cityCode: code }));
+    setDraft((current) => ({
+      ...current,
+      cityCode: code,
+      publisherName: code ? publisherNameForCity(code) : "",
+    }));
   };
   const selectSource = (name: string) => {
     const source = ALL_SOURCES.find((candidate) => candidate.name === name);
@@ -159,7 +162,7 @@ function NewsEditor({ item, onClose, onSaved }: EditorProps) {
           <datalist id="source-options">{ALL_SOURCES.map((source) => <option key={`${source.name}-${source.url}`} value={source.name} />)}</datalist>
           <label>City *<select value={draft.cityCode} onChange={(e) => selectCity(e.target.value)}><option value="">Select city</option>{CITY_PATTERNS.map((city) => <option key={city.code} value={city.code}>{city.name}</option>)}</select></label>
           <label>Published date & time<input type="datetime-local" value={draft.publishedAt} onChange={(e) => patch("publishedAt", e.target.value)} /></label>
-          <label>Publisher name<input value={draft.publisherName} onChange={(e) => patch("publisherName", e.target.value)} /></label>
+          <label>Publisher name<input value={draft.cityCode ? publisherNameForCity(draft.cityCode) : "Select a city first"} readOnly /></label>
           <label>Publisher tagline<input value={draft.publisherTagline} onChange={(e) => patch("publisherTagline", e.target.value)} /></label>
           <label className="toggle-field"><span>Article status</span><button type="button" className={`switch ${draft.isActive ? "on" : ""}`} onClick={() => patch("isActive", !draft.isActive)}><span />{draft.isActive ? "Active" : "Inactive"}</button></label>
         </fieldset>

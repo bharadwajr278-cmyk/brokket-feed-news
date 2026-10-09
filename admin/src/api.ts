@@ -4,6 +4,7 @@ import {
   REGIONAL_INFRASTRUCTURE_TERMS,
   REGIONAL_PROPERTY_TERMS,
 } from "../../src/regional";
+import { publisherNameForCity } from "../../src/cities";
 
 export type NewsItem = {
   id: string;
@@ -328,7 +329,7 @@ function toWritePayload(draft: NewsDraft): Record<string, unknown> {
     isActive: draft.isActive,
     newsLink: draft.newsLink || null,
     thumbnailImage: draft.thumbnailImage || null,
-    publisherName: draft.publisherName || "Brokket News",
+    publisherName: publisherNameForCity(draft.cityCode),
     publisherTagline: draft.publisherTagline || "Real Estate Intelligence",
     publisherLogo: draft.publisherLogo || "",
     sourceName: draft.sourceName,

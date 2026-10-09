@@ -1,4 +1,4 @@
-import { CITY_PATTERNS, CityPattern } from "./cities";
+import { CITY_PATTERNS, CityPattern, publisherNameForCity } from "./cities";
 import { ALL_SOURCES, CORE_SOURCES, NewsSource, ROTATING_SOURCES } from "./sources";
 import { isCrossLanguageDuplicate, isNearDuplicateHeadline } from "./deduplication";
 import {
@@ -748,7 +748,7 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
           description: existing.description ?? item.description,
           newsLink: existing.newsLink ?? article.url,
           thumbnailImage: deliveryThumbnailUrl(existing.thumbnailImage ?? article.image),
-          publisherName: existing.publisherName ?? "Brokket News",
+          publisherName: publisherNameForCity(existing.cityCode ?? city.code),
           publisherTagline: existing.publisherTagline ?? "Real Estate Intelligence",
           publisherLogo: existing.publisherLogo ?? "",
           sourceName: existing.sourceName ?? item.sourceName,
@@ -790,7 +790,7 @@ async function pushItem(env: MonitorEnv, item: FeedItem, city: CityPattern): Pro
     description,
     thumbnailImage: deliveryThumbnailUrl(article.image),
     newsLink: article.url,
-    publisherName: "Brokket News",
+    publisherName: publisherNameForCity(city.code),
     publisherTagline: "Real Estate Intelligence",
     publisherLogo: "",
     sourceName: source.name.slice(0, 200),

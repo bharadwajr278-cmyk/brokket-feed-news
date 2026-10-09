@@ -1,5 +1,6 @@
 import { isRelevant } from "./index";
 import { duplicateLoserCodes, type DeduplicationRecord } from "./deduplication";
+import { publisherNameForCity } from "./cities";
 
 type FeedNews = DeduplicationRecord & {
   code: string;
@@ -50,17 +51,18 @@ function wait(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
-async function activate(item: FeedNews, attempt = 0): Promise<void> {
+async function updateItem(item: FeedNews, isActive: boolean, attempt = 0): Promise<void> {
+  const publisherName = publisherNameForCity(item.cityCode);
   const response = await fetch(`${endpoint}/${encodeURIComponent(item.code)}`, {
     method: "PUT",
     headers,
     body: JSON.stringify({
       title: item.title,
       description: item.description,
-      isActive: true,
+      isActive,
       newsLink: item.newsLink,
       thumbnailImage: item.thumbnailImage,
-      publisherName: item.publisherName,
+      publisherName,
       publisherTagline: item.publisherTagline,
       publisherLogo: item.publisherLogo,
       sourceName: item.sourceName,
@@ -75,10 +77,10 @@ async function activate(item: FeedNews, attempt = 0): Promise<void> {
     const retryMessage = Number(body.message?.match(/(\d+)\s*seconds?/i)?.[1] || "0");
     const retrySeconds = Math.max(2, retryHeader, retryMessage);
     await wait((retrySeconds + 1) * 1_000);
-    return activate(item, attempt + 1);
+    return updateItem(item, isActive, attempt + 1);
   }
-  if (!response.ok || body.data?.isActive !== true) {
-    throw new Error(`${item.code}: ${body.message ?? `activation failed (${response.status})`}`);
+  if (!response.ok || body.data?.isActive !== isActive) {
+    throw new Error(`${item.code}: ${body.message ?? `update failed (${response.status})`}`);
   }
 }
 
@@ -94,13 +96,26 @@ const inactiveRelevant = items.filter((item) =>
   && !duplicateCodes.has(item.code)
   && isRelevant(`${item.title} ${item.description}`),
 );
+const publisherCorrections = items.filter((item) =>
+  item.publisherName !== publisherNameForCity(item.cityCode)
+  && !inactiveRelevant.some((candidate) => candidate.code === item.code),
+);
 const failures: string[] = [];
 let activated = 0;
 for (let index = 0; index < inactiveRelevant.length; index += 4) {
   const batch = inactiveRelevant.slice(index, index + 4);
-  const results = await Promise.allSettled(batch.map(activate));
+  const results = await Promise.allSettled(batch.map((item) => updateItem(item, true)));
   results.forEach((result) => {
     if (result.status === "fulfilled") activated += 1;
+    else failures.push(result.reason instanceof Error ? result.reason.message : String(result.reason));
+  });
+}
+let publisherNamesCorrected = 0;
+for (let index = 0; index < publisherCorrections.length; index += 4) {
+  const batch = publisherCorrections.slice(index, index + 4);
+  const results = await Promise.allSettled(batch.map((item) => updateItem(item, item.isActive)));
+  results.forEach((result) => {
+    if (result.status === "fulfilled") publisherNamesCorrected += 1;
     else failures.push(result.reason instanceof Error ? result.reason.message : String(result.reason));
   });
 }
@@ -109,6 +124,8 @@ console.log(JSON.stringify({
   scanned: items.length,
   inactiveRelevant: inactiveRelevant.length,
   activated,
+  publisherCorrections: publisherCorrections.length,
+  publisherNamesCorrected,
   failures,
 }, null, 2));
 

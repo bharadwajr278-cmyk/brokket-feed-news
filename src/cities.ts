@@ -1,5 +1,16 @@
 export type CityPattern = { name: string; code: string; patterns: readonly string[] };
 
+export function publisherNameForCity(cityCode: string): string {
+  const normalizedCode = cityCode.trim().toLowerCase();
+  const city = CITY_PATTERNS.find((candidate) => candidate.code.toLowerCase() === normalizedCode);
+  const cityName = city?.name ?? cityCode
+    .trim()
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (character) => character.toUpperCase());
+
+  return cityName ? `${cityName} News` : "City News";
+}
+
 // Generated from the user's combined_project_data_india.xlsx-derived geography config.
 // Longest patterns are checked first so "Greater Noida" wins over "Noida".
 export const CITY_PATTERNS: readonly CityPattern[] = [

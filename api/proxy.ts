@@ -1,7 +1,7 @@
 // Vercel Edge blocks literal IP origins. This AWS hostname resolves to 65.2.3.60.
 const FEED_ORIGIN = "http://ec2-65-2-3-60.ap-south-1.compute.amazonaws.com";
 const MEDIA_ORIGIN = "https://www.brokket.app";
-const RERA_HISTORY_URL = "https://api.github.com/repos/bharadwajr278-cmyk/rera-new-projects/contents/data/sent_notifications.json?ref=main";
+const RERA_HISTORY_URL = "https://raw.githubusercontent.com/bharadwajr278-cmyk/rera-new-projects/main/data/sent_notifications.json";
 
 const ALLOWED_ROUTES = [
   /^\/api\/feed-news$/,
@@ -45,7 +45,7 @@ export default async function handler(request: Request): Promise<Response> {
     try {
       const history = await fetch(RERA_HISTORY_URL, {
         headers: {
-          accept: "application/vnd.github+json",
+          accept: "application/json",
           "user-agent": "brokket-rera-mail-history",
         },
         cache: "no-store",
@@ -53,12 +53,15 @@ export default async function handler(request: Request): Promise<Response> {
       if (!history.ok) {
         return Response.json({ message: "RERA mail history is temporarily unavailable" }, { status: 502 });
       }
-      const file = await history.json() as { content?: string; encoding?: string };
-      if (file.encoding !== "base64" || !file.content) {
+      const ledger = await history.json() as { count?: unknown; projects?: unknown };
+      if (
+        !ledger
+        || typeof ledger !== "object"
+        || typeof ledger.count !== "number"
+        || !Array.isArray(ledger.projects)
+      ) {
         return Response.json({ message: "RERA mail history returned an invalid document" }, { status: 502 });
       }
-      const decoded = atob(file.content.replace(/\s/g, ""));
-      const ledger = JSON.parse(decoded) as unknown;
       return Response.json(ledger, { headers: { "cache-control": "private, no-store" } });
     } catch {
       return Response.json({ message: "RERA mail history is temporarily unavailable" }, { status: 502 });

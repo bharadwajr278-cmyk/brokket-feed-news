@@ -229,14 +229,6 @@ function isNearDuplicate(left: DeduplicationRecord, right: DeduplicationRecord):
   return isNearDuplicateHeadline(left.title, right.title) || isCrossLanguageDuplicate(left, right);
 }
 
-function sameStory(left: DeduplicationRecord, right: DeduplicationRecord): boolean {
-  const leftUrl = canonicalUrl(left.newsLink);
-  const rightUrl = canonicalUrl(right.newsLink);
-  if (leftUrl && leftUrl === rightUrl) return true;
-  if (normalisedTitle(left.title) === normalisedTitle(right.title)) return true;
-  return isNearDuplicate(left, right);
-}
-
 function qualityScore(item: DeduplicationRecord): number {
   const imageScore = /^https:\/\//i.test(item.thumbnailImage || "") ? 2_000 : 0;
   const linkScore = /^https:\/\//i.test(item.newsLink || "") ? 1_000 : 0;
@@ -260,9 +252,37 @@ export function duplicateGroups(items: DeduplicationRecord[]): DeduplicationReco
     const rightRoot = find(right);
     if (leftRoot !== rightRoot) parent[rightRoot] = leftRoot;
   };
-  for (let left = 0; left < items.length; left += 1) {
-    for (let right = left + 1; right < items.length; right += 1) {
-      if (sameStory(items[left]!, items[right]!)) union(left, right);
+
+  // Exact matches are indexed globally. Near-duplicate comparisons only need
+  // records from the same city, avoiding an O(n²) scan across thousands of
+  // unrelated cities every time the admin panel loads.
+  const urlIndexes = new Map<string, number>();
+  const titleIndexes = new Map<string, number>();
+  const cityIndexes = new Map<string, number[]>();
+  items.forEach((item, index) => {
+    const url = canonicalUrl(item.newsLink);
+    if (url) {
+      const existing = urlIndexes.get(url);
+      if (existing !== undefined) union(existing, index);
+      else urlIndexes.set(url, index);
+    }
+    const title = normalisedTitle(item.title);
+    if (title) {
+      const existing = titleIndexes.get(title);
+      if (existing !== undefined) union(existing, index);
+      else titleIndexes.set(title, index);
+    }
+    if (item.cityCode) {
+      cityIndexes.set(item.cityCode, [...(cityIndexes.get(item.cityCode) ?? []), index]);
+    }
+  });
+  for (const indexes of cityIndexes.values()) {
+    for (let left = 0; left < indexes.length; left += 1) {
+      for (let right = left + 1; right < indexes.length; right += 1) {
+        const leftIndex = indexes[left]!;
+        const rightIndex = indexes[right]!;
+        if (isNearDuplicate(items[leftIndex]!, items[rightIndex]!)) union(leftIndex, rightIndex);
+      }
     }
   }
   const groups = new Map<number, DeduplicationRecord[]>();

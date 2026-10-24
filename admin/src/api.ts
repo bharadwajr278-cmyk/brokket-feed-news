@@ -223,8 +223,11 @@ export async function listNews(filters: NewsFilters): Promise<PageResult> {
   const first = await fetchPage(0, batchSize);
   const pages = [first];
   const safePageCount = Math.min(first.totalPages, 100);
-  for (let pageNumber = 1; pageNumber < safePageCount; pageNumber += 1) {
-    pages.push(await fetchPage(pageNumber, batchSize));
+  const pageNumbers = Array.from({ length: Math.max(0, safePageCount - 1) }, (_unused, index) => index + 1);
+  const concurrency = 6;
+  for (let start = 0; start < pageNumbers.length; start += concurrency) {
+    const batch = pageNumbers.slice(start, start + concurrency);
+    pages.push(...await Promise.all(batch.map((pageNumber) => fetchPage(pageNumber, batchSize))));
   }
 
   const unique = new Map<string, NewsItem>();
